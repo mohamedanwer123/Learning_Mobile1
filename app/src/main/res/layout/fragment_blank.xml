@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.cm.learning_mobile.FRAGMENTS_TRACKS.BlankFragment"
+    android:orientation="vertical"
+
+    android:background="@color/colorPrimary">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/aa"/>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:text="our gool \n to make this app help the user how to learn ios,java and android"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:textStyle="italic|bold"
+        android:textColor="#fdfdfd"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/add"
+        app:rippleColor="#510761"
+        android:id="@+id/fab"/>
+</LinearLayout>

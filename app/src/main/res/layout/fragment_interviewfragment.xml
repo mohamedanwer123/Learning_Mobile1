@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0b1139"
+    android:orientation="vertical"
+    tools:context="com.example.cm.learning_mobile.REAGMENTS_COMPONENTS.interviewfragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/in3"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textColor="#ae0c3f"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="Question?"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:textColor="#fff"
+            android:padding="20dp"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:textSize="23dp"
+            android:id="@+id/ques"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/hello_blank_fragment" />
+    </ScrollView>
+
+
+</LinearLayout>

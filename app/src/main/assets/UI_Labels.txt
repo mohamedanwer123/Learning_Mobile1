@@ -1,0 +1,46 @@
+The appearance of labels is configurable, and they can display attributed strings, allowing you to customize the appearance of substrings within a label. You can add labels to your interface programmatically or by using Interface Builder.
+The following steps are required to add a label to your interface:
+Supply either a string or an attributed string that represents the content.
+If using a nonattributed string, configure the appearance of the label.
+Set up Auto Layout rules to govern the size and position of the label in your interface.
+Provide accessibility information and localized strings.
+Interface Builder Attributes
+Table 1 lists the core attributes that you configure for labels in Interface Builder.
+Table 1 
+Core attributes
+Attribute
+Description
+Text
+Specifies the content of the label. Set the mode to Plain to display the label’s content with a uniform appearance. Set the mode to Attributed to apply styling attributes selectively within the string. In addition to the styling attributes detailed in this table, when the mode is set to Attributed you can use the More menu to reveal additional appearance attributes. Access this value at runtime with the text and attributedText properties for the Plain and Attributed modes, respectively.
+Color
+Controls the color of the text in the label. In Plain configuration, specifies the color of the entire label. In Attributed mode, select a part of the string and use the color cell to set the color of the selection.
+Font
+Specifies the font of the string in the label. In Plain configuration, specifies the font for the entire label. In Attributed mode, use the font panel to specify the fonts used within the attributed string.
+Alignment
+Controls the horizontal alignment of the text within the label. Choose left, right, center, justified, or natural, which chooses either left or right depending on the current localization of the app. In Plain configuration, the alignment affects the content of the entire label. In Attributed mode, you can control the alignment of individual paragraphs.
+Lines
+Specifies the maximum number of lines the label will use to render the text. Set to 0 to use as many lines as required. Access this value at runtime with the numberOfLines property.
+Behavior
+Both Enabled and Highlighted control the appearance of the label, representing the isEnabled and isHighlighted properties, respectively. When Enabled is unchecked, the text is drawn dimmed to indicate that it is inactive. When Highlighted is checked, the text is rendered in the Highlighted color.
+Table 2 lists the text-spacing attributes you configure for labels in Interface Builder.
+Table 2 
+Spacing attributes
+Attribute
+Description
+Baseline
+Controls the vertical alignment of the text within the label when Autoshrink is enabled. Select Align Baselines to maintain the baseline as the font size is automatically reduced, or Align Centers to maintain the vertical center line of the text. The default value is None, which maintains the top of the text’s bounding box. Access this value at runtime with the baselineAdjustment property.
+Line Breaks
+Specifies what happens when a line is too long for the label’s bounds. Character wrap and word wrap are most commonly applied to multiline labels and determine the position of line breaks between consecutive lines. Select word wrap to place line breaks at word boundaries, or character wrap to insert line breaks in words. Truncate head, middle, and tail are usually applied for single-line labels, and describe the placement of an inserted ellipsis to represent the truncated text. Access this value at runtime with the lineBreakMode property.
+Autoshrink
+Determines whether the label adjusts the appearance of the text before resorting to truncation. Choose Minimum Font Scale and enter a value to allow the label to reduce the font size to fit the text. Enable Tighten Letter Spacing to allow the label to reduce intercharacter spacing. Access these values at runtime with the minimumScaleFactor and allowsDefaultTighteningForTruncation properties, respectively. Note that the Minimum Font Size option was deprecated in iOS 6.
+Table 3 lists the advanced appearance attributes you configure for labels in Interface Builder.
+Table 3 
+Advanced appearance attributes
+Attribute
+Description
+Highlighted
+The color applied to the text in the label when the Highlighted attribute is checked. Access this value at runtime with the highlightedTextColor property.
+Shadow
+Specifies the color of the shadow rendered beneath the text in the label. Defaults to transparent, which means no shadow is drawn. Access this value at runtime with the shadowColor property.
+Shadow Offset
+Controls the offset of the rendered shadow. Note that the shadow is rendered only when the Shadow color attribute has been set. Access this value at runtime with the shadowOffset property.

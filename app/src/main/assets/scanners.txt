@@ -1,0 +1,69 @@
+ava Scanner class
+There are various ways to read input from the keyboard, the java.util.Scanner class is one of them.
+
+The Java Scanner class breaks the input into tokens using a delimiter that is whitespace bydefault. It provides many methods to read and parse various primitive values.
+
+Java Scanner class is widely used to parse text for string and primitive types using regular expression.
+
+Java Scanner class extends Object class and implements Iterator and Closeable interfaces.
+
+Commonly used methods of Scanner class
+There is a list of commonly used Scanner class methods:
+
+Method	Description
+public String next()	it returns the next token from the scanner.
+public String nextLine()	it moves the scanner position to the next line and returns the value as a string.
+public byte nextByte()	it scans the next token as a byte.
+public short nextShort()	it scans the next token as a short value.
+public int nextInt()	it scans the next token as an int value.
+public long nextLong()	it scans the next token as a long value.
+public float nextFloat()	it scans the next token as a float value.
+public double nextDouble()	it scans the next token as a double value.
+Java Scanner Example to get input from console
+Let's see the simple example of the Java Scanner class which reads the int, string and double value as an input:
+
+import java.util.Scanner;  
+class ScannerTest{  
+ public static void main(String args[]){  
+   Scanner sc=new Scanner(System.in);  
+     
+   System.out.println("Enter your rollno");  
+   int rollno=sc.nextInt();  
+   System.out.println("Enter your name");  
+   String name=sc.next();  
+   System.out.println("Enter your fee");  
+   double fee=sc.nextDouble();  
+   System.out.println("Rollno:"+rollno+" name:"+name+" fee:"+fee);  
+   sc.close();  
+ }  
+}   
+download this scanner example
+Output:
+
+       Enter your rollno
+       111
+       Enter your name
+       Ratan
+       Enter 
+       450000
+       Rollno:111 name:Ratan fee:450000
+Java Scanner Example with delimiter
+Let's see the example of Scanner class with delimiter. The \s represents whitespace.
+
+import java.util.*;  
+public class ScannerTest2{  
+public static void main(String args[]){  
+     String input = "10 tea 20 coffee 30 tea buiscuits";  
+     Scanner s = new Scanner(input).useDelimiter("\\s");  
+     System.out.println(s.nextInt());  
+     System.out.println(s.next());  
+     System.out.println(s.nextInt());  
+     System.out.println(s.next());  
+     s.close();   
+}}  
+Output:
+
+10
+tea
+20
+coffee

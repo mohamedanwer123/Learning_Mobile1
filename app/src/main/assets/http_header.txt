@@ -1,0 +1,17 @@
+HTTP headers allow the client and the server to pass additional information with the request or the response. A request header consists of its case-insensitive name followed by a colon ':', then by its value (without line breaks). Leading white space before the value is ignored.
+
+Custom proprietary headers can be added using the 'X-' prefix, but this convention was deprecated in June 2012, because of the inconveniences it caused when non-standard fields became standard in RFC 6648; others are listed in an IANA registry, whose original content was defined in RFC 4229. IANA also maintains a registry of proposed new HTTP message headers.
+
+Headers can be grouped according to their contexts:
+
+General header: Headers applying to both requests and responses but with no relation to the data eventually transmitted in the body.
+Request header: Headers containing more information about the resource to be fetched or about the client itself.
+Response header: Headers with additional information about the response, like its location or about the server itself (name and version etc.).
+Entity header: Headers containing more information about the body of the entity, like its content length or its MIME-type.
+Headers can also be grouped according to how proxies handle them:
+
+End-to-end headers
+These headers must be transmitted to the final recipient of the message; that is, the server for a request or the client for a response. Intermediate proxies must retransmit end-to-end headers unmodified and caches must store them.
+Hop-by-hop headers
+These headers are meaningful only for a single transport-level connection and must not be retransmitted by proxies or cached. Such headers are: Connection, Keep-Alive, Proxy-Authenticate, Proxy-Authorization, TE, Trailer, Transfer-Encoding and Upgrade. Note that only hop-by-hop headers may be set using the Connection general header.
+The following list summarizes HTTP headers by their usage category. For an alphabetical list, see the navigation on the left side.

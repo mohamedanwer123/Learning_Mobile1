@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.cm.learning_mobile.FRAGMENTS_TRACKS.javafragment">
+
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fffefe">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="220dp"
+            android:layout_height="240dp"
+            android:background="@drawable/java"
+            />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:text="Beginner"
+            android:textColor="#fff"
+            android:textStyle="italic"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:id="@+id/java_beginner"
+            android:background="@drawable/level"
+            />
+
+
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:text="Intermediate"
+            android:textColor="#fff"
+            android:textStyle="italic"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:id="@+id/java_Intermediate"
+            android:background="@drawable/level"
+            />
+
+
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:text="Advanced"
+            android:textColor="#fff"
+            android:textStyle="italic"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:id="@+id/java_Advanced"
+            android:background="@drawable/level"
+            />
+
+
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
+            android:text="Interview"
+            android:textColor="#fd585c57"
+            android:textStyle="italic"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:id="@+id/java_interview"
+            android:background="@drawable/level"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

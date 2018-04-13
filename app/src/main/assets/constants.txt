@@ -1,0 +1,14 @@
+Java does not directly support constants. However, a static final variable is effectively a constant.
+
+The static modifier causes the variable to be available without loading an instance of the class where it is defined. The final modifier causes the variable to be unchangeable.
+
+Ex: public static final int FOUNDING_YEAR = 2001;
+
+Naming Standards for Java Constants
+Although these aren’t syntactical rules, they are widely used as accepted conventions.
+
+Java constants are normally declared in ALL CAPS.
+Underscores normally separate Words in Java constants.
+Sample Java Constant Declaration
+public class MAX_UNITS {
+ public static final int MAX_UNITS = 25;

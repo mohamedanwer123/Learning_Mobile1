@@ -1,0 +1,54 @@
+A character in Swift is a single character String literal, addressed by the data type Character. Take a look at the following example. It uses two Character constants -
+
+ Live Demo
+let char1: Character = "A"
+let char2: Character = "B"
+
+print("Value of char1 \(char1)")
+print("Value of char2 \(char2)")
+When the above code is compiled and executed, it produces the following result -
+
+Value of char1 A
+Value of char2 B
+If you try to store more than one character in a Character type variable or constant, then Swift 4 will not allow that. Try to type the following example in Swift 4 Playground and you will get an error even before compilation.
+
+// Following is wrong in Swift 4
+let char: Character = "AB"
+
+print("Value of char \(char)")
+Empty Character Variables
+It is not possible to create an empty Character variable or constant which will have an empty value. The following syntax is not possible -
+
+// Following is wrong in Swift 4
+let char1: Character = ""
+var char2: Character = ""
+
+print("Value of char1 \(char1)")
+print("Value of char2 \(char2)")
+Accessing Characters from Strings
+As explained while discussing Swift 4's Strings, String represents a collection of Character values in a specified order. So we can access individual characters from the given String by iterating over that string with a for-in loop -
+
+ Live Demo
+for ch in "Hello" {
+   print(ch)
+}
+When the above code is compiled and executed, it produces the following result -
+
+H
+e
+l
+l
+o
+Concatenating Strings with Characters
+The following example demonstrates how a Swift 4's Character can be concatenated with Swift 4's String.
+
+ Live Demo
+var varA:String = "Hello "
+let varB:Character = "G"
+
+varA.append( varB )
+
+print("Value of varC = \(varA)")
+When the above code is compiled and executed, it produces the following result -
+
+Value of varC = Hello G

@@ -1,0 +1,16 @@
+The status bar appears along the upper edge of the screen and displays useful information about the device’s current state, like the time, cellular carrier, network status, and battery level. The actual information shown in the status bar varies depending on the device and system configuration.
+
+Use the system-provided status bar. People expect the status bar to be consistent systemwide. Don’t replace it with a custom status bar.
+Coordinate the status bar style with your app design. The visual style of the status bar’s text and indicators is either light or dark, and can be set globally for your app or individually for different screens. A dark status bar works well above light-colored content and a light status bar works well above dark-colored content.
+
+Obscure content under the status bar. By default, the background of the status bar is transparent, allowing content beneath to show through. Keep the status bar readable and don’t imply that content behind it is interactive. There are several common techniques for doing this:
+
+Use a navigation bar in your app, which automatically displays a status bar background and ensures that content doesn’t appear under the status bar.
+Display a custom image, like a gradient or solid color, behind the status bar.
+Place a blurred view behind the status bar. For developer guidance, see UIBlurEffect.
+Consider temporarily hiding the status bar when displaying full-screen media. A status bar can be distracting when users are trying to focus on media. Temporarily hide these elements to provide a more immersive experience. The Photos app, for example, hides the status bar and other interface elements when the user browses full-screen photos.
+Avoid permanently hiding the status bar. Without a status bar, people must leave your app to check the time or see if they have a Wi-Fi connection. Let people redisplay a hidden status bar by using a simple, discoverable gesture. When browsing full-screen photos in the Photos app, a single tap shows the status bar again.
+
+Use the status bar to denote network activity. When your app uses the network, especially for lengthy operations, show the network activity status bar indicator so people know activity is occurring. See Network Activity Indicators.
+
+For developer guidance, see the UIStatusBarStyle constant in UIApplication and the preferredStatusBarStyle property in UIViewController.

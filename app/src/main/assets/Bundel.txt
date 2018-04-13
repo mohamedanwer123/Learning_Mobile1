@@ -1,0 +1,301 @@
+Bundle
+public final class Bundle 
+extends BaseBundle implements Cloneable, Parcelable
+
+java.lang.Object
+   ?	android.os.BaseBundle
+ 	   ?	android.os.Bundle
+
+A mapping from String keys to various Parcelable values.
+
+See also:
+
+PersistableBundle
+Summary
+Inherited constants
+  From interface android.os.Parcelable
+Fields
+public static final Creator<Bundle>	CREATOR
+public static final Bundle	EMPTY
+Public constructors
+Bundle()
+Constructs a new, empty Bundle.
+
+Bundle(ClassLoader loader)
+Constructs a new, empty Bundle that uses a specific ClassLoader for instantiating Parcelable and Serializable objects.
+
+Bundle(int capacity)
+Constructs a new, empty Bundle sized to hold the given number of elements.
+
+Bundle(Bundle b)
+Constructs a Bundle containing a copy of the mappings from the given Bundle.
+
+Bundle(PersistableBundle b)
+Constructs a Bundle containing a copy of the mappings from the given PersistableBundle.
+
+Public methods
+void	clear()
+Removes all elements from the mapping of this Bundle.
+
+Object	clone()
+Clones the current Bundle.
+
+Bundle	deepCopy()
+Make a deep copy of the given bundle.
+
+int	describeContents()
+Report the nature of this Parcelable's contents
+
+IBinder	getBinder(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+Bundle	getBundle(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+byte	getByte(String key)
+Returns the value associated with the given key, or (byte) 0 if no mapping of the desired type exists for the given key.
+
+Byte	getByte(String key, byte defaultValue)
+Returns the value associated with the given key, or defaultValue if no mapping of the desired type exists for the given key.
+
+byte[]	getByteArray(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+char	getChar(String key)
+Returns the value associated with the given key, or (char) 0 if no mapping of the desired type exists for the given key.
+
+char	getChar(String key, char defaultValue)
+Returns the value associated with the given key, or defaultValue if no mapping of the desired type exists for the given key.
+
+char[]	getCharArray(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+CharSequence	getCharSequence(String key, CharSequence defaultValue)
+Returns the value associated with the given key, or defaultValue if no mapping of the desired type exists for the given key or if a null value is explicitly associatd with the given key.
+
+CharSequence	getCharSequence(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+CharSequence[]	getCharSequenceArray(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+ArrayList<CharSequence>	getCharSequenceArrayList(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+ClassLoader	getClassLoader()
+Return the ClassLoader currently associated with this Bundle.
+
+float	getFloat(String key, float defaultValue)
+Returns the value associated with the given key, or defaultValue if no mapping of the desired type exists for the given key.
+
+float	getFloat(String key)
+Returns the value associated with the given key, or 0.0f if no mapping of the desired type exists for the given key.
+
+float[]	getFloatArray(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+ArrayList<Integer>	getIntegerArrayList(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+<T extends Parcelable> T	getParcelable(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+Parcelable[]	getParcelableArray(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+<T extends Parcelable> ArrayList<T>	getParcelableArrayList(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+Serializable	getSerializable(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+short	getShort(String key)
+Returns the value associated with the given key, or (short) 0 if no mapping of the desired type exists for the given key.
+
+short	getShort(String key, short defaultValue)
+Returns the value associated with the given key, or defaultValue if no mapping of the desired type exists for the given key.
+
+short[]	getShortArray(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+Size	getSize(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+SizeF	getSizeF(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+<T extends Parcelable> SparseArray<T>	getSparseParcelableArray(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+ArrayList<String>	getStringArrayList(String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+boolean	hasFileDescriptors()
+Reports whether the bundle contains any parcelled file descriptors.
+
+void	putAll(Bundle bundle)
+Inserts all mappings from the given Bundle into this Bundle.
+
+void	putBinder(String key, IBinder value)
+Inserts an IBinder value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putBundle(String key, Bundle value)
+Inserts a Bundle value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putByte(String key, byte value)
+Inserts a byte value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putByteArray(String key, byte[] value)
+Inserts a byte array value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putChar(String key, char value)
+Inserts a char value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putCharArray(String key, char[] value)
+Inserts a char array value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putCharSequence(String key, CharSequence value)
+Inserts a CharSequence value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putCharSequenceArray(String key, CharSequence[] value)
+Inserts a CharSequence array value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putCharSequenceArrayList(String key, ArrayList<CharSequence> value)
+Inserts an ArrayList value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putFloat(String key, float value)
+Inserts a float value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putFloatArray(String key, float[] value)
+Inserts a float array value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putIntegerArrayList(String key, ArrayList<Integer> value)
+Inserts an ArrayList value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putParcelable(String key, Parcelable value)
+Inserts a Parcelable value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putParcelableArray(String key, Parcelable[] value)
+Inserts an array of Parcelable values into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putParcelableArrayList(String key, ArrayList<? extends Parcelable> value)
+Inserts a List of Parcelable values into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putSerializable(String key, Serializable value)
+Inserts a Serializable value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putShort(String key, short value)
+Inserts a short value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putShortArray(String key, short[] value)
+Inserts a short array value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putSize(String key, Size value)
+Inserts a Size value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putSizeF(String key, SizeF value)
+Inserts a SizeF value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putSparseParcelableArray(String key, SparseArray<? extends Parcelable> value)
+Inserts a SparceArray of Parcelable values into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	putStringArrayList(String key, ArrayList<String> value)
+Inserts an ArrayList value into the mapping of this Bundle, replacing any existing value for the given key.
+
+void	readFromParcel(Parcel parcel)
+Reads the Parcel contents into this Bundle, typically in order for it to be passed through an IBinder connection.
+
+void	remove(String key)
+Removes any entry with the given key from the mapping of this Bundle.
+
+void	setClassLoader(ClassLoader loader)
+Changes the ClassLoader this Bundle uses when instantiating objects.
+
+String	toString()
+Returns a string representation of the object.
+
+void	writeToParcel(Parcel parcel, int flags)
+Writes the Bundle contents to a Parcel, typically in order for it to be passed through an IBinder connection.
+
+Inherited methods
+  From class android.os.BaseBundle
+  From class java.lang.Object
+  From interface android.os.Parcelable
+Fields
+CREATOR
+added in API level 1
+Creator<Bundle> CREATOR
+EMPTY
+added in API level 1
+Bundle EMPTY
+Public constructors
+Bundle
+added in API level 1
+Bundle ()
+Constructs a new, empty Bundle.
+
+Bundle
+added in API level 1
+Bundle (ClassLoader loader)
+Constructs a new, empty Bundle that uses a specific ClassLoader for instantiating Parcelable and Serializable objects.
+
+Parameters
+loader	ClassLoader: An explicit ClassLoader to use when instantiating objects inside of the Bundle.
+Bundle
+added in API level 1
+Bundle (int capacity)
+Constructs a new, empty Bundle sized to hold the given number of elements. The Bundle will grow as needed.
+
+Parameters
+capacity	int: the initial capacity of the Bundle
+Bundle
+added in API level 1
+Bundle (Bundle b)
+Constructs a Bundle containing a copy of the mappings from the given Bundle. Does only a shallow copy of the original Bundle -- see deepCopy() if that is not what you want.
+
+Parameters
+b	Bundle: a Bundle to be copied.
+See also:
+
+deepCopy()
+Bundle
+added in API level 21
+Bundle (PersistableBundle b)
+Constructs a Bundle containing a copy of the mappings from the given PersistableBundle. Does only a shallow copy of the PersistableBundle -- see deepCopy() if you don't want that.
+
+Parameters
+b	PersistableBundle: a PersistableBundle to be copied.
+Public methods
+clear
+added in API level 1
+void clear ()
+Removes all elements from the mapping of this Bundle.
+
+clone
+added in API level 1
+Object clone ()
+Clones the current Bundle. The internal map is cloned, but the keys and values to which it refers are copied by reference.
+
+Returns
+Object	a clone of this instance.
+deepCopy
+added in API level 26
+Bundle deepCopy ()
+Make a deep copy of the given bundle. Traverses into inner containers and copies them as well, so they are not shared across bundles. Will traverse in to Bundle, PersistableBundle, ArrayList, and all types of primitive arrays. Other types of objects (such as Parcelable or Serializable) are referenced as-is and not copied in any way.
+
+Returns
+Bundle	
+describeContents
+added in API level 1
+int describeContents ()
+Report the nature of this Parcelable's contents
+
+Returns
+int	a bitmask indicating the set of special object types marshaled by this Parcelable object instance.
+getBinder
+added in API level 18
+IBinder getBinder (String key)
+Returns the value associated with the given key, or null if no mapping of the desired type exists for the given key or a null value is explicitly associated with the key.
+
+Parameters
+key	String: a String, or null

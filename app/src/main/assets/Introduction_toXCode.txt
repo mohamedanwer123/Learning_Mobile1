@@ -1,0 +1,24 @@
+The Tools
+
+Apple has favored a closed ecosystem over the open system. iOS can be only run on Apple's own devices including iPhone and iPad. It is very much unlike its competitor, Google, that Android is allowed to run on mobile devices from different manufacturers. As an aspiring iOS developer, what this means to you is that you will need a Mac for app development.
+
+1. Get a Mac
+
+Having a Mac is the basic requirement for iOS development. To develop an iPhone (or iPad) app, you need to get a Mac with an Intel-based processor running on Mac OS X version 10.12 (or later). If you now own a PC, the cheapest option is to purchase the Mac Mini. As of this writing, the retail price of the entry model is US$499. You can hook it up to the monitor of your PC. The basic model of Mac mini comes with a 1.4GHz dual-core Intel Core i5 processor and 4GB memory. It should be good enough to run the iOS development tools smoothly. Of course, if you have a bigger budget, get the higher model or an iMac with better processing power.
+
+What about Hackintosh? Is it an option if you do not have a Mac? While you may have heard of some success cases of using Hackintosh for iOS development, it is not the recommended approach. 
+2. Register Your Apple ID
+
+You will need an Apple ID to download Xcode, access iOS SDK documentation, and other technical resources. Most importantly, it will allow you to deploy your app to a real iPhone/iPad for testing.
+
+If you have downloaded an app from the App Store, it is quite sure that you already own an Apple ID. In case you haven't created your Apple ID before, you have to get one. Simply go to Apple's website (https://appleid.apple.com/account) and follow the procedures for registration.
+
+3. Install Xcode
+
+To start developing iOS apps, Xcode is the only tool you need to download. Xcode is an integrated development environment (IDE) provided by Apple. Xcode provides everything you need to kick start your app development. It already bundles the latest version of the iOS SDK (short for Software Development Kit), a built-in source code editor, graphic user interface (UI) editor, debugging tools and much more. Most importantly, Xcode comes with an iPhone (and iPad) simulator so you can test your app without the real devices.
+
+You have two ways to install Xcode: 1. Download it through Mac App Store. 2. Manually download it from Apple's developer website.
+
+Download Xcode from Mac App Store
+
+To download Xcode, launch the Mac App Store on your Mac. If you're using the latest version of Mac OS, you should be able to open the Mac App Store by clicking the icon in the dock. In case you can't find it, you may need to upgrade your Mac OS.

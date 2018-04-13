@@ -1,0 +1,77 @@
+API overview
+
+The Gmail API is a web service: it uses a RESTful API with a JSON payload. This section provides a general overview of the API features and their use. For detailed information on the API's resources and methods, refer to the Gmail API reference.
+
+Key resource types
+
+The Gmail API provides several resource types:
+
+Messages
+Labels
+Drafts
+History
+Threads
+Settings
+Messages and labels are the basic units of a mailbox. Drafts, history, and threads all contain one or more messages with additional metadata.
+
+Messages are immutable: they can only be created and deleted. No message properties can be changed other than the labels applied to a given message.
+
+Labels serve as the primary means of categorizing and organizing messages and threads. A label has a many-to-many relationship with messages and threads: a single message may have multiple labels applied to it and a single label may be applied to multiple messages or threads. Labels also come in two types: system and user. System labels, such as INBOX, TRASH, or SPAM, are internally created and cannot be created, deleted, or modified. However, some system labels, such as INBOX, can be applied to or removed from messages and threads. User labels can be added, deleted, or modified by the user or an application.
+
+Drafts represent unsent messages. The messages themselves cannot be modified once created, but the message contained within the draft may be replaced. Sending a draft automatically deletes the draft and creates a message with the SENT system label.
+
+History is a collection of recently modified messages in chronological order. While the history is intended as a lightweight method of synchronizing a client, it typically only contains records of changes within the past 30 days. In some cases, such as when a client becomes too out of date, the client should manually synchronize.
+
+Threads are collections of messages that represent a conversation. Like messages, threads may also have labels applied to them. However, unlike messages, threads cannot be created, only deleted. Messages can, however, be inserted into a thread.
+
+Settings control how features of Gmail behave for a user. Settings are available for POP and IMAP access, email forwarding, filters, vacation auto-response, send-as aliases, and signatures.
+
+Auth and the Gmail API
+
+Like other Google REST APIs, the Gmail API uses OAuth 2.0 to handle authentication and authorization. Your app will specify one or more scopes: strings which identify resources that it needs to access. These scopes are used together with a set of tokens to secure a user's access to resources. A scope represents a particular form of access to a single resource or to a group of resources, for example:
+
+Read a message from Gmail (https://www.googleapis.com/auth/gmail.readonly)
+Change labels applied to a thread or message (https://www.googleapis.com/auth/gmail.modify)
+Send a message on behalf of a user (https://www.googleapis.com/auth/gmail.compose)
+Although you can code the web service authorization calls explicitly, you normally should simplify your app by using the Google API client libraries available for many programming languages.
+
+For more about using auth with the Gmail API, see Authorizing Your App with Gmail.
+
+Scopes
+
+The Gmail API supports a number of fine-grained authorization scopes to allow only the level of access required. By requesting the minimum level of access required, users feel more confident granting access to their mailbox.
+
+Example use case
+
+Consider the following use case: printing out a page of threads for the currently authenticated user (for example, in a recent messages panel). To achieve this, your app would perform the following steps:
+
+Authenticate as the user, using the https://www.googleapis.com/auth/gmail.readonly scope.
+Call the API method. GET https://www.googleapis.com/gmail/v1/users/<userId>/threads
+Process the returned list of threads in your app.
+For actual example code, refer to the Quickstart for the language of your choice.
+
+Common uses
+
+This section provides a very high-level view of how some common use cases can be implemented. For more details, refer to the developer guides.
+
+Sending Gmail messages
+
+Emails are sent as base64url encoded strings within the raw property of a message. To create and send a message:
+
+Create the email content in some convenient way, which may depend on the programming language you are using.
+Create a base64url encoded string representation of that content.
+Create a new message resource and set its raw property to the base64url string you just created.
+Call messages.send to send the message.
+Fetching received emails
+
+Given the ID of an email, you can fetch the contents using the get method of the Users.messages resource.
+
+When you fetch a message, you can specify the payload format for the response. FULL (the default) format returns the entire parsed message in the payload field. MINIMAL format returns only the metadata such as identifiers and labels. RAW format returns the data as a base64url encoded string within the raw property.
+
+Mail change history
+
+Message changes are represented by History objects. The start_history_id property lets you set from what point you want changes returned. Some changes may affect more than one message and thus the history representing that change will contain multiple messages.
+
+Label management
+
+Labels applied to a thread are also applied to all messages within the thread. If a label is deleted, it is removed from all threads and messages it was applied to. The messageListVisibility property is used to determine if messages with this label show up in the messages list. Similarly, the labelListVisibility is used to determine if the label appears in the label list. You can use the messages.modify or threads.modify method to change the labels applied to messages or threads, respectively           

@@ -1,0 +1,28 @@
+                               (GUI) 
+Definition:
+The graphical user interface (GUI), is a type of user interface that allows users to interact with electronic devices through graphical icons and visual indicators such as secondary notation, instead of text-based user interfaces, typed command labels or text navigation.
+
+
+How does a GUI work?
+A GUI uses windows, icons, and menus to carry out commands, such as opening, deleting, and moving files. Although many GUI operating systems are navigated through the use of a mouse, the keyboard can also be utilized by using keyboard shortcuts or arrow keys.
+
+
+What are the benefits of GUI?
+Unlike a command line operating system or CUI, like Unix or MS-DOS, GUI operating systems are much easier to learn and use because commands do not need to be memorized. Additionally, users do not need to know any programming languages. Because of their ease of use, GUI operating systems have become the dominant operating system used by today's end-users.
+
+
+What are examples of a GUI operating system?
+1.	Microsoft Windows
+2.	Apple System 7 and macOS
+3.	Chrome OS
+4.	Linux variants like Ubunt
+
+Are all operating systems GUI?
+No. Early command line operating systems like MS-DOS and even some versions of Linuxtoday have no GUI interface
+
+
+What are examples of a GUI interface?
+1.	GNOME
+2.	KDE
+3.	Any Microsoft program (i.e. Word, Excel, Outlook)
+4.	Internet browser (i.e. Internet Explorer, 

@@ -1,0 +1,193 @@
+Start developing
+To start building apps for Android 6.0, you must first get the Android SDK. Then use the SDK Manager to download the Android 6.0 SDK Platform and System Images.
+
+Update your target API level
+To better optimize your app for devices running Android , set your targetSdkVersion to "23", install your app on an Android system image, test it, then publish the updated app with this change.
+
+You can use Android APIs while also supporting older versions by adding conditions to your code that check for the system API level before executing APIs not supported by your minSdkVersion. To learn more about maintaining backward compatibility, read Supporting Different Platform Versions.
+
+For more information about how API levels work, read What is API Level?
+
+Fingerprint Authentication
+This release offers new APIs to let you authenticate users by using their fingerprint scans on supported devices, Use these APIs in conjunction with the Android Keystore system.
+
+To authenticate users via fingerprint scan, get an instance of the new FingerprintManager class and call the authenticate() method. Your app must be running on a compatible device with a fingerprint sensor. You must implement the user interface for the fingerprint authentication flow on your app, and use the standard Android fingerprint icon in your UI. The Android fingerprint icon (c_fp_40px.png) is included in the Fingerprint Dialog sample. If you are developing multiple apps that use fingerprint authentication, note that each app must authenticate the user’s fingerprint independently.
+
+To use this feature in your app, first add the USE_FINGERPRINT permission in your manifest.
+
+<uses-permission
+        android:name="android.permission.USE_FINGERPRINT" />
+
+To see an app implementation of fingerprint authentication, refer to the Fingerprint Dialog sample. For a demonstration of how you can use these authentication APIs in conjunction with other Android APIs, see the video Fingerprint and Payment APIs.
+
+If you are testing this feature, follow these steps:
+
+Install Android SDK Tools Revision 24.3, if you have not done so.
+Enroll a new fingerprint in the emulator by going to Settings > Security > Fingerprint, then follow the enrollment instructions.
+Use an emulator to emulate fingerprint touch events with the following command. Use the same command to emulate fingerprint touch events on the lockscreen or in your app.
+adb -e emu finger touch <finger_id>
+On Windows, you may have to run telnet 127.0.0.1 <emulator-id> followed by finger touch <finger_id>.
+Confirm Credential
+Your app can authenticate users based on how recently they last unlocked their device. This feature frees users from having to remember additional app-specific passwords, and avoids the need for you to implement your own authentication user interface. Your app should use this feature in conjunction with a public or secret key implementation for user authentication.
+
+To set the timeout duration for which the same key can be re-used after a user is successfully authenticated, call the new setUserAuthenticationValidityDurationSeconds() method when you set up a KeyGenerator or KeyPairGenerator.
+
+Avoid showing the re-authentication dialog excessively -- your apps should try using the cryptographic object first and if the timeout expires, use the createConfirmDeviceCredentialIntent() method to re-authenticate the user within your app.
+
+To see an app implementation of this feature, refer to the Confirm Credential sample.
+
+App Linking
+This release enhances Android’s intent system by providing more powerful app linking. This feature allows you to associate an app with a web domain you own. Based on this association, the platform can determine the default app to use to handle a particular web link and skip prompting users to select an app. To learn how to implement this feature, see Handling App Links.
+
+Auto Backup for Apps
+The system now performs automatic full data backup and restore for apps. Your app must target Android 6.0 (API level 23) to enable this behavior; you do not need to add any additional code. If users delete their Google accounts, their backup data is deleted as well. To learn how this feature works and how to configure what to back up on the file system, see Configuring Auto Backup for Apps.
+
+direct shae:
+This release provides you with APIs to make sharing intuitive and quick for users. You can now define direct share targets that launch a specific activity in your app. These direct share targets are exposed to users via the Share menu. This feature allows users to share content to targets, such as contacts, within other apps. For example, the direct share target might launch an activity in another social network app, which lets the user share content directly to a specific friend or community in that app.
+
+To enable direct share targets you must define a class that extends the ChooserTargetService class. Declare your service in the manifest. Within that declaration, specify the BIND_CHOOSER_TARGET_SERVICE permission and an intent filter using the SERVICE_INTERFACE action.
+
+The following example shows how you might declare the ChooserTargetService in your manifest.
+
+<service android:name=".ChooserTargetService"
+        android:label="@string/service_name"
+        android:permission="android.permission.BIND_CHOOSER_TARGET_SERVICE">
+    <intent-filter>
+        <action android:name="android.service.chooser.ChooserTargetService" />
+    </intent-filter>
+</service>
+For each activity that you want to expose to ChooserTargetService, add a <meta-data> element with the name "android.service.chooser.chooser_target_service" in your app manifest.
+
+<activity android:name=".MyShareActivity”
+        android:label="@string/share_activity_label">
+    <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+    </intent-filter>
+<meta-data
+        android:name="android.service.chooser.chooser_target_service"
+        android:value=".ChooserTargetService" />
+</activity>
+Voice Interactions
+This release provides a new voice interaction API which, together with Voice Actions, allows you to build conversational voice experiences into your apps. Call the isVoiceInteraction() method to determine if a voice action triggered your activity. If so, your app can use the VoiceInteractor class to request a voice confirmation from the user, select from a list of options, and more.
+
+Most voice interactions originate from a user voice action. A voice interaction activity can also, however, start without user input. For example, another app launched through a voice interaction can also send an intent to launch a voice interaction. To determine if your activity launched from a user voice query or from another voice interaction app, call the isVoiceInteractionRoot() method. If another app launched your activity, the method returns false. Your app may then prompt the user to confirm that they intended this action.
+
+To learn more about implementing voice actions, see the Voice Actions developer site.
+
+Assist API
+This release offers a new way for users to engage with your apps through an assistant. To use this feature, the user must enable the assistant to use the current context. Once enabled, the user can summon the assistant within any app, by long-pressing on the Home button.
+
+Your app can elect to not share the current context with the assistant by setting the FLAG_SECURE flag. In addition to the standard set of information that the platform passes to the assistant, your app can share additional information by using the new AssistContent class.
+
+To provide the assistant with additional context from your app, follow these steps:
+
+Implement the Application.OnProvideAssistDataListener interface.
+Register this listener by using registerOnProvideAssistDataListener().
+In order to provide activity-specific contextual information, override the onProvideAssistData() callback and, optionally, the new onProvideAssistContent() callback.
+Adoptable Storage Devices
+With this release, users can adopt external storage devices such as SD cards. Adopting an external storage device encrypts and formats the device to behave like internal storage. This feature allows users to move both apps and private data of those apps between storage devices. When moving apps, the system respects the android:installLocation preference in the manifest.
+
+If your app accesses the following APIs or fields, be aware that the file paths they return will dynamically change when the app is moved between internal and external storage devices. When building file paths, it is strongly recommended that you always call these APIs dynamically. Don’t use hardcoded file paths or persist fully-qualified file paths that were built previously.
+
+Context methods:
+getFilesDir()
+getCacheDir()
+getCodeCacheDir()
+getDatabasePath()
+getDir()
+getNoBackupFilesDir()
+getFileStreamPath()
+getPackageCodePath()
+getPackageResourcePath()
+ApplicationInfo fields:
+dataDir
+sourceDir
+nativeLibraryDir
+publicSourceDir
+splitSourceDirs
+splitPublicSourceDirs
+To debug this feature, you can enable adoption of a USB drive that is connected to an Android device through a USB On-The-Go (OTG) cable, by running this command:
+
+$ adb shell sm set-force-adoptable true
+Notifications
+This release adds the following API changes for notifications:
+
+New INTERRUPTION_FILTER_ALARMS filter level that corresponds to the new Alarms only do not disturb mode.
+New CATEGORY_REMINDER category value that is used to distinguish user-scheduled reminders from other events (CATEGORY_EVENT) and alarms (CATEGORY_ALARM).
+New Icon class that you can attach to your notifications via the setSmallIcon() and setLargeIcon() methods. Similarly, the addAction() method now accepts an Icon object instead of a drawable resource ID.
+New getActiveNotifications() method that allows your apps to find out which of their notifications are currently alive. To see an app implementation that uses this feature, see the Active Notifications sample.
+Bluetooth Stylus Support
+This release provides improved support for user input using a Bluetooth stylus. Users can pair and connect a compatible Bluetooth stylus with their phone or tablet. While connected, position information from the touch screen is fused with pressure and button information from the stylus to provide a greater range of expression than with the touch screen alone. Your app can listen for stylus button presses and perform secondary actions, by registering View.OnContextClickListener and GestureDetector.OnContextClickListener objects in your activity.
+
+Use the MotionEvent methods and constants to detect stylus button interactions:
+
+If the user touches a stylus with a button on the screen of your app, the getTooltype() method returns TOOL_TYPE_STYLUS.
+For apps targeting Android 6.0 (API level 23), the getButtonState() method returns BUTTON_STYLUS_PRIMARY when the user presses the primary stylus button. If the stylus has a second button, the same method returns BUTTON_STYLUS_SECONDARY when the user presses it. If the user presses both buttons simultaneously, the method returns both values OR'ed together (BUTTON_STYLUS_PRIMARY|BUTTON_STYLUS_SECONDARY).
+For apps targeting a lower platform version, the getButtonState() method returns BUTTON_SECONDARY (for primary stylus button press), BUTTON_TERTIARY (for secondary stylus button press), or both.
+Improved Bluetooth Low Energy Scanning
+If your app performs performs Bluetooth Low Energy scans, use the new setCallbackType() method to specify that you want the system to notify callbacks when it first finds, or sees after a long time, an advertisement packet matching the set ScanFilter. This approach to scanning is more power-efficient than what’s provided in the previous platform version.
+
+Hotspot 2.0 Release 1 Support
+This release adds support for the Hotspot 2.0 Release 1 spec on Nexus 6 and Nexus 9 devices. To provision Hotspot 2.0 credentials in your app, use the new methods of the WifiEnterpriseConfig class, such as setPlmn() and setRealm(). In the WifiConfiguration object, you can set the FQDN and the providerFriendlyName fields. The new isPasspointNetwork() method indicates if a detected network represents a Hotspot 2.0 access point.
+
+4K Display Mode
+The platform now allows apps to request that the display resolution be upgraded to 4K rendering on compatible hardware. To query the current physical resolution, use the new Display.Mode APIs. If the UI is drawn at a lower logical resolution and is upscaled to a larger physical resolution, be aware that the physical resolution the getPhysicalWidth() method returns may differ from the logical resolution reported by getSize().
+
+You can request the system to change the physical resolution in your app as it runs, by setting the preferredDisplayModeId property of your app’s window. This feature is useful if you want to switch to 4K display resolution. While in 4K display mode, the UI continues to be rendered at the original resolution (such as 1080p) and is upscaled to 4K, but SurfaceView objects may show content at the native resolution.
+
+Themeable ColorStateLists
+Theme attributes are now supported in ColorStateList for devices running on Android 6.0 (API level 23). The Resources.getColorStateList() and Resources.getColor() methods have been deprecated. If you are calling these APIs, call the new Context.getColorStateList() or Context.getColor() methods instead. These methods are also available in the v4 appcompat library via ContextCompat.
+
+Audio Features
+This release adds enhancements to audio processing on Android, including:
+
+Support for the MIDI protocol, with the new android.media.midi APIs. Use these APIs to send and receive MIDI events.
+New AudioRecord.Builder and AudioTrack.Builder classes to create digital audio capture and playback objects respectively, and configure audio source and sink properties to override the system defaults.
+API hooks for associating audio and input devices. This is particularly useful if your app allows users to start a voice search from a game controller or remote control connected to Android TV. The system invokes the new onSearchRequested() callback when the user starts a search. To determine if the user's input device has a built-in microphone, retrieve the InputDevice object from that callback, then call the new hasMicrophone() method.
+New getDevices() method which lets you retrieve a list of all audio devices currently connected to the system. You can also register an AudioDeviceCallback object if you want the system to notify your app when an audio device connects or disconnects.
+Video Features
+This release adds new capabilities to the video processing APIs, including:
+
+New MediaSync class which helps applications to synchronously render audio and video streams. The audio buffers are submitted in non-blocking fashion and are returned via a callback. It also supports dynamic playback rate.
+New EVENT_SESSION_RECLAIMED event, which indicates that a session opened by the app has been reclaimed by the resource manager. If your app uses DRM sessions, you should handle this event and make sure not to use a reclaimed session.
+New ERROR_RECLAIMED error code, which indicates that the resource manager reclaimed the media resource used by the codec. With this exception, the codec must be released, as it has moved to terminal state.
+New getMaxSupportedInstances() interface to get a hint for the max number of the supported concurrent codec instances.
+New setPlaybackParams() method to set the media playback rate for fast or slow motion playback. It also stretches or speeds up the audio playback automatically in conjunction with the video.
+Camera Features
+This release includes the following new APIs for accessing the camera’s flashlight and for camera reprocessing of images:
+
+Flashlight API
+If a camera device has a flash unit, you can call the setTorchMode() method to switch the flash unit’s torch mode on or off without opening the camera device. The app does not have exclusive ownership of the flash unit or the camera device. The torch mode is turned off and becomes unavailable whenever the camera device becomes unavailable, or when other camera resources keeping the torch on become unavailable. Other apps can also call setTorchMode() to turn off the torch mode. When the last app that turned on the torch mode is closed, the torch mode is turned off.
+
+You can register a callback to be notified about torch mode status by calling the registerTorchCallback() method. The first time the callback is registered, it is immediately called with the torch mode status of all currently known camera devices with a flash unit. If the torch mode is turned on or off successfully, the onTorchModeChanged() method is invoked.
+
+Reprocessing API
+The Camera2 API is extended to support YUV and private opaque format image reprocessing. To determine if these reprocessing capabilities are available, call getCameraCharacteristics() and check for the REPROCESS_MAX_CAPTURE_STALL key. If a device supports reprocessing, you can create a reprocessable camera capture session by calling createReprocessableCaptureSession(), and create requests for input buffer reprocessing.
+
+Use the ImageWriter class to connect the input buffer flow to the camera reprocessing input. To get an empty buffer, follow this programming model:
+
+Call the dequeueInputImage() method.
+Fill the data into the input buffer.
+Send the buffer to the camera by calling the queueInputImage() method.
+If you are using a ImageWriter object together with an PRIVATE image, your app cannot access the image data directly. Instead, pass the PRIVATE image directly to the ImageWriter by calling the queueInputImage() method without any buffer copy.
+
+The ImageReader class now supports PRIVATE format image streams. This support allows your app to maintain a circular image queue of ImageReader output images, select one or more images, and send them to the ImageWriter for camera reprocessing.
+
+Android for Work Features
+This release includes the following new APIs for Android for Work:
+
+Enhanced controls for Corporate-Owned, Single-Use devices: The Device Owner can now control the following settings to improve management of Corporate-Owned, Single-Use (COSU) devices:
+Disable or re-enable the keyguard with the setKeyguardDisabled() method.
+Disable or re-enable the status bar (including quick settings, notifications, and the navigation swipe-up gesture that launches Google Now) with the setStatusBarDisabled() method.
+Disable or re-enable safe boot with the UserManager constant DISALLOW_SAFE_BOOT.
+Prevent the screen from turning off while plugged in with the STAY_ON_WHILE_PLUGGED_IN constant.
+Silent install and uninstall of apps by Device Owner: A Device Owner can now silently install and uninstall applications using the PackageInstaller APIs, independent of Google Play for Work. You can now provision devices through a Device Owner that fetches and installs apps without user interaction. This feature is useful for enabling one-touch provisioning of kiosks or other such devices without activating a Google account.
+Silent enterprise certificate access: When an app calls choosePrivateKeyAlias(), prior to the user being prompted to select a certificate, the Profile or Device Owner can now call the onChoosePrivateKeyAlias() method to provide the alias silently to the requesting application. This feature lets you grant managed apps access to certificates without user interaction.
+Auto-acceptance of system updates. By setting a system update policy with setSystemUpdatePolicy(), a Device Owner can now auto-accept a system update, for instance in the case of a kiosk device, or postpone the update and prevent it being taken by the user for up to 30 days. Furthermore, an administrator can set a daily time window in which an update must be taken, for example during the hours when a kiosk device is not in use. When a system update is available, the system checks if the device policy controller app has set a system update policy, and behaves accordingly.
+Delegated certificate installation: A Profile or Device Owner can now grant a third-party app the ability to call these DevicePolicyManager certificate management APIs:
+getInstalledCaCerts()
+hasCaCertInstalled()
+installCaCert()
+uninstallCaCert()
+uninstallAllUserCaCerts()
+installKeyPair()

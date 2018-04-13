@@ -1,0 +1,70 @@
+(Abstraction)
+
+Definition:
+Abstraction is the quality of dealing with ideas rather than events. For example, when you consider the case of e-mail, complex details such as what happens as soon as you send an e-mail, the protocol your e-mail server uses are hidden from the user. Therefore, to send an e-mail you just need to type the content, mention the address of the receiver, and click send.
+Likewise in Object-oriented programming, abstraction is a process of hiding the implementation details from the user, only the functionality will be provided to the user. In other words, the user will have the information on what the object does instead of how it does it.
+In Java, abstraction is achieved using Abstract classes and interfaces.
+
+Abstract Class:
+A class which contains the abstract keyword in its declaration is known as abstract class.
+
+
+Example
+This section provides you an example of the abstract class. To create an abstract class, just use the abstract keyword before the class keyword, in the class declaration.
+/* File name : Employee.java */
+public abstract class Employee {
+   private String name;
+   private String address;
+   private int number;
+
+   public Employee(String name, String address, int number) {
+      System.out.println("Constructing an Employee");
+      this.name = name;
+      this.address = address;
+      this.number = number;
+   }
+   
+   public double computePay() {
+     System.out.println("Inside Employee computePay");
+     return 0.0;
+   }
+   
+   public void mailCheck() {
+      System.out.println("Mailing a check to " + this.name + " " + this.address);
+   }
+
+   public String toString() {
+      return name + " " + address + " " + number;
+   }
+
+   public String getName() {
+      return name;
+   }
+ 
+   public String getAddress() {
+      return address;
+   }
+   
+   public void setAddress(String newAddress) {
+      address = newAddress;
+   }
+ 
+   public int getNumber() {
+      return number;
+   }
+}
+You can observe that except abstract methods the Employee class is same as normal class in Java. The class is now abstract, but it still has three fields, seven methods, and one constructor.
+Now you can try to instantiate the Employee class in the following way -
+/* File name : AbstractDemo.java */
+public class AbstractDemo {
+
+   public static void main(String [] args) {
+      /* Following is not allowed and would raise error */
+      Employee e = new Employee("George W.", "Houston, TX", 43);
+      System.out.println("\n Call mailCheck using Employee reference--");
+      e.mailCheck();
+   }
+}
+
+
+You can observe that except abstract methods the Employee class is same as normal class in Java. The class is now abstract, but it still has three fields, seven methods, and one constructor.

@@ -1,0 +1,267 @@
+Swift 4 language provides 'Generic' features to write flexible and reusable functions and types. Generics are used to avoid duplication and to provide abstraction. Swift 4 standard libraries are built with generics code. Swift 4s 'Arrays' and 'Dictionary' types belong to generic collections. With the help of arrays and dictionaries the arrays are defined to hold 'Int' values and 'String' values or any other types.
+
+ Live Demo
+func exchange(a: inout Int, b: inout Int) {
+   let temp = a
+   a = b
+   b = temp
+}
+
+var numb1 = 100
+var numb2 = 200
+
+print("Before Swapping values are: \(numb1) and \(numb2)")
+exchange(a: &numb1, b: &numb2)
+print("After Swapping values are: \(numb1) and \(numb2)")
+When we run the above program using playground, we get the following result -
+
+Before Swapping values are: 100 and 200
+After Swapping values are: 200 and 100
+Generic Functions: Type Parameters
+Generic functions can be used to access any data type like 'Int' or 'String'.
+
+ Live Demo
+func exchange<T>(a: inout T, b: inout T) {
+   let temp = a
+   a = b
+   b = temp
+}
+var numb1 = 100
+var numb2 = 200
+
+print("Before Swapping Int values are: \(numb1) and \(numb2)")
+exchange(a: &numb1, b: &numb2)
+print("After Swapping Int values are: \(numb1) and \(numb2)")
+
+var str1 = "Generics"
+var str2 = "Functions"
+
+print("Before Swapping String values are: \(str1) and \(str2)")
+exchange(a: &str1, b: &str2)
+print("After Swapping String values are: \(str1) and \(str2)")
+When we run the above program using playground, we get the following result -
+
+Before Swapping Int values are: 100 and 200
+After Swapping Int values are: 200 and 100
+Before Swapping String values are: Generics and Functions
+After Swapping String values are: Functions and Generics
+The function exchange() is used to swap values which is described in the above program and <T> is used as a type parameter. For the first time, function exchange() is called to return 'Int' values and second call to the function exchange() will return 'String' values. Multiple parameter types can be included inside the angle brackets separated by commas.
+
+Type parameters are named as user defined to know the purpose of the type parameter that it holds. Swift 4 provides <T> as generic type parameter name. However type parameters like Arrays and Dictionaries can also be named as key, value to identify that they belong to type 'Dictionary'.
+
+ Live Demo
+struct TOS<T> {
+   var items = [T]()
+   mutating func push(item: T) {
+      items.append(item)
+   }
+   mutating func pop() -> T {
+      return items.removeLast()
+   }
+}
+
+var tos = TOS<String>()
+tos.push(item: "Swift 4")
+print(tos.items)
+
+tos.push(item: "Generics")
+print(tos.items)
+
+tos.push(item: "Type Parameters")
+print(tos.items)
+
+tos.push(item: "Naming Type Parameters")
+print(tos.items)
+
+let deletetos = tos.pop()
+When we run the above program using playground, we get the following result -
+
+[Swift 4]
+[Swift 4, Generics]
+[Swift 4, Generics, Type Parameters]
+[Swift 4, Generics, Type Parameters, Naming Type Parameters]
+Extending a Generic Type
+Extending the stack property to know the top of the item is included with 'extension' keyword.
+
+ Live Demo
+struct TOS<T> {
+   var items = [T]()
+   mutating func push(item: T) {
+      items.append(item)
+   }
+   mutating func pop() -> T {
+      return items.removeLast()
+   }
+}
+var tos = TOS<String>()
+tos.push(item: "Swift 4")
+print(tos.items)
+
+tos.push(item: "Generics")
+print(tos.items)
+
+tos.push(item: "Type Parameters")
+print(tos.items)
+
+tos.push(item: "Naming Type Parameters")
+print(tos.items)
+
+extension TOS {
+   var first: T? {
+      return items.isEmpty ? nil : items[items.count - 1]
+   }
+}
+if let first = tos.first {
+   print("The top item on the stack is \(first).")
+}
+When we run the above program using playground, we get the following result -
+
+["Swift 4"]
+["Swift 4", "Generics"]
+["Swift 4", "Generics", "Type Parameters"]
+["Swift 4", "Generics", "Type Parameters", "Naming Type Parameters"]
+The top item on the stack is Naming Type Parameters.
+Type Constraints
+Swift 4 language allows 'type constraints' to specify whether the type parameter inherits from a specific class, or to ensure protocol conformance standard.
+
+ Live Demo
+func exchange<T>(a: inout T, b: inout T) {
+   let temp = a
+   a = b
+   b = temp
+}
+var numb1 = 100
+var numb2 = 200
+
+print("Before Swapping Int values are: \(numb1) and \(numb2)")
+exchange(a: &numb1, b: &numb2)
+print("After Swapping Int values are: \(numb1) and \(numb2)")
+
+var str1 = "Generics"
+var str2 = "Functions"
+
+print("Before Swapping String values are: \(str1) and \(str2)")
+exchange(a: &str1, b: &str2)
+print("After Swapping String values are: \(str1) and \(str2)")
+When we run the above program using playground, we get the following result -
+
+Before Swapping Int values are: 100 and 200
+After Swapping Int values are: 200 and 100
+Before Swapping String values are: Generics and Functions
+After Swapping String values are: Functions and Generics
+Associated Types
+Swift 4 allows associated types to be declared inside the protocol definition by the keyword 'associatedtype'.
+
+ Live Demo
+protocol Container {
+   associatedtype ItemType
+   mutating func append(item: ItemType)
+   var count: Int { get }
+   subscript(i: Int) -> ItemType { get }
+}
+struct TOS<T>: Container {
+   // original Stack<T> implementation
+   var items = [T]()
+   mutating func push(item: T) {
+      items.append(item)
+   }
+   mutating func pop() -> T {
+      return items.removeLast()
+   }
+   
+   // conformance to the Container protocol
+   mutating func append(item: T) {
+      self.push(item: item)
+   }
+   var count: Int {
+      return items.count
+   }
+   subscript(i: Int) -> T {
+      return items[i]
+   }
+}
+var tos = TOS<String>()
+tos.push(item: "Swift 4")
+print(tos.items)
+
+tos.push(item: "Generics")
+print(tos.items)
+
+tos.push(item: "Type Parameters")
+print(tos.items)
+
+tos.push(item: "Naming Type Parameters")
+print(tos.items)
+When we run the above program using playground, we get the following result -
+
+[Swift 4]
+[Swift 4, Generics]
+[Swift 4, Generics, Type Parameters]
+[Swift 4, Generics, Type Parameters, Naming Type Parameters]
+Where Clauses
+Type constraints enable the user to define requirements on the type parameters associated with a generic function or type. For defining requirements for associated types 'where' clauses are declared as part of type parameter list. 'where' keyword is placed immediately after the list of type parameters followed by constraints of associated types, equality relationships between types and associated types.
+
+protocol Container {
+   associatedtype ItemType
+   mutating func append(item: ItemType)
+   var count: Int { get }
+   subscript(i: Int) -> ItemType { get }
+}
+struct Stack<T>: Container {
+   // original Stack<T> implementation
+   var items = [T]()
+   mutating func push(item: T) {
+      items.append(item)
+   }
+   mutating func pop() -> T {
+      return items.removeLast()
+   }
+
+   // conformance to the Container protocol
+   mutating func append(item: T) {
+      self.push(item: item)
+   }
+   var count: Int {
+      return items.count
+   }
+   subscript(i: Int) -> T {
+      return items[i]
+   }
+}
+func allItemsMatch<
+C1: Container, C2: Container
+where C1.ItemType == C2.ItemType, C1.ItemType: Equatable>
+(someContainer: C1, anotherContainer: C2) -> Bool {
+   // check that both containers contain the same number of items
+   if someContainer.count != anotherContainer.count {
+      return false
+   }
+   
+   // check each pair of items to see if they are equivalent
+   for i in 0..<someContainer.count {
+      if someContainer[i] != anotherContainer[i] {
+         return false
+      }
+   }
+   // all items match, so return true
+   return true
+}  
+var tos = Stack<String>()
+
+tos.push(item: "Swift 4")
+print(tos.items)
+
+tos.push(item: "Generics")
+print(tos.items)
+
+tos.push(item: "Where Clause")
+print(tos.items)
+
+var eos = ["Swift 4", "Generics", "Where Clause"]
+print(eos)
+When we run the above program using playground, we get the following result -
+
+[Swift 4]
+[Swift 4, Generics]
+[Swift 4, Generics, Where Clause]
+[Swift 4, Generics, Where Clause]

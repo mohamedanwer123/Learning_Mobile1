@@ -1,0 +1,73 @@
+Composition in java
+ is the design technique to implement has-a relationship in classes. We can use java inheritance or Object composition in java for code reuse.
+Java composition is achieved by using instance variables that refers to other objects. For example, a Person has a Job. Let’s see this with a java composition example code.
+
+
+ 
+Java Composition Example
+
+package com.journaldev.composition;
+
+public class Job {
+    private String role;
+    private long salary;
+    private int id;
+        
+    public String getRole() {
+        return role;
+    }
+    public void setRole(String role) {
+        this.role = role;
+    }
+    public long getSalary() {
+        return salary;
+    }
+    public void setSalary(long salary) {
+        this.salary = salary;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
+}
+package com.journaldev.composition;
+
+public class Person {
+
+    //composition has-a relationship
+    private Job job;
+   
+    public Person(){
+        this.job=new Job();
+        job.setSalary(1000L);
+    }
+    public long getSalary() {
+        return job.getSalary();
+    }
+
+}
+Here is a test class for java composition example that uses person object and get it’s salary.
+
+package com.journaldev.composition;
+
+public class TestPerson {
+
+    public static void main(String[] args) {
+        Person person = new Person();
+        long salary = person.getSalary();
+    }
+
+}
+Java Composition Benefits
+
+Notice that above test program for composition in java is not affected by any change in the Job object. If you are looking for code reuse and the relationship between two classes is has-a then you should use composition rather than inheritance.
+
+Benefit of using composition in java is that we can control the visibility of other object to client classes and reuse only what we need.
+
+Also if there is any change in the other class implementation, for example getSalary returning String, we need to change Person class to accommodate it but client classes doesn’t need to change.
+
+Composition allows creation of back-end class when it’s needed, for example we can change Person getSalary method to initialize the Job object at runtime when required.

@@ -1,0 +1,108 @@
+Classes in Swift 4 are building blocks of flexible constructs. Similar to constants, variables and functions the user can define class properties and methods. Swift 4 provides us the functionality that while declaring classes the users need not create interfaces or implementation files. Swift 4 allows us to create classes as a single file and the external interfaces will be created by default once the classes are initialized.
+
+Benefits of having Classes
+Inheritance acquires the properties of one class to another class
+
+Type casting enables the user to check class type at run time
+
+Deinitializers take care of releasing memory resources
+
+Reference counting allows the class instance to have more than one reference
+
+Common Characteristics of Classes and structures
+Properties are defined to store values
+Subscripts are defined for providing access to values
+Methods are initialized to improve functionality
+Initial state are defined by initializers
+Functionality are expanded beyond default values
+Confirming protocol functionality standards
+Syntax
+Class classname {
+   Definition 1
+   Definition 2
+   --- 
+   Definition N
+}
+Class Definition
+class student {
+   var studname: String
+   var mark: Int 
+   var mark2: Int 
+}
+The syntax for creating instances
+
+let studrecord = student()
+Example
+ Live Demo
+class MarksStruct {
+   var mark: Int
+   init(mark: Int) {
+      self.mark = mark
+   }
+}
+
+class studentMarks {
+   var mark = 300
+}
+
+let marks = studentMarks()
+print("Mark is \(marks.mark)")
+When we run the above program using playground, we get the following result -
+
+Mark is 300
+Accessing Class Properties as Reference Types
+Class properties can be accessed by the '.' syntax. Property name is separated by a '.' after the instance name.
+
+ Live Demo
+class MarksStruct {
+   var mark: Int
+   init(mark: Int) {
+      self.mark = mark
+   }
+}
+
+class studentMarks {
+   var mark1 = 300
+   var mark2 = 400
+   var mark3 = 900
+}
+
+let marks = studentMarks()
+print("Mark1 is \(marks.mark1)")
+print("Mark2 is \(marks.mark2)")
+print("Mark3 is \(marks.mark3)")
+When we run the above program using playground, we get the following result -
+
+Mark1 is 300
+Mark2 is 400
+Mark3 is 900
+Class Identity Operators
+Classes in Swift 4 refers multiple constants and variables pointing to a single instance. To know about the constants and variables pointing to a particular class instance identity operators are used. Class instances are always passed by reference. In Classes NSString, NSArray, and NSDictionary instances are always assigned and passed around as a reference to an existing instance, rather than as a copy.
+
+Identical to Operators	Not Identical to Operators
+Operator used is (===)	Operator used is (!==)
+Returns true when two constants or variables pointing to a same instance	Returns true when two constants or variables pointing to a different instance
+ Live Demo
+class SampleClass: Equatable {
+   let myProperty: String
+   init(s: String) {
+      myProperty = s
+   }
+}
+
+func ==(lhs: SampleClass, rhs: SampleClass) -> Bool {
+   return lhs.myProperty == rhs.myProperty
+}
+
+let spClass1 = SampleClass(s: "Hello")
+let spClass2 = SampleClass(s: "Hello")
+
+spClass1 === spClass2 // false
+print("\(spClass1)")
+
+spClass1 !== spClass2 // true
+print("\(spClass2)")
+When we run the above program using playground, we get the following result -
+
+main.SampleClass
+main.SampleClass

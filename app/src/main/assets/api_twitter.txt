@@ -1,0 +1,41 @@
+Get started: Display Twitter content on the web
+and in your app
+Our publisher tools Twitter for Websites and Twitter Kit make it easy to tell the best stories with Tweets, on the web and in native mobile apps. Use TweetDeck to find and curate content, and bring relevant, even real-time, engaging content to your users. Use our publishing portal to easily get the code to embed Tweets and timelines, or create buttons.
+1. Discover & curate Tweets
+Open up TweetDeck to start finding and organizing Tweets. You can create searches for trending hashtags or interesting topics, and then filter the results by engagement, location, and users. Read our getting started documentation if you're new to the tool, and dig into advanced features to learn how to wrangle Tweets with lists and collections. TweetDeck can be your Twitter content hub, with many columns of timelines or saved Tweets for use in your products.
+2a. Embedding on the web
+To embed a Tweet on the web, click the “more” menu (•••) and choose “Embed this Tweet”. You can copy and paste a blob of HTML into your template or content management system. To embed an entire column timeline, click the column settings icon and tap “Share”: “Embed Timeline”. Learn now to customize embedded Tweets or embedded timelines by checking out the documentation.
+2b. Displaying in a mobile app
+You can display Twitter content in your native mobile app using the Twitter Kit SDK. You can generate Tweet and timeline views for use in an iOS or Android app. 
+Get started: Build an app on Twitter
+Twitter’s API platform includes numerous endpoints to help you build an app and solution on Twitter. Our basic endpoints are available for free. As your app or solution needs grow, you’ll also find enterprise APIs that include increased levels of access.
+Get started with the basic REST and Streaming APIs
+Twitter’s basic REST and Streaming APIs enable free access to numerous endpoints. To get started, you must first create an app.
+1. Create an app
+To use an endpoint, you must create an app and use our OAuth-based authorization system. Visit apps.twitter.com to create one.
+2. Start using the endpoints!
+Once you’ve setup your account, accessing the endpoint is super simple. Check out the documentation and API reference for additional details about each endpoint. There are many libraries and utilities in different programming languages that can help you to get started.
+Have a question? There’s a good chance our community has an answer for you. Visit our developer forums to review topics, ask questions, and learn from others.
+Get started with Twitter Data objects
+The data provided by Twitter APIs are made up of data objects and their attributes rendered in JavaScript Object Notation (JSON). To learn more about Tweet metadata, see this introduction to Tweet JSON objects.
+The following documentation provide 'data dictionaries' to help you understand the many attributes that make up Twitter Tweets, Users and other objects.
+Tweet object
+Tweets are the basic atomic building block of all things Twitter. Click here to learn more about the Tweet object and its data fields.
+User object
+The user object contains public Twitter account metadata and describes the author of the Tweet. Click here to learn more.
+Twitter entities and extended entities
+Both the entities and extended entities objects encompass common Tweet elements such as media (photo, video, GIF), hashtags, urls, mentions, and even polls. Click here to learn more.
+Geospatial objects
+When posting Tweets, users have the option to geotag their Tweet with an exact location or a Twitter Place. User accounts can also have geospatial metadata associated with them. Click here to learn more.
+Get started: Create and manage Twitter ads
+Twitter’s Ads API endpoints provides developers a programmatic way to create and manage Twitter Ads campaigns. In addition, these endpoints provide a means to access features like Audiences, Creatives, Targeting, etc.
+1. Apply for Ads API access
+In order to be able to use any of the Ads API endpoints, first create an app and apply for access here. Feel free to play around in our sandbox environment as well!
+2. Setup twurl
+twurl is a command-line application that can be used to make authenticated requests to the Ads API. Use twurl in order to confirm access to the Ads API by making a call to any Ads API endpoint. Additional details can be found in the twurl tutorial.
+3. Review our Tutorials
+Our tutorials page contains all the necessary information around the Ads entity hierarchy as well as a basic getting started guide as well.
+4. Check out our SDKs
+The Python and Ruby SDKs provide a frictionless means to integrate with the Ads API directly in your application.
+5. Check out our Community
+The developer forums are a great place to ask any questions, report an issue or just tell us what you’re building. If you’re an expert on the Ads API feel free to help out others as well!

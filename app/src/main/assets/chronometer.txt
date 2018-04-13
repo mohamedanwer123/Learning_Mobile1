@@ -1,0 +1,177 @@
+Chronometer
+public class Chronometer 
+extends TextView 
+
+java.lang.Object
+   ?	android.view.View
+ 	   ?	android.widget.TextView
+ 	 	   ?	android.widget.Chronometer
+
+Class that implements a simple timer.
+
+You can give it a start time in the elapsedRealtime() timebase, and it counts up from that, or if you don't give it a base time, it will use the time at which you call start().
+
+The timer can also count downward towards the base time by setting setCountDown(boolean) to true.
+
+By default it will display the current timer value in the form "MM:SS" or "H:MM:SS", or you can use setFormat(String) to format the timer value into an arbitrary string.
+
+Summary
+Nested classes
+interface	Chronometer.OnChronometerTickListener
+A callback that notifies when the chronometer has incremented on its own. 
+
+XML attributes
+android:countDown	Specifies whether this Chronometer counts down or counts up from the base. 
+android:format	Format string: if specified, the Chronometer will display this string, with the first "%s" replaced by the current timer value in "MM:SS" or "H:MM:SS" form. 
+Inherited XML attributes
+  From class android.widget.TextView
+  From class android.view.View
+Inherited constants
+  From class android.widget.TextView
+  From class android.view.View
+Inherited fields
+  From class android.view.View
+Public constructors
+Chronometer(Context context)
+Initialize this Chronometer object.
+
+Chronometer(Context context, AttributeSet attrs)
+Initialize with standard view layout information.
+
+Chronometer(Context context, AttributeSet attrs, int defStyleAttr)
+Initialize with standard view layout information and style.
+
+Chronometer(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
+Public methods
+CharSequence	getAccessibilityClassName()
+Return the class name of this object to be used for accessibility purposes.
+
+long	getBase()
+Return the base time as set through setBase(long).
+
+CharSequence	getContentDescription()
+Returns the View's content description.
+
+String	getFormat()
+Returns the current format string as set through setFormat(String).
+
+Chronometer.OnChronometerTickListener	getOnChronometerTickListener()
+boolean	isCountDown()
+boolean	isTheFinalCountDown()
+void	setBase(long base)
+Set the time that the count-up timer is in reference to.
+
+void	setCountDown(boolean countDown)
+Set this view to count down to the base instead of counting up from it.
+
+void	setFormat(String format)
+Sets the format string used for display.
+
+void	setOnChronometerTickListener(Chronometer.OnChronometerTickListener listener)
+Sets the listener to be called when the chronometer changes.
+
+void	start()
+Start counting up.
+
+void	stop()
+Stop counting up.
+
+Protected methods
+void	onDetachedFromWindow()
+This is called when the view is detached from a window.
+
+void	onVisibilityChanged(View changedView, int visibility)
+Called when the visibility of the view or an ancestor of the view has changed.
+
+void	onWindowVisibilityChanged(int visibility)
+Called when the window containing has change its visibility (between GONE, INVISIBLE, and VISIBLE).
+
+Inherited methods
+  From class android.widget.TextView
+  From class android.view.View
+  From class java.lang.Object
+  From interface android.view.ViewTreeObserver.OnPreDrawListener
+  From interface android.graphics.drawable.Drawable.Callback
+  From interface android.view.KeyEvent.Callback
+  From interface android.view.accessibility.AccessibilityEventSource
+XML attributes
+android:countDown
+Specifies whether this Chronometer counts down or counts up from the base. If not specified this is false and the Chronometer counts up.
+
+May be a boolean value, such as "true" or "false".
+
+android:format
+Format string: if specified, the Chronometer will display this string, with the first "%s" replaced by the current timer value in "MM:SS" or "H:MM:SS" form. If no format string is specified, the Chronometer will simply display "MM:SS" or "H:MM:SS".
+
+May be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character;
+
+Public constructors
+Chronometer
+added in API level 1
+Chronometer (Context context)
+Initialize this Chronometer object. Sets the base to the current time.
+
+Parameters
+context	Context
+Chronometer
+added in API level 1
+Chronometer (Context context, 
+                AttributeSet attrs)
+Initialize with standard view layout information. Sets the base to the current time.
+
+Parameters
+context	Context
+attrs	AttributeSet
+Chronometer
+added in API level 1
+Chronometer (Context context, 
+                AttributeSet attrs, 
+                int defStyleAttr)
+Initialize with standard view layout information and style. Sets the base to the current time.
+
+Parameters
+context	Context
+attrs	AttributeSet
+defStyleAttr	int
+Chronometer
+added in API level 21
+Chronometer (Context context, 
+                AttributeSet attrs, 
+                int defStyleAttr, 
+                int defStyleRes)
+Parameters
+context	Context
+attrs	AttributeSet
+defStyleAttr	int
+defStyleRes	int
+Public methods
+getAccessibilityClassName
+added in API level 23
+CharSequence getAccessibilityClassName ()
+Return the class name of this object to be used for accessibility purposes. Subclasses should only override this if they are implementing something that should be seen as a completely new class of view when used by accessibility, unrelated to the class it is deriving from. This is used to fill in AccessibilityNodeInfo.setClassName.
+
+Returns
+CharSequence	
+getBase
+added in API level 1
+long getBase ()
+Return the base time as set through setBase(long).
+
+Returns
+long	
+getContentDescription
+added in API level 4
+CharSequence getContentDescription ()
+Returns the View's content description.
+
+Note: Do not override this method, as it will have no effect on the content description presented to accessibility services. You must call setContentDescription(CharSequence) to modify the content description.
+
+Returns
+CharSequence	the content description
+getFormat
+added in API level 1
+String getFormat ()
+Returns the current format string as set through setFormat(String).
+
+Returns
+String	

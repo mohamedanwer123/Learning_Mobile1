@@ -1,0 +1,58 @@
+An HTTP cookie (also called web cookie, Internet cookie, browser cookie, or simply cookie) is a small piece of data sent from a website and stored on the user's computer by the user's web browser while the user is browsing. Cookies were designed to be a reliable mechanism for websites to remember stateful information (such as items added in the shopping cart in an online store) or to record the user's browsing activity (including clicking particular buttons, logging in, or recording which pages were visited in the past). They can also be used to remember arbitrary pieces of information that the user previously entered into form fields such as names, addresses, passwords, and credit card numbers.
+
+Other kinds of cookies perform essential functions in the modern web. Perhaps most importantly, authentication cookies are the most common method used by web servers to know whether the user is logged in or not, and which account they are logged in with. Without such a mechanism, the site would not know whether to send a page containing sensitive information, or require the user to authenticate themselves by logging in. The security of an authentication cookie generally depends on the security of the issuing website and the user's web browser, and on whether the cookie data is encrypted. Security vulnerabilities may allow a cookie's data to be read by a hacker, used to gain access to user data, or used to gain access (with the user's credentials) to the website to which the cookie belongs (see cross-site scripting and cross-site request forgery for examples).[1]
+
+The tracking cookies, and especially third-party tracking cookies, are commonly used as ways to compile long-term records of individuals' browsing histories – a potential privacy concern that prompted European[2] and U.S. lawmakers to take action in 2011.[3][4] European law requires that all websites targeting European Union member states gain "informed consent" from users before storing non-essential cookies on their device.
+History
+Magic cookies were already used in computing when computer programmer Lou Montulli had the idea of using them in web communications in June 1994.[7] At the time, he was an employee of Netscape Communications, which was developing an e-commerce application for MCI. Vint Cerf and John Klensin represented MCI in technical discussions with Netscape Communications. MCI did not want its servers to have to retain partial transaction states, which led them to ask Netscape to find a way to store that state in each user's computer instead. Cookies provided a solution to the problem of reliably implementing a virtual shopping cart.[8][9]
+
+Together with John Giannandrea, Montulli wrote the initial Netscape cookie specification the same year. Version 0.9beta of Mosaic Netscape, released on October 13, 1994,[10][11] supported cookies[citation needed]. The first use of cookies (out of the labs) was checking whether visitors to the Netscape website had already visited the site. Montulli applied for a patent for the cookie technology in 1995, and US 5774670 was granted in 1998. Support for cookies was integrated in Internet Explorer in version 2, released in October 1995.[12]
+
+The introduction of cookies was not widely known to the public at the time. In particular, cookies were accepted by default, and users were not notified of their presence. The general public learned about cookies after the Financial Times published an article about them on February 12, 1996.[13] In the same year, cookies received a lot of media attention, especially because of potential privacy implications. Cookies were discussed in two U.S. Federal Trade Commission hearings in 1996 and 1997.
+
+The development of the formal cookie specifications was already ongoing. In particular, the first discussions about a formal specification started in April 1995 on the www-talk mailing list. A special working group within the Internet Engineering Task Force (IETF) was formed. Two alternative proposals for introducing state in HTTP transactions had been proposed by Brian Behlendorf and David Kristol respectively. But the group, headed by Kristol himself and Lou Montulli, soon decided to use the Netscape specification as a starting point. In February 1996, the working group identified third-party cookies as a considerable privacy threat. The specification produced by the group was eventually published as RFC 2109 in February 1997. It specifies that third-party cookies were either not allowed at all, or at least not enabled by default.
+
+At this time, advertising companies were already using third-party cookies. The recommendation about third-party cookies of RFC 2109 was not followed by Netscape and Internet Explorer. RFC 2109 was superseded by RFC 2965 in October 2000.
+
+RFC 2965 added a Set-Cookie2 header, which informally came to be called "RFC 2965-style cookies" as opposed to the original Set-Cookie header which was called "Netscape-style cookies".[14][15] Set-Cookie2 was seldom used however, and was deprecated in RFC 6265 in April 2011 which was written as a definitive specification for cookies as used in the real world.[16]
+Session cookie
+A session cookie, also known as an in-memory cookie or transient cookie, exists only in temporary memory while the user navigates the website.[17] Web browsers normally delete session cookies when the user closes the browser.[18] Unlike other cookies, session cookies do not have an expiration date assigned to them, which is how the browser knows to treat them as session cookies.
+
+Persistent cookie
+Instead of expiring when the web browser is closed as session cookies do, a persistent cookie expires at a specific date or after a specific length of time. This means that, for the cookie's entire lifespan (which can be as long or as short as its creators want), its information will be transmitted to the server every time the user visits the website that it belongs to, or every time the user views a resource belonging to that website from another website (such as an advertisement).
+
+For this reason, persistent cookies are sometimes referred to as tracking cookies because they can be used by advertisers to record information about a user's web browsing habits over an extended period of time. However, they are also used for "legitimate" reasons (such as keeping users logged into their accounts on websites, to avoid re-entering login credentials at every visit).
+
+These cookies are however reset if the expiration time is reached or the user manually deletes the cookie.
+
+Secure cookie
+A secure cookie can only be transmitted over an encrypted connection (i.e. HTTPS). They cannot be transmitted over unencrypted connections (i.e. HTTP). This makes the cookie less likely to be exposed to cookie theft via eavesdropping. A cookie is made secure by adding the Secure flag to the cookie.
+
+HttpOnly cookie
+An HttpOnly cookie cannot be accessed by client-side APIs, such as JavaScript. This restriction eliminates the threat of cookie theft via cross-site scripting (XSS). However, the cookie remains vulnerable to cross-site tracing (XST) and cross-site request forgery (XSRF) attacks. A cookie is given this characteristic by adding the HttpOnly flag to the cookie.
+
+SameSite cookie
+Google Chrome 51 recently introduced[19] a new kind of cookie which can only be sent in requests originating from the same origin as the target domain. This restriction mitigates attacks such as cross-site request forgery (XSRF).[20] A cookie is given this characteristic by setting the SameSite flag to Strict or Lax.[21]
+
+Third-party cookie
+Normally, a cookie's domain attribute will match the domain that is shown in the web browser's address bar. This is called a first-party cookie. A third-party cookie, however, belongs to a domain different from the one shown in the address bar. This sort of cookie typically appears when web pages feature content from external websites, such as banner advertisements. This opens up the potential for tracking the user's browsing history, and is often used by advertisers in an effort to serve relevant advertisements to each user.
+
+As an example, suppose a user visits www.example.org. This web site contains an advertisement from ad.foxytracking.com, which, when downloaded, sets a cookie belonging to the advertisement's domain (ad.foxytracking.com). Then, the user visits another website, www.foo.com, which also contains an advertisement from ad.foxytracking.com, and which also sets a cookie belonging to that domain (ad.foxytracking.com). Eventually, both of these cookies will be sent to the advertiser when loading their advertisements or visiting their website. The advertiser can then use these cookies to build up a browsing history of the user across all the websites that have ads from this advertiser.
+
+As of 2014, some websites were setting cookies readable for over 100 third-party domains.[22] On average, a single website was setting 10 cookies, with a maximum number of cookies (first- and third-party) reaching over 800.[23]
+
+Most modern web browsers contain privacy settings that can block third-party cookies.
+
+Supercookie
+A supercookie is a cookie with an origin of a top-level domain (such as .com) or a public suffix (such as .co.uk). Ordinary cookies, by contrast, have an origin of a specific domain name, such as example.com.
+
+Supercookies can be a potential security concern and are therefore often blocked by web browsers. If unblocked by the browser, an attacker in control of a malicious website could set a supercookie and potentially disrupt or impersonate legitimate user requests to another website that shares the same top-level domain or public suffix as the malicious website. For example, a supercookie with an origin of .com, could maliciously affect a request made to example.com, even if the cookie did not originate from example.com. This can be used to fake logins or change user information.
+
+The Public Suffix List[24] helps to mitigate the risk that supercookies pose. The Public Suffix List is a cross-vendor initiative that aims to provide an accurate and up-to-date list of domain name suffixes. Older versions of browsers may not have an up-to-date list, and will therefore be vulnerable to supercookies from certain domains.
+
+Other uses
+The term "supercookie" is sometimes used for tracking technologies that do not rely on HTTP cookies. Two such "supercookie" mechanisms were found on Microsoft websites in August 2011: cookie syncing that respawned MUID (machine unique identifier) cookies, and ETag cookies.[25] Due to media attention, Microsoft later disabled this code.[26]
+
+Zombie cookie
+Main articles: Zombie cookie and Evercookie
+A zombie cookie is a cookie that is automatically recreated after being deleted. This is accomplished by storing the cookie's content in multiple locations, such as Flash Local shared object, HTML5 Web storage, and other client-side and even server-side locations. When the cookie's absence is detected, the cookie is recreated using the data stored in these locations.

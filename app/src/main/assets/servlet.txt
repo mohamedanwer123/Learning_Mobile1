@@ -1,0 +1,43 @@
+What are Servlets?
+Java Servlets are programs that run on a Web or Application server and act as a middle layer between a requests coming from a Web browser or other HTTP client and databases or applications on the HTTP server.
+
+Using Servlets, you can collect input from users through web page forms, present records from a database or another source, and create web pages dynamically.
+
+Java Servlets often serve the same purpose as programs implemented using the Common Gateway Interface (CGI). But Servlets offer several advantages in comparison with the CGI.
+
+Performance is significantly better.
+
+Servlets execute within the address space of a Web server. It is not necessary to create a separate process to handle each client request.
+
+Servlets are platform-independent because they are written in Java.
+
+Java security manager on the server enforces a set of restrictions to protect the resources on a server machine. So servlets are trusted.
+
+The full functionality of the Java class libraries is available to a servlet. It can communicate with applets, databases, or other software via the sockets and RMI mechanisms that you have seen already.
+
+Servlets Architecture
+The following diagram shows the position of Servlets in a Web Application.
+Servlets Tasks
+Servlets perform the following major tasks ?
+
+Read the explicit data sent by the clients (browsers). This includes an HTML form on a Web page or it could also come from an applet or a custom HTTP client program.
+
+Read the implicit HTTP request data sent by the clients (browsers). This includes cookies, media types and compression schemes the browser understands, and so forth.
+
+Process the data and generate the results. This process may require talking to a database, executing an RMI or CORBA call, invoking a Web service, or computing the response directly.
+
+Send the explicit data (i.e., the document) to the clients (browsers). This document can be sent in a variety of formats, including text (HTML or XML), binary (GIF images), Excel, etc.
+
+Send the implicit HTTP response to the clients (browsers). This includes telling the browsers or other clients what type of document is being returned (e.g., HTML), setting cookies and caching parameters, and other such tasks.
+
+Servlets Packages
+Java Servlets are Java classes run by a web server that has an interpreter that supports the Java Servlet specification.
+
+Servlets can be created using the javax.servlet and javax.servlet.http packages, which are a standard part of the Java's enterprise edition, an expanded version of the Java class library that supports large-scale development projects.
+
+These classes implement the Java Servlet and JSP specifications. At the time of writing this tutorial, the versions are Java Servlet 2.5 and JSP 2.1.
+
+Java servlets have been created and compiled just like any other Java class. After you install the servlet packages and add them to your computer's Classpath, you can compile servlets with the JDK's Java compiler or any other current compiler.
+
+What is Next?
+I would take you step by step to set up your environment to start with Servlets. So fasten your belt for a nice drive with Servlets. I'm sure you are going to enjoy this tutorial very much.

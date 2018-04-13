@@ -1,0 +1,24 @@
+1/oop concept
+2/class
+3/access_modifier
+4/this
+5/encapsulation
+6/inheretance
+7/super
+8/static
+9/overloading
+10/override
+11/composition
+12/encapsulation
+13/exception
+14/polymorphism
+15/abstract
+16/interface
+17/annonymous
+18/enumeration
+19/nested_class
+20/generics
+21/files
+22/database
+23/sqlite and mysql
+24/gui

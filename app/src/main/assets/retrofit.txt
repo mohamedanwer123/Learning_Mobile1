@@ -1,0 +1,1145 @@
+1.1. What is Retrofit
+Retrofit is a REST Client for Android and Java by Square. It makes it relatively easy to retrieve and upload JSON (or other structured data) via a REST based webservice. 
+In Retrofit you configure which converter is used for the data serialization. Typically for JSON you use GSon, but you can add custom converters to process XML or other protocols.
+ Retrofit uses the OkHttp library for HTTP requests.
+1.2. Using Retrofit
+To work with Retrofit you need basically three classes.
+
+Model class which is used to map the JSON data to
+
+Interfaces which defines the possible HTTP operations
+
+Retrofit.Builder class - Instance which uses the interface and the Builder API which allows defining the URL end point for the HTTP operation.
+
+Every method of an interface represents one possible API call. It must have a HTTP annotation (GET, POST, etc.) to specify the request type and the relative URL. The return value wraps the response in a Call object with the type of the expected result.
+
+@GET("users")
+Call<List<User>> getUsers()
+You can use replacement blocks and query parameters to adjust the URL. A replacement block is added to the relative URL with {}. With the help of the @Path annotation on the method parameter, the value of that parameter is bound to the specific replacement block.
+
+@GET("users/{name}/commits")
+Call<List<Commit>> getCommitsByName(@Path("name") String name)
+Query parameters are added with the @Query annotation on a method parameter. They are automatically added at the end of the URL.
+
+@GET("users")
+Call<User> getUserById(@Query("id") Integer id)
+The @Body annotation on a method parameter tells Retrofit to use the object as the request body for the call.
+
+@POST("users")
+Call<User> postUser(@Body User user)
+2. Retrofit converters and adapters
+2.1. Retrofit Converters
+Retrofit can be configured to use a specific converter. This converter handles the data (de)serialization. Several converters are already available for various serialization formats.
+
+To convert to and from JSON:
+
+Gson: com.squareup.retrofit:converter-gson
+
+Jackson: com.squareup.retrofit:converter-jackson
+
+Moshi: com.squareup.retrofit:converter-moshi
+
+To convert to and from Protocol Buffers:
+
+Protobuf: com.squareup.retrofit:converter-protobuf
+
+Wire: com.squareup.retrofit:converter-wire
+
+To convert to and from XML:
+
+Simple XML: com.squareup.retrofit:converter-simplexml
+
+Besides the listed converters, you can also create custom converters to process other protocols by subclassing the Converter.Factory class.
+
+2.2. Retrofit Adapters
+Retrofit can also be extended by adapters to get involved with other libraries like RxJava 2.x, Java 8 and Guava.
+
+An overview for available adapters can be found on Github square/retrofit/retrofit-adapters/.
+
+For example the RxJava 2.x adapter can be obtained by using Gradle:
+
+compile 'com.squareup.retrofit2:adapter-rxjava2:latest.version'
+or using Apache Maven:
+
+<dependency>
+  <groupId>com.squareup.retrofit2</groupId>
+  <artifactId>adapter-rxjava2</artifactId>
+  <version>latest.version</version>
+</dependency>
+In order to add an adapter the retrofit2.Retrofit.Builder.addCallAdapterFactory(Factory) method has to be used.
+
+Retrofit retrofit = new Retrofit.Builder()
+    .baseUrl("https://api.example.com")
+    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+    .build();
+With this adapter being applied the Retrofit interfaces are able to return RxJava 2.x types, e.g., Observable, Flowable or Single and so on.
+
+@GET("users")
+Observable<List<User>> getUsers();
+3. Retrofit authentication
+Retrofit supports you with API calls that need authentication. Authentication can be done by using a username and a password (Http Basic authentication) or an API token.
+
+There are two ways, how you can handle the authentication. The first method would be to manipulate the header for the request with the help of annotations. Another possibility would be to use an OkHttp interceptor for that.
+
+3.1. Authentication with annotations
+Assume, that you want to request your user details, which requires you to authenticate. You can do this by adding a new parameter to your API definition, like the following:
+
+@GET("user")
+Call<UserDetails> getUserDetails(@Header("Authorization") String credentials)
+With the help of the @Header("Authorization") annotation you tell Retrofit to add the Authorization field to the request header with the value you provide for credentials.
+
+To generate Basic authentication credentials, you can use OkHttps Credentials class with its basic(String, String) method. The method takes the username and the password and returns the authentication credential for the Basic scheme.
+
+Credentials.basic("ausername","apassword");
+If you want to use an API token and no Basic authentication, just call the getUserDetails(String) method with your token instead.
+
+3.2. Authentication with OkHttp interceptors
+The above method only adds the credentials, if you request your user details. If you have more calls that require you to authenticate, you can use an interceptor for this. An interceptor is used to modify each request before it is performed and alters the request header. The advantage is, that you don’t have to add @Header("Authorization") to each API method definition.
+
+To add an interceptor, you have to use the okhttp3.OkHttpClient.Builder.addInterceptor(Interceptor) method on the OkHttp Builder.
+
+OkHttpClient okHttpClient = new OkHttpClient().newBuilder().addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request originalRequest = chain.request();
+
+                Request.Builder builder = originalRequest.newBuilder().header("Authorization",
+                        Credentials.basic("aUsername", "aPassword"));
+
+                Request newRequest = builder.build();
+                return chain.proceed(newRequest);
+            }
+        }).build();
+The created OkHttp client has to be added to your Retrofit client with the retrofit2.Retrofit.Builder.client(OkHttpClient) method.
+
+Retrofit retrofit = new Retrofit.Builder()
+    .baseUrl("https://api.example.com")
+    .client(okHttpClient)
+    .build();
+You may again noticed the usage of the Credentials class for Basic authentication. Again, if you want to use a API token, just use the token instead.
+
+4. Exercise: Using Retrofit to query Gerrit in Java
+The following section describes how to create a minimal Java application which uses Retrofit to query the subjects of open changes from the Gerrit API. The results are printed on the console.
+
+4.1. Project creation and setup
+This exercise assumes that you are familiar with Gradle and Buildship for Eclipse.
+
+Create a new Gradle project with the name com.vogella.java.retrofitgerrit. Add a new package to src/main/java with the name com.vogella.java.retrofitgerrit.
+
+Add the following dependencies to your build.gradle file.
+
+compile 'com.squareup.retrofit2:retrofit:2.1.0'
+compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+4.2. Define the API and the Retrofit adapter
+In the JSON reply from Gerrit we are only interested in the subject of the changes. Therefore create the following data classes in the previously added default package.
+
+package com.vogella.java.retrofitgerrit;
+
+public class Change {
+    String subject;
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+}
+Define the REST API for Retrofit via the following interface.
+
+package com.vogella.java.retrofitgerrit;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
+
+public interface GerritAPI {
+
+    @GET("changes/")
+    Call<List<Change>> loadChanges(@Query("q") String status);
+}
+Create the following controller class. This class creates the Retrofit client, calls the Gerrit API and handles the result (prints the result of the call on the console).
+
+package com.vogella.java.retrofitgerrit;
+
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class Controller implements Callback<List<Change>> {
+
+    static final String BASE_URL = "https://git.eclipse.org/r/";
+
+    public void start() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        GerritAPI gerritAPI = retrofit.create(GerritAPI.class);
+
+        Call<List<Change>> call = gerritAPI.loadChanges("status:open");
+        call.enqueue(this);
+
+    }
+
+    @Override
+    public void onResponse(Call<List<Change>> call, Response<List<Change>> response) {
+        if(response.isSuccessful()) {
+            List<Change> changesList = response.body();
+            changesList.forEach(change -> System.out.println(change.subject));
+        } else {
+            System.out.println(response.errorBody());
+        }
+    }
+
+    @Override
+    public void onFailure(Call<List<Change>> call, Throwable t) {
+        t.printStackTrace();
+    }
+}
+Create a class with a main-method to start the controller.
+
+package com.vogella.java.retrofitgerrit;
+
+public class Main {
+
+    public static void main(String[] args) {
+        Controller controller = new Controller();
+        controller.start();
+    }
+}
+5. Exercise: Using Retrofit to convert XML response from an RSS feed
+This section describes the usage of Retrofit to convert a XML response with the help of the Simple XML Converter.
+
+A minimal Java application is created that requests the Vogella RSS feed (http://vogella.com/article.rss) and prints out the channel title and the titles and the links of the articles.
+
+5.1. Project creation and setup
+This exercise assumes that you are familiar with Gradle and Buildship for Eclipse.
+
+Create a new Gradle project with the name com.vogella.java.retrofitxml. Add a new package to src/main/java with the name com.vogella.java.retrofitxml.
+
+Add the following dependencies to your build.gradle file.
+
+compile 'com.squareup.retrofit2:retrofit:2.1.0'
+compile 'com.squareup.retrofit2:converter-simplexml:2.1.0'
+5.2. Define the XML mapping
+An RSS feed looks like the following:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+    <title>Eclipse and Android Information</title>
+    <link>http://www.vogella.com</link>
+    <description>Eclipse and Android Information</description>
+    <language>en</language>
+    <copyright>Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Germany (CC BY-NC-SA 3.0)</copyright>
+    <pubDate>Tue, 03 May 2016 11:46:11 +0200</pubDate>
+<item>
+    <title>Android user interface testing with Espresso - Tutorial</title>
+    <description> This tutorial describes how to test Android applications with the Android Espresso testing framework.</description>
+    <link>http://www.vogella.com/tutorials/AndroidTestingEspresso/article.html</link>
+    <author>lars.vogel@vogella.com (Lars Vogel)</author>
+    <guid>http://www.vogella.com/tutorials/AndroidTestingEspresso/article.html</guid>
+</item>
+<item>
+    <title>Using the Gradle build system in the Eclipse IDE - Tutorial</title>
+    <description>This article describes how to use the Gradle tooling in Eclipse</description>
+    <link>http://www.vogella.com/tutorials/EclipseGradle/article.html</link>
+    <author>lars.vogel@vogella.com (Lars Vogel)</author>
+    <guid>http://www.vogella.com/tutorials/EclipseGradle/article.html</guid>
+</item>
+<item>
+    <title>Unit tests with Mockito - Tutorial</title>
+    <description>This tutorial explains testing with the Mockito framework for writting software tests.</description>
+    <link>http://www.vogella.com/tutorials/Mockito/article.html</link>
+    <author>lars.vogel@vogella.com (Lars Vogel)</author>
+    <guid>http://www.vogella.com/tutorials/Mockito/article.html</guid>
+</item>
+</channel>
+</rss>
+Besides the XML header this file consists of various XML elements. The rss-element contains a channel-element which again contains other elements (i.e. title, description, pubDate) and several item-elements (the articles).
+
+Create the following two data classes named RSSFeed and Article.
+
+package com.vogella.java.retrofitxml;
+
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
+
+@Root(name = "item", strict = false)
+public class Article {
+
+    @Element(name = "title")
+    private String title;
+
+    @Element(name = "link")
+    private String link;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+}
+package com.vogella.java.retrofitxml;
+
+import java.util.List;
+
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Path;
+import org.simpleframework.xml.Root;
+
+@Root(name="rss", strict=false)
+public class RSSFeed {
+
+    @Element(name="title")
+    @Path("channel")
+    private String channelTitle;
+
+    @ElementList(name="item", inline=true)
+    @Path("channel")
+    private List<Article> articleList;
+
+    public String getChannelTitle() {
+        return channelTitle;
+    }
+
+    public void setChannelTitle(String channelTitle) {
+        this.channelTitle = channelTitle;
+    }
+
+    public List<Article> getArticleList() {
+        return articleList;
+    }
+
+    public void setArticleList(List<Article> articleList) {
+        this.articleList = articleList;
+    }
+
+
+}
+The 'Article' class represents one single article and only stores the title and the link of it. These are the only fields we are interested in.
+
+With the @Root annotation a class is marked to be (de)serialized. Optional, you can provide a name in the @Root annotation that represents the name of the XML element. If no name is provided, the class name is used as the XML element name. Because the class name (RSSFeed) is different to the XML element name (rss), you have to provide a name.
+
+With strict set to false, strict parsing is disabled. This tells the parser to not fail and throw an exception, if a XML element or attribute is found for which no mapping is provided. As the rss-element has the version attribute which is not bound to a field, the application would crash, if it is not set to false.
+
+With the help of the @Element annotation, a XML element is represented. Optional, you can provide a name for the XML element that is represented by that field. If no name is provided, the fields name is used.
+
+The field articleList is annotated with @ElementList . That indicates, that this field is used to store a Collection (in our case: List<Article>) of XML elements with the same name. With inline set to true it is determined that the elements of the Collection are inlined. That means, that they have no enclosing element and are listed one after another within the XML response.
+
+With the @Path annotation you can provide a path to an XML element inside the XML tree. This is helpful, if you don’t want to model the complete XML tree with Java objects. For the title of the channel and the several item-elements, we can directly point to the specific elements within the channel-element.
+
+5.3. Define the API and the Retrofit adapter
+Define the REST API for Retrofit via the following interface.
+
+package com.vogella.java.retrofitxml;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+
+public interface VogellaAPI {
+
+    @GET("article.rss")
+    Call<RSSFeed> loadRSSFeed();
+}
+Create the following controller class. This class creates the Retrofit client, calls the Vogella API and handles the result.
+
+package com.vogella.java.retrofitxml;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+
+public class Controller implements Callback<RSSFeed> {
+
+    static final String BASE_URL = "http://vogella.com/";
+
+    public void start() {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                .addConverterFactory(SimpleXmlConverterFactory.create()).build();
+
+        VogellaAPI vogellaAPI = retrofit.create(VogellaAPI.class);
+
+        Call<RSSFeed> call = vogellaAPI.loadRSSFeed();
+        call.enqueue(this);
+    }
+
+    @Override
+    public void onResponse(Call<RSSFeed> call, Response<RSSFeed> response) {
+        if (response.isSuccessful()) {
+            RSSFeed rss = response.body();
+            System.out.println("Channel title: " + rss.getChannelTitle());
+            rss.getArticleList().forEach(
+                    article -> System.out.println("Title: " + article.getTitle() + " Link: " + article.getLink()));
+        } else {
+            System.out.println(response.errorBody());
+        }
+    }
+
+    @Override
+    public void onFailure(Call<RSSFeed> call, Throwable t) {
+        t.printStackTrace();
+    }
+}
+The last step is to create a class with a main-method to start the controller.
+
+package com.vogella.java.retrofitxml;
+
+public class Application {
+
+    public static void main(String[] args) {
+        Controller ctrl = new Controller();
+        ctrl.start();
+    }
+
+}
+6. Exercise: Build an application for querying StackOverflow
+StackOverflow is a popular side for asking programming orientated questions. It also provides a REST API which is well documented on the Stackoverflow API side.
+
+In this exercise you use the Retrofit REST library. You will use it to query StackOverflow for tagged questions and their answers.
+
+We use the following query URL in our example. Open this URL in the browser and have a look at the response.
+
+https://api.stackexchange.com/2.2/search?order=desc&sort=votes&tagged=android&site=stackoverflow
+6.1. Project creation and setup
+Create an Android application called com.vogella.android.stackoverflow. Use com.vogella.android.stackoverflow as the top level package name.
+
+Add the following dependency to your build.gradle file.
+
+compile "com.android.support:recyclerview-v7:25.3.1"
+compile 'com.google.code.gson:gson:2.8.1'
+6.2. Create data model
+We are interested in the questions and answers from Stackoverflow. Create the following two data classes for that purpose.
+
+package com.vogella.android.stackoverflow;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Question {
+
+    public String title;
+    public String body;
+
+    @SerializedName("question_id")
+    public String questionId;
+
+    @Override
+    public String toString() {
+        return(title);
+    }
+}
+package com.vogella.android.stackoverflow;
+
+import com.google.gson.annotations.SerializedName;
+
+public class Answer {
+
+    @SerializedName("answer_id")
+    public int answerId;
+
+    @SerializedName("is_accepted")
+    public boolean accepted;
+
+    public int score;
+
+    @Override
+    public String toString() {
+        return answerId + " - Score: " + score + " - Accepted: " + (accepted ? "Yes" : "No");
+    }
+}
+6.3. Create activity and adjust layout
+Adjust the activity_main.xml layout of your activity.
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    android:orientation="vertical"
+    tools:context="com.vogella.android.stackoverflow.MainActivity">
+
+    <Spinner
+        android:id="@+id/questions_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/authenticate_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="Authenticate" />
+</LinearLayout>
+Add the a recycler view adapter class called RecyclerViewAdapter to your project.
+
+One possible implementation could look like the following listing.
+
+package com.vogella.android.stackoverflow;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.List;
+
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+    private List<Answer> data;
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView text;
+
+        public ViewHolder(View v) {
+            super(v);
+            text = (TextView) v.findViewById(android.R.id.text1);
+        }
+    }
+
+    public RecyclerViewAdapter(List<Answer> data) {
+        this.data = data;
+    }
+
+    @Override
+    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v;
+        v = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_selectable_list_item, parent, false);
+        return new ViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerViewAdapter.ViewHolder holder, int position) {
+        Answer answer = ((Answer) data.get(position));
+        holder.text.setText(answer.toString());
+        holder.itemView.setTag(answer.answerId);
+    }
+
+    @Override
+    public int getItemCount() {
+        return data.size();
+    }
+
+}
+Change your MainActivity class to the following.
+
+package com.vogella.android.stackoverflow;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends Activity implements View.OnClickListener {
+
+    private String token;
+
+    private Button authenticateButton;
+
+    private Spinner questionsSpinner;
+    private RecyclerView recyclerView;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        questionsSpinner = (Spinner) findViewById(R.id.questions_spinner);
+        questionsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "Spinner item selected", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        authenticateButton = (Button) findViewById(R.id.authenticate_button);
+
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (token != null) {
+            authenticateButton.setEnabled(false);
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case android.R.id.text1:
+                if (token != null) {
+                    // TODO
+                } else {
+                    Toast.makeText(this, "You need to authenticate first", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.authenticate_button:
+                // TODO
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            token = data.getStringExtra("token");
+        }
+    }
+}
+6.4. Use a fake data provider
+Create a fake data provider and fill the spinner with fake questions and the recyclerview of fake answers (once the spinner selection changes).
+
+package com.vogella.android.stackoverflow;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class FakeDataProvider {
+    public static List<Question> getQuestions(){
+        List<Question> questions = new ArrayList<>();
+        for (int i = 0; i<10; i++) {
+            Question question = new Question();
+            question.questionId = String.valueOf(i);
+            question.title = String.valueOf(i);
+            question.body = String.valueOf(i) + "Body";
+            questions.add(question);
+        }
+        return questions;
+    }
+    public static List<Answer> getAnswers(){
+        List<Answer> answers = new ArrayList<>();
+        for (int i = 0; i<10; i++) {
+            Answer answer = new Answer();
+            answer.answerId = i;
+            answer.accepted = false;
+            answer.score = i;
+            answers.add(answer);
+        }
+        return answers;
+    }
+}
+Now configure the spinner and the recyclerview to use this fake data.
+
+package com.vogella.android.stackoverflow;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.List;
+
+public class MainActivity extends Activity implements View.OnClickListener {
+
+    private String token;
+
+    private Button authenticateButton;
+
+    private Spinner questionsSpinner;
+    private RecyclerView recyclerView;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        questionsSpinner = (Spinner) findViewById(R.id.questions_spinner);
+        questionsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, "Spinner item selected", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        List<Question> questions = FakeDataProvider.getQuestions();
+        ArrayAdapter<Question> arrayAdapter = new ArrayAdapter<Question>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, questions);
+        questionsSpinner.setAdapter(arrayAdapter);
+
+        authenticateButton = (Button) findViewById(R.id.authenticate_button);
+
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        List<Answer> answers = FakeDataProvider.getAnswers();
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(answers);
+        recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (token != null) {
+            authenticateButton.setEnabled(false);
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case android.R.id.text1:
+                if (token != null) {
+                    // TODO
+                } else {
+                    Toast.makeText(this, "You need to authenticate first", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.authenticate_button:
+                // TODO
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            token = data.getStringExtra("token");
+        }
+    }
+
+}
+6.5. Add Gradle dependencies and permissions
+Add the following dependency to your build.gradle file.
+
+compile 'com.squareup.retrofit2:retrofit:2.1.0'
+compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+Add the permission to access the Internet to your manifest file.
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.vogella.android.stackoverflow">
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+6.6. Define the API and the Retrofit adapter
+The Stackoverflow API wraps replies for questions or answers in a JSON object with the name items. To handle this, create the following data class named ListWrapper. This is needed to handled the Stackoverflow items wrapper. This class accepts a type parameter and simply wraps a list of objects of that type.
+
+package com.vogella.android.stackoverflow;
+
+import java.util.List;
+
+public class ListWrapper<T> {
+    List<T> items;
+}
+Define the REST API for Retrofit via the following interface.
+
+package com.vogella.android.stackoverflow;
+
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.Call;
+
+public interface StackOverflowAPI {
+    String BASE_URL = "https://api.stackexchange.com";
+
+    @GET("/2.2/questions?order=desc&sort=votes&site=stackoverflow&tagged=android&filter=withbody")
+    Call<ListWrapper<Question>> getQuestions();
+
+    @GET("/2.2/questions/{id}/answers?order=desc&sort=votes&site=stackoverflow")
+    Call<ListWrapper<Answer>> getAnswersForQuestion(@Path("id") String questionId);
+
+}
+6.7. Adjust activity
+Change your MainActivity activity code to the following.
+
+package com.vogella.android.stackoverflow;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class MainActivity extends Activity implements View.OnClickListener {
+
+    private StackOverflowAPI stackoverflowAPI;
+    private String token;
+
+    private Button authenticateButton;
+
+    private Spinner questionsSpinner;
+    private RecyclerView recyclerView;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        questionsSpinner = (Spinner) findViewById(R.id.questions_spinner);
+        questionsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Question question = (Question) parent.getAdapter().getItem(position);
+                stackoverflowAPI.getAnswersForQuestion(question.questionId).enqueue(answersCallback);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        authenticateButton = (Button) findViewById(R.id.authenticate_button);
+
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+        createStackoverflowAPI();
+        stackoverflowAPI.getQuestions().enqueue(questionsCallback);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (token != null) {
+            authenticateButton.setEnabled(false);
+        }
+    }
+
+    private void createStackoverflowAPI() {
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(StackOverflowAPI.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .build();
+
+        stackoverflowAPI = retrofit.create(StackOverflowAPI.class);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case android.R.id.text1:
+                if (token != null) {
+                    //TODO
+                } else {
+                    Toast.makeText(this, "You need to authenticate first", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.authenticate_button:
+                // TODO
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == 1) {
+            token = data.getStringExtra("token");
+        }
+    }
+
+    Callback<ListWrapper<Question>> questionsCallback = new Callback<ListWrapper<Question>>() {
+        @Override
+        public void onResponse(Call<ListWrapper<Question>> call, Response<ListWrapper<Question>> response) {
+            if (response.isSuccessful()) {
+                ListWrapper<Question> questions = response.body();
+                ArrayAdapter<Question> arrayAdapter = new ArrayAdapter<Question>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, questions.items);
+                questionsSpinner.setAdapter(arrayAdapter);
+            } else {
+                Log.d("QuestionsCallback", "Code: " + response.code() + " Message: " + response.message());
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ListWrapper<Question>> call, Throwable t) {
+            t.printStackTrace();
+        }
+    };
+
+    Callback<ListWrapper<Answer>> answersCallback = new Callback<ListWrapper<Answer>>() {
+        @Override
+        public void onResponse(Call<ListWrapper<Answer>> call, Response<ListWrapper<Answer>> response) {
+            if (response.isSuccessful()) {
+                List<Answer> data = new ArrayList<>();
+                data.addAll(response.body().items);
+                recyclerView.setAdapter(new RecyclerViewAdapter(data));
+            } else {
+                Log.d("QuestionsCallback", "Code: " + response.code() + " Message: " + response.message());
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ListWrapper<Answer>> call, Throwable t) {
+            t.printStackTrace();
+        }
+    };
+
+    Callback<ResponseBody> upvoteCallback = new Callback<ResponseBody>() {
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            if (response.isSuccessful()) {
+                Toast.makeText(MainActivity.this, "Upvote successful", Toast.LENGTH_LONG).show();
+            } else {
+                Log.d("QuestionsCallback", "Code: " + response.code() + " Message: " + response.message());
+                Toast.makeText(MainActivity.this, "You already upvoted this answer", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+            t.printStackTrace();
+        }
+    };
+}
+6.8. Optional: Get the profile pictures from the user
+Change your row layout in the recycler view to show also the profile image of the user. Extend your data model to also receive the profile picture of the user who answered the question. Add an ImageView to your row layout and use the Glide library to download the picture.
+
+6.9. Optional: Use different layouts for even and odd rows
+Change your adapter implementation to use different layouts for even and odds rows.
+
+This requires that inflate different layouts based on the data type. Use getItemViewType in the adapter.
+
+6.10. Optional: Handle network failure
+If you have a network failure, show a retry button instead of the main user interface.
+
+7. Exercise: Using Retrofit to access Github API in Android
+This exercise describes how to list all Github repositories for an user in an Android application using Retrofit. You can select a repository from a drop down field and list the issues that are assigned to the user for the selected repository. You can then select an issue from an additional drop down field and post a comment on it. A DialogFragment is used to enter the credentials for authentication. Make sure, that you have a Github account, as this tutorial doesn’t work if you don’t have one. As Retrofit is used in conjunction with RxJava2 during this tutorial, make sure that you also check the RxJava2 Tutorial.
+
+7.1. Project setup
+Create an Android application with the name Retrofit Github. Use com.vogella.android.retrofitgithub as the top level package name and use the empty template. Ensure to select the Backwards Compatibility flag in the wizard.
+
+To use Retrofit and RxJava2 CallAdapter, add the following lines to your build.gradle file
+
+compile 'com.squareup.retrofit2:retrofit:2.3.0'
+compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+Add the permission to access the Internet to your manifest file.
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.vogella.android.retrofitgithub">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.vogella.android.retrofitgithub.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+7.2. Define the API
+Create the following two data classes called GithubIssue and GithubRepo.
+
+package com.vogella.android.retrofitgithub;
+
+import com.google.gson.annotations.SerializedName;
+
+public class GithubIssue {
+
+    String id;
+    String title;
+    String comments_url;
+
+    @SerializedName("body")
+    String comment;
+
+    @Override
+    public String toString() {
+        return id +  " - " + title;
+    }
+}
+package com.vogella.android.retrofitgithub;
+
+public class GithubRepo {
+    String name;
+    String owner;
+    String url;
+
+    @Override
+    public String toString() {
+        return(name + " " +  url);
+    }
+}
+From the repositories, only the name and the url of the repository is displayed in the drop down field. Also add owner to the data class as the owner name is mandatory for requesting the issues later. We only show the id and the title of the issue in the drop down field, so create a field for each of them. Furthermore, the response from Github contains the URL to post the comment to, which is stored in the field comments_url. To later post a new comment to the Github API, add a field called comment. The Github API specifies that the contents of a comment has to be bound to a field named body in the JSON request. As Retrofit (de)serializes all fields based on their name and as we don’t want to use body as the field name in our GithubIssue class, we use the @SerializedName annotation. With the help of this annotation, we can change the name a field is (de)serialized to in the JSON.
+
+Unfortunately the GithubRepo class is not enough to query all needed repository information. As you can see here, the owner of a repository is a separate JSON object within the repository response and therefore it normally needs a corresponding Java class for (de)serialization. Fortunately Retrofit gives yu the possibility to add an own typed JSONDeserializer to control the deserialization for a specific type. Every time an object of the specific type has to be deserialized, this custom Deserializer is used.
+
+To do so, add the following class called GithubRepoDeserialzer.
+
+package com.vogella.android.retrofitgithub;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
+import java.lang.reflect.Type;
+
+public class GithubRepoDeserializer implements JsonDeserializer<GithubRepo> {
+
+    @Override
+    public GithubRepo deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        GithubRepo githubRepo = new GithubRepo();
+
+        JsonObject repoJsonObject =  json.getAsJsonObject();
+        githubRepo.name = repoJsonObject.get("name").getAsString();
+        githubRepo.url = repoJsonObject.get("url").getAsString();
+
+        JsonElement ownerJsonElement = repoJsonObject.get("owner");
+        JsonObject ownerJsonObject = ownerJsonElement.getAsJsonObject();
+        githubRepo.owner = ownerJsonObject.get("login").getAsString();
+
+        return githubRepo;
+    }
+}
+Define the REST API for Retrofit via the following interface:
+
+package com.vogella.android.retrofitgithub;
+
+import java.util.List;
+
+import io.reactivex.Single;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Url;
+
+public interface GithubAPI {
+    String ENDPOINT = "https://api.github.com";
+
+    @GET("user/repos?per_page=100")
+    Single<List<GithubRepo>> getRepos();
+
+    @GET("/repos/{owner}/{repo}/issues")
+    Single<List<GithubIssue>> getIssues(@Path("owner") String owner, @Path("repo") String repository);
+
+    @POST
+    Single<ResponseBody> postComment(@Url String url, @Body GithubIssue issue);
+}
+You might wonder about the @Url annotation. With the help of this annotation, we can provide the URL for this request. This allows us to change the URL for each request dynamically. We need this for the comments_url field of the GithubIssue class.
+
+The @Path annotation binds the parameter value to the corresponding variable (curly brackets) in the request URL. This is needed to specify the owner and the repository name for which the issues should be requested
+
+7.3. Create Credentials dialog
+To give the user the opportunity to store their credentials in the application a DialogFragment is used. Therefore, create the following class named CredentialsDialog and also add a xml layout file named dialog_credentials.xml to your layout resources folder.
+
+The result should look similar to the following screenshot.

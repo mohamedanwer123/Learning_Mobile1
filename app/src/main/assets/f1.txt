@@ -1,0 +1,15 @@
+1/history_of_java
+2/mathmatical_function
+3/Variables_types
+4/constants
+5/Operators
+6/casting
+7/increment & decrement
+8/control_statement
+9/looping
+10/break and continue
+11/arrays
+12/Strings
+13/functions
+14/Data type Conversion
+15/scanners

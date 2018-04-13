@@ -1,0 +1,37 @@
+1/android_concept
+2/android_versions
+3/android staudio
+4/sdk concept
+5/install android staudio
+6/layouts
+7/xml
+8/buttons
+9/edit text
+10/text view
+11/toast
+12/image view
+13/toggle button
+14/switch button
+15/checkbox
+16/radiobutton
+17/spinner
+18/list view
+19/custom list view
+20/menu
+21/context menu
+22/popup menu
+23/alert dialog
+24/prograss Bar
+25/seek Bar
+26/ratin Bar
+27/time picker
+28/date picker
+29/calender
+30/chronometer
+31/video view
+32/web view
+33/html with webview
+34/media player (audio)
+35/shared prefrences
+36/files
+37/activites type

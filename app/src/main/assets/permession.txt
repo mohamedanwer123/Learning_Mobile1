@@ -1,0 +1,22 @@
+System Permissions
+To maintain security for the system and users, Android requires apps to request permission before the apps can use certain system data and features. Depending on how sensitive the area is, the system may grant the permission automatically, or it may ask the user to approve the request.
+
+Note: These permissions are Android permissions; they grant access to device features. If you're looking for Google API permissions, such as those used for interacting with Google Drive, see Google Play Services Permissions.
+
+This section describes how apps can request access to system permissions. It also describes how apps can define their own permissions, so apps can securely share their data and features with other apps.
+
+REQUESTING PERMISSIONS
+
+API GUIDES
+Requesting Permissions
+Describes how an app can request the standard Android permissions, which control access to system-wide resources and information.
+
+Defining Permissions
+Describes how an app can define its own custom permissions, enabling it to share its information and functionality with other apps.
+
+SEE ALSO
+Working with System Permissions training
+Shows how you declare and request permissions for your app.
+
+Permissions Best Practices
+Provides tips on how and when to use system permissions, and how to get equivalent functionality without requesting permissions.

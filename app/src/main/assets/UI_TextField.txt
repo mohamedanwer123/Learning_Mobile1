@@ -1,0 +1,59 @@
+You use text fields to gather text-based input from the user using the onscreen keyboard. The keyboard is configurable for many different types of input such as plain text, emails, numbers, and so on. Text fields use the target-action mechanism and a delegate object to report changes made during the course of editing.
+In addition to its basic text-editing behavior, you can add overlay views to a text field to display additional information and provide additional tappable controls. You might add custom overlay views for elements such as a bookmarks button or search icon. Text fields provide a built-in overlay view to clear the current text. The use of custom overlay views is optional.
+
+After adding a text field to your interface, you configure it for use in your app. Configuration involves performing some or all of the following tasks:
+Configure one or more targets and actions for the text field.
+Configure the keyboard-related attributes of the text field.
+Assign a delegate object to handle important tasks, such as:
+Determining whether the user should be allowed to edit the text field’s contents.
+Validating the text entered by the user.
+Responding to taps in the keyboard’s return button.
+Forwarding the user-entered text to other parts of your app.
+Store a reference to the text field in one of your controller objects.
+For information about the methods of the text field’s delegate object, see UITextFieldDelegate.
+Showing and Hiding the Keyboard
+When a text field becomes first responder, the system automatically shows the keyboard and binds its input to the text field. A text field becomes the first responder automatically when the user taps it. You can also force a text field to become the first responder by calling its becomeFirstResponder() method. You might force a text field to become first responder when you require the user to enter some information.
+Note
+The appearance of the keyboard has the potential to obscure portions of your user interface. You should update your interface as needed to ensure that the text field being edited is visible. Use the keyboard notifications to detect the appearance and disappearance of the keyboard and to make necessary changes to your interface. For more information, see Responding to Keyboard-Related Notifications.
+You can ask the system to dismiss the keyboard by calling the resignFirstResponder() method of your text field. Usually, you dismiss the keyboard in response to specific interactions. For example, you might dismiss the keyboard when the user taps the keyboard’s return key. The system can also dismiss the keyboard in response to user actions. Specifically, the system dismisses the keyboard when the user taps a new control that does not support keyboard input.
+The appearance and dismissal of the keyboard affect the editing state of the text field. When the keyboard appears, the text field enters the editing state and sends the appropriate notifications to its delegate. Similarly, when the text field resigns the first responder status, it leaves the editing state and notifies its delegate. For more information about the sequence of events that occur during editing, see Validating Text and Managing the Editing Process.
+Configuring the Keyboard’s Appearance
+You customize your text field’s keyboard using the properties of the UITextInputTraits protocol, which the UITextField class adopts. UIKit supports standard keyboards for the user’s current language and also supports specialized keyboards for entering numbers, URLs, email addresses, and other specific types of information. You use the properties of this protocol to adjust keyboard traits such as the following:
+The type of keyboard to display
+The autocapitalization behavior of the keyboard
+The autocorrection behavior of the keyboard
+The type of return key to display
+For information about how to configure keyboard attributes in Interface Builder or in your code, see Table 2.
+Responding to Keyboard-Related Notifications
+Because the system manages the showing and hiding of the keyboard in response to responder changes, it posts the following notifications for tracking the keyboard-related changes:
+UIKeyboardWillShow
+UIKeyboardDidShow
+UIKeyboardWillHide
+UIKeyboardDidHide
+UIKeyboardWillChangeFrame
+UIKeyboardDidChangeFrame
+Each notification contains a userInfo dictionary that includes the size of the keyboard. Because the keyboard can hide portions of your interface, you should use the size information to reposition your content on the screen. For content embedded in a scroll view, you can scroll the text field into view, as illustrated in Figure 2. In other cases, you can resize your main content view so that it is not covered by the keyboard.
+Formatting the Text in a Text Field
+There are two types of formatting you can do to a text field’s text:
+You can change the font, color, and style of the text using properties of this class. Alternatively, you can specify an NSAttributedString for the text field’s content.
+You can format the content of a text field using an Formatter object.
+The font, textColor, and textAlignment properties, among others, affect the appearance of the text field’s string. Modifying these properties applies the specified characteristic to the entire string. To specify more granular formatting, specify the text field’s text using an NSAttributedString object.
+The UITextField class does not provide built-in support for formatting its string using an Formatter object, but you can use the text field’s delegate to format the content yourself. To do so, use the text field’s delegate methods to validate text and to format it appropriately. For example, use the textField(_:shouldChangeCharactersIn:replacementString:) method to validate and format text while the user is typing. For information about how to use formatter objects, see Data Formatting Guide.
+Using Overlay Views to Edit Content
+Overlay views are small views displayed on the left and right sides of the text view’s editable area. Typically, overlay views are image-based buttons that you set up as additional editing controls. For example, you might use an overlay view to implement a bookmarks button. To configure a button as an overlay view, specify an image for the button’s content and configure the target and action of the button to respond to taps.
+Listing 1 shows how to add a button as the left overlay of a text field. In this case, the code creates a button and configure its size and contents. The leftViewMode property specifies when your button is displayed. When the user taps the button, the button calls the configured action method, which in this case is a custom displayBookmarks: method.
+Listing 1 
+Adding an overlay view to a text field
+UIButton* overlayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+[overlayButton setImage:[UIImage imageNamed:@"bookmark"] forState:UIControlStateNormal];
+[overlayButton addTarget:self action:@selector(displayBookmarks:)
+        forControlEvents:UIControlEventTouchUpInside];
+overlayButton = CGRectMake(0, 0, 28, 28);
+ 
+// Assign the overlay button to a stored text field
+self.textField.leftView = overlayButton;
+self.textField.leftViewMode = UITextFieldViewModeAlways;
+When configuring overlay views, consider whether you want your text field to display the built-in clear button. The clear button provides the user with a convenient way to delete all of the text field’s text. This button is displayed in the right overlay position, but if you provide a custom right overlay view, use the rightViewMode and clearButtonMode properties to define when your custom overlay should be displayed and when the clear button should be displayed.
+Validating Text and Managing the Editing Process
+A text field manages the editing of its text with the help of its delegate object. As the user interacts with a text field, the text field notifies its delegate and gives it a chance to control what is happening. You can use the delegate methods to prevent the user from starting or stopping the editing process or to validate text as it is typed. You can also use the delegate methods to perform related tasks, such as updating other parts of your interface based on the information typed by the user.
+For more information about using the text field’s delegate to manage editing interactions, see UITextFieldDelegate.

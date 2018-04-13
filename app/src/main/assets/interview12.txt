@@ -1,0 +1,167 @@
+1/Explain what is Swift Programming Language?
+Swift is a programming language and system for creating applications for iOS and OS X. It is an innovative programming language for Cocoa and Cocoa Touch.
+
+----------------------------------
+
+2/Explain how you define variables in Swift language?
+Variables and constants must be declared before they are used. You announce constants with the let keyword and variables with the var keyword. Both variables and dictionaries are described using brackets. For example,
+Var  Guru99 = �This is Guru99�
+Let ksomeconstant = 30
+
+----------------------------------
+
+3/What is the significance of �?� in swift?
+The question mark makes a property optional if declared.  In case the property does not hold a value, the �?� helps in avoiding runtime errors.
+
+----------------------------------
+
+4/Mention what are the features of Swift Programming?
+It eliminates entire classes of unsafe code
+Variables are always initialized before use
+Arrays and integers are checked for overflow
+Memory is managed automatically
+Instead of using �if� statement in conditional programming, swift has �switch� function
+
+----------------------------------
+
+5/Mention what are the type of integers does Swift have?
+Swift provides unsigned and signed integers in 8, 16, 32 and 64 bit forms. Similar to C these integers follow a naming convention. For instance, unsigned integer is denoted by type UInt8 while 32 bit signed integer will be denoted by type Int32.
+
+----------------------------------
+
+6/Mention what is the Floating point numbers and what are the types of floating number in Swift?
+Floating numbers are numbers with a fractional component, like 3.25169 and -238.21.  Floating point types can represent a wider range of values than integer types. There are two signed floating point number
+Double: It represents a 64 bit floating point number, it is used when floating point values must be very large
+Float: It represents a 32 bit floating point number, it is used when floating point values does not need 64 bit precision
+
+----------------------------------
+
+7/Explain how multiple line comment can be written in swift?
+Multiple line comment can be written as forward-slash followed by an asterisk (/*)  and end with an asterisk followed by a forward slash (*/).
+
+----------------------------------
+
+8/What is de-initializer and how it is written in Swift?
+A de-initializer is declared immediately before a class instance is de-allocated.  You write de-initializer with the deinit keyword.  De-initializer is written without any parenthesis, and it does not take any parameters. It is written as
+deinit  {
+// perform the deinitialization
+}
+
+----------------------------------
+
+9/Mention what are the collection types available in Swift?
+In Swift, collection types come in two varieties Array and Dictionary
+Array: You can create an Array of a single type or an array with multiple types. Swift usually prefers the former one
+Example for single type array is,
+Var cardName : [String] = [ �Robert� , �Lisa� , �Kevin�]
+// Swift can infer [String] so we can also write it as:
+Var cardNames = [ �Robert�, �Lisa�, �Kevin�] // inferred as [String]
+To add an array you need to use the subscript println(CardNames[0])
+Dictionary: It is similar to a Hash table as in other programming language. A dictionary enables you to store key-value pairs and access the value by providing the key
+var cards = [ �Robert�: 22, �Lisa� : 24, and �Kevin�: 26]
+
+----------------------------------
+
+10/List out what are the control transfer statements used in Swift?
+Control transfer statements used in Swift includes
+Continue
+Break
+Fallthrough
+Return
+
+----------------------------------
+
+11/Explain what is optional chaining?
+Optional chaining is a process of querying and calling properties. Multiple queries can be chained together, and if any link in the chain is nil then, the entire chain fails.
+
+----------------------------------
+
+12/How base-class is defined in Swift?
+In Swift the classes are not inherited from the base class and the classes that you define without specifying its superclass, automatically becomes the base-class.
+
+----------------------------------
+
+13/Explain what Lazy stored properties is and when it is useful?
+Lazy stored properties are used for a property whose initial values is not calculated until the first time it is used.  You can declare a lazy stored property by writing the lazy modifier before its declaration. Lazy properties are useful when the initial value for a property is reliant on outside factors whose values are unknown.
+
+----------------------------------
+
+14/Mention what is the characteristics of Switch in Swift?
+It supports any kind of data, and not only synchronize but also checks for equality
+When a case is matched in switch, the program exists from the switch case and does not continue checking next cases. So you don�t need to explicitly break out the switch at the end of case
+Switch statement must be exhaustive, which means that you have to cover all possible values for your variable
+
+----------------------------------
+
+15/What is the question mark ? in Swift?
+Answer: The question mark ? is used during the declaration of a property, as it tells the compiler that this property is optional. The property may hold a value or not, in the latter case it's possible to avoid runtime errors when accessing that property by using ?. This is useful in optional chaining (see below) and a variant of this example is in conditional clauses.
+var optionalName : String? = �John"
+if optionalName != nil {
+print(�Your name is \(optionalName!)�)
+}
+
+----------------------------------
+
+16/What is the use of double question marks?
+Answer: To provide a default value for a variable.
+let missingName : String? = nil
+let realName : String? = �John Doe"
+let existentName : String = missingName ?? realName
+
+----------------------------------
+
+17/What is the use of exclamation mark?
+Answer: Highly related to the previous keywords, the ! is used to tell the compiler that I know definitely, this variable/constant contains a value and please use it (i.e. please unwrap the optional). From question 1, the block that executes the if condition is true and calls a forced unwrapping of the optional's value. There is a method for avoiding forced unwrapping which we will cover below.
+
+----------------------------------
+
+18/What is the difference between let and var in Swift?
+Answer*: The let keyword is used to declare constants while var is used for declaring variables.
+let someConstant = 10
+var someVariable : String
+Here, we used the : string to explicitly declare that someVariable will hold a string. In practice, it's rarely necessary � especially if the variable is given an initial value � as Swift will infer the type for you. It is a compile-time error trying to use a variable declared as a constant through let and later modifying that variable.
+
+----------------------------------
+
+19/What is type aliasing in Swift?
+Answer: This borrows very much from C/C++. It allows you to alias a type, which can be useful in many particular contexts.
+typealias AudioSample = UInt16
+
+----------------------------------
+
+20/What is the difference between functions and methods in Swift?
+Answer: Both are functions in the same terms any programmer usually knows of it. That is, self-contained blocks of code ideally set to perform a specific task. Functions are globally scoped while methods belong to a certain type.
+
+----------------------------------
+
+21/What's the syntax for external parameters?
+Answer: The external parameter precedes the local parameter name.
+func yourFunction(externalParameterName localParameterName :Type, ....) { .... }
+A concrete example of this would be:
+func sendMessage(from name1 :String, to name2 :String) { print("Sending message from \(name1) to \(name2)") }
+
+----------------------------------
+
+22/What is a deinitializer in Swift?
+Answer: If you need to perform additional cleanup of your custom classes, it's possible to define a block called deinit. The syntax is the following:
+deinit { //Your statements for cleanup here }
+Typically, this type of block is used when you have opened files or external connections and want to close them before your class is deallocated.
+
+----------------------------------
+
+/How should one handle errors in Swift?
+Answer: The method for handling errors in Swift differ a bit from Objective-C. In Swift, it's possible to declare that a function throws an error. It is, therefore, the caller's responsibility to handle the error or propagate it. This is similar to how Java handles the situation.
+You simply declare that a function can throw an error by appending the throws keyword to the function name. Any function that calls such a method must call it from a try block.
+func canThrowErrors() throws -> String
+//How to call a method that throws an error
+try canThrowErrors()
+//Or specify it as an optional
+let maybe = try? canThrowErrors()</pre>
+
+----------------------------------
+
+24/What is a guard statement in Swift?
+Guard statements are a nice little control flow statement that can be seen as a great addition if you're into a defensive programming style (which you should!). It basically evaluates a boolean condition and proceeds with program execution if the evaluation is true. A guard statement always has an else clause, and it must exit the code block if it reaches there.
+guard let courses = student.courses! else {
+return
+}

@@ -1,0 +1,67 @@
+To create toolbar items, use the UIBarButtonItem class. To add toolbar items to a toolbar, use the setItems(_:animated:) method.
+Toolbar images that represent normal and highlighted states of an item derive from the image you set using the inherited image property from the UIBarItem class. The image is colored with the toolbar’s tintColor.
+If you need radio button style controls, use the UITabBar class instead of UIToolbar.
+Customizing Appearance
+You use the methods listed in Customizing Appearance to customize the appearance of toolbars. You send the setter messages to the appearance proxy ([UIToolbar appearance]) to customize all toolbars, or to a specific UIToolbar instance. When a property is dependent on the bar metrics, you should typically specify a value for default as well as for landscapePhone.
+Topics
+Managing Toolbar Changes
+var delegate: UIToolbarDelegate?
+The toolbar’s delegate object.
+protocol UIToolbarDelegate
+The UIToolbarDelegate protocol defines the interface that toolbar delegate objects implement to manage the toolbar behavior. This protocol declares no methods of its own but conforms to the 
+UIBarPositioningDelegate
+ protocol to support the positioning of a toolbar when it is moved to a window.
+Configuring Toolbar Items
+var items: [UIBarButtonItem]?
+The items displayed on the toolbar.
+func setItems([UIBarButtonItem]?, animated: Bool)
+Sets the items on the toolbar by animating the changes.
+Customizing Appearance
+var barStyle: UIBarStyle
+The toolbar style that specifies its appearance.
+var barTintColor: UIColor?
+The tint color to apply to the toolbar background.
+var tintColor: UIColor!
+The tint color to apply to the bar button items.
+var isTranslucent: Bool
+A Boolean value that indicates whether the toolbar is translucent (true) or not (false).
+func backgroundImage(forToolbarPosition: UIBarPosition, barMetrics: UIBarMetrics)
+Returns the image to use for the background in a given position and with given metrics.
+func setBackgroundImage(UIImage?, forToolbarPosition: UIBarPosition, barMetrics: UIBarMetrics)
+Sets the image to use for the background in a given position and with given metrics.
+func shadowImage(forToolbarPosition: UIBarPosition)
+Returns the image to use for the toolbar shadow in a given position.
+func setShadowImage(UIImage?, forToolbarPosition: UIBarPosition)
+Sets the image to use for the toolbar shadow in a given position.
+Relationships
+Inherits From
+UIView
+Conforms To
+CVarArg
+Equatable
+Hashable
+UIAccessibilityIdentification
+UIBarPositioning
+UIPasteConfigurationSupporting
+See Also
+Bars
+class UIBarItem
+An abstract superclass for items that can be added to a bar that appears at the bottom of the screen.
+class UIBarButtonItem
+A button specialized for placement on a toolbar or tab bar.
+class UIBarButtonItemGroup
+A set of bar button items on the shortcuts bar above the keyboard on iPad.
+class UINavigationBar
+A control that supports navigation of hierarchical content, most often used in navigation controllers.
+class UISearchBar
+A text field–like control that supports text-based searches.
+class UITabBar
+A control that displays one or more buttons in a tab bar for selecting between different subtasks, views, or modes in an app.
+class UITabBarItem
+An item in a tab bar.
+protocol UIBarPositioning
+A set of methods for defining the ways that bars can be positioned in iOS apps.
+protocol UIBarPositioningDelegate
+A set of methods that support the positioning of a bar that conforms to the 
+UIBarPositioning
+ protocol.

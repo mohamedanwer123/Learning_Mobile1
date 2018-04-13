@@ -1,0 +1,33 @@
+1/streams
+2/threading
+3/java_EE_consept
+4/web_concept
+5/http_concept
+6/servlet
+7/http_header
+8/cookies
+9/session
+10/Contexts_and_Dependency_Injection
+11/The Java API for JSON Binding
+12/Java API for RESTful Web Services
+13/JavaServer Faces
+14/Java API for JSON Processing
+15/Java EE Security
+16/Bean Validation
+17/Common Annotations
+18/Java API for WebSocket
+19/JavaMai
+20/java ME Concept
+21/Oracle Java ME Embedded
+22/Java ME SDK
+23/Oracle Java ME Embedded Client
+24/Java for Mobile
+25/Java TV
+26/Oracle Java Platform Integrator
+27/Java DB
+28/java Embedded
+29/web tier
+30/java card
+31/new to java
+32/community
+33/java magazine

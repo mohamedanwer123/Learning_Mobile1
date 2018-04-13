@@ -1,0 +1,157 @@
+this keyword in java
+
+There can be a lot of usage of java this keyword. In java, this is a reference variable that refers to the current object.
+
+Usage of java this keyword
+
+Here is given the 6 usage of java this keyword.
+
+1 this can be used to refer current class instance variable.
+2 this can be used to invoke current class method (implicitly)
+3 this() can be used to invoke current class constructor.
+4 this can be passed as an argument in the method call.
+5 this can be passed as argument in the constructor call.
+9 this can be used to return the current class instance from the method.
+1) this: to refer current class instance variable
+
+The this keyword can be used to refer current class instance variable. If there is ambiguity between the instance variables and parameters, this keyword resolves the problem of ambiguity.
+
+Understanding the problem without this keyword
+
+Let's understand the problem if we don't use this keyword by the example given below:
+class Student{  
+int rollno;  
+String name;  
+float fee;  
+Student(int rollno,String name,float fee){  
+rollno=rollno;  
+name=name;  
+fee=fee;  
+}  
+void display(){System.out.println(rollno+" "+name+" "+fee);}  
+}  
+class TestThis1{  
+public static void main(String args[]){  
+Student s1=new Student(111,"ankit",5000f);  
+Student s2=new Student(112,"sumit",6000f);  
+s1.display();  
+s2.display();  
+}}  
+Test it Now
+Output:
+
+0 null 0.0
+0 null 0.0
+In the above example, parameters (formal arguments) and instance variables are same. So, we are using this keyword to distinguish local variable and instance variable.
+
+Solution of the above problem by this keyword
+
+class Student{  
+int rollno;  
+String name;  
+float fee;  
+Student(int rollno,String name,float fee){  
+this.rollno=rollno;  
+this.name=name;  
+this.fee=fee;  
+}  
+void display(){System.out.println(rollno+" "+name+" "+fee);}  
+}  
+  
+class TestThis2{  
+public static void main(String args[]){  
+Student s1=new Student(111,"ankit",5000f);  
+Student s2=new Student(112,"sumit",6000f);  
+s1.display();  
+s2.display();  
+}}  
+111 ankit 5000
+112 sumit 6000
+2) this: to invoke current class method
+
+You may invoke the method of the current class by using the this keyword. If you don't use the this keyword, compiler automatically adds this keyword while invoking the method. Let's see the example
+class A{  
+void m(){System.out.println("hello m");}  
+void n(){  
+System.out.println("hello n");  
+//m();//same as this.m()  
+this.m();  
+}  
+}  
+class TestThis4{  
+public static void main(String args[]){  
+A a=new A();  
+a.n();  
+}}  
+hello n
+hello m
+3) this() : to invoke current class constructor
+
+The this() constructor call can be used to invoke the current class constructor. It is used to reuse the constructor. In other words, it is used for constructor chaining.
+
+Calling default constructor from parameterized constructor:
+
+class A{  
+A(){System.out.println("hello a");}  
+A(int x){  
+this();  
+System.out.println(x);  
+}  
+}  
+class TestThis5{  
+public static void main(String args[]){  
+A a=new A(10);  
+}}  
+hello a
+10
+4) this: to pass as an argument in the method
+
+The this keyword can also be passed as an argument in the method. It is mainly used in the event handling. Let's see the example:
+
+class S2{  
+  void m(S2 obj){  
+  System.out.println("method is invoked");  
+  }  
+  void p(){  
+  m(this);  
+  }  
+  public static void main(String args[]){  
+  S2 s1 = new S2();  
+  s1.p();  
+  }  
+}  
+method is invoked
+5) this: to pass as argument in the constructor call
+
+We can pass the this keyword in the constructor also. It is useful if we have to use one object in multiple classes. Let's see the example:
+
+class B{  
+  A4 obj;  
+  B(A4 obj){  
+    this.obj=obj;  
+  }  
+  void display(){  
+    System.out.println(obj.data);//using data member of A4 class  
+  }  
+}  
+  
+class A4{  
+  int data=10;  
+  A4(){  
+   B b=new B(this);  
+   b.display();  
+  }  
+  public static void main(String args[]){  
+   A4 a=new A4();  
+  }  
+}  
+Output:10
+6) this keyword can be used to return current class instance
+
+We can return this keyword as an statement from the method. In such case, return type of the method must be the class type (non-primitive). Let's see the example:
+
+Syntax of this that can be returned as a statement
+
+return_type method_name(){  
+return this;  
+}  

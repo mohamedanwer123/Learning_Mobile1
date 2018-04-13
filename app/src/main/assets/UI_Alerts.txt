@@ -1,0 +1,28 @@
+Alerts convey important information related to the state of your app or the device, and often request feedback. An alert consists of a title, an optional message, one or more buttons, and optional text fields for gathering input. Aside from these configurable elements, the visual appearance of an alert is static and can’t be customized.
+Minimize alerts. Alerts disrupt the user experience and should only be used in important situations like confirming purchases and destructive actions (such as deletions), or notifying people about problems. The infrequency of alerts helps ensure that people take them seriously. Ensure that each alert offers critical information and useful choices.
+
+Test the appearance of alerts in both orientations. An alert may appear differently in landscape mode and portrait mode. Optimize alert text so it reads well in any orientation without scrolling.
+
+For developer guidance, see UIAlertController.
+
+Alert Titles and Messages
+Write short, descriptive, multiword alert titles. The less text people have to read onscreen, the better. Try to craft a title that avoids adding extra text as a message. Because single-word titles rarely provide useful information, consider asking a question or using short sentences. Whenever possible, keep titles to a single line. Use sentence-style capitalization and appropriate punctuation for complete sentences. Don’t use ending punctuation for sentence fragments.
+
+If you must provide a message, write short, complete sentences. Try to keep messages short enough to fit on one or two lines to prevent scrolling. Use sentence-style capitalization and appropriate punctuation.
+
+Avoid sounding accusatory, judgmental, or insulting. People know that alerts notify them about problems and dangerous situations. As long as you use a friendly tone, it’s better to be negative and direct than positive and oblique. Avoid pronouns such as you, your, me, and my, which are sometimes interpreted as insulting or patronizing.
+
+Avoid explaining the alert buttons. If your alert text and button titles are clear, there should be no need to explain what the buttons do. In rare cases where you must provide guidance, use the word tap, preserve capitalization when referencing buttons, and don’t enclose button titles in quotes.
+
+Alert Buttons
+Generally, use two-button alerts. Two-button alerts provide an easy choice between two alternatives. Single-button alerts inform, but give no control over the situation. Alerts with three or more buttons create complexity and can require scrolling, which is a bad user experience. If you find that you need more than two choices, consider using an action sheet instead. See Action Sheets.
+
+Give alert buttons succinct, logical titles. The best button titles consist of one or two words that describe the result of selecting the button. As with all button titles, use title-style capitalization and no ending punctuation. To the extent possible, use verbs and verb phrases that relate directly to the alert title and message—for example, View All, Reply, or Ignore. Use OK for simple acceptance. Avoid using Yes and No.
+
+Place buttons where people expect them. In general, buttons people are most likely to tap should be on the right. Cancel buttons should always be on the left.
+
+Label cancellation buttons appropriately. A button that cancels an alert’s action should always be labeled Cancel.
+
+Identify destructive buttons. If an alert button results in a destructive action, such as deleting content, set the button’s style to Destructive so that it gets appropriate formatting by the system. For developer guidance, see the UIAlertActionStyleDestructive constant of UIAlertAction. Additionally, provide a Cancel button so people can safely opt out of the destructive action. Make the Cancel button bold by marking it as the default button.
+
+Allow people to cancel alerts by exiting to the Home screen. Accessing the Home screen while an alert is visible exits the app. It should also produce the same effect as tapping the Cancel button—that is, the alert is dismissed without performing any action. If your alert doesn’t have a Cancel button, consider implementing a cancel action in your code that runs when someone exits your app.

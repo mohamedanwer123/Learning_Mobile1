@@ -1,0 +1,185 @@
+The version history of the Android mobile operating system began with the public release of the Android beta in November 5, 2007. The first commercial version, Android 1.0, was released in September 2008. Android is continually developed by Google and the Open Handset Alliance, and it has seen a number of updates to its base operating system since the initial release.
+
+Versions 1.0 and 1.1 were not released under specific code names. Android code names are confectionery-themed and have been in alphabetical order since 2009's Android 1.5 Cupcake, with the most recent major version being Android 8.1 Oreo, released in December 2017.
+
+Code name	Version number	Initial release date	API level	Security patches[1]
+(No codename)[2]	1.0	September 23, 2008	1	Unsupported
+(Internally known as "Petit Four")[2]	1.1	February 9, 2009	2	Unsupported
+Cupcake	1.5	April 27, 2009	3	Unsupported
+Donut[3]	1.6	September 15, 2009	4	Unsupported
+Eclair[4]	2.0 – 2.1	October 26, 2009	5 – 7	Unsupported
+Froyo[5]	2.2 – 2.2.3	May 20, 2010	8	Unsupported
+Gingerbread[6]	2.3 – 2.3.7	December 6, 2010	9 – 10	Unsupported
+Honeycomb[7]	3.0 – 3.2.6	February 22, 2011	11 – 13	Unsupported
+Ice Cream Sandwich[8]	4.0 – 4.0.4	October 18, 2011	14 – 15	Unsupported
+Jelly Bean[9]	4.1 – 4.3.1	July 9, 2012	16 – 18	Unsupported
+KitKat[10]	4.4 – 4.4.4	October 31, 2013	19 – 20	Unsupported[11]
+Lollipop[12]	5.0 – 5.1.1	November 12, 2014	21 – 22	Supported
+Marshmallow[13]	6.0 – 6.0.1	October 5, 2015	23	Supported
+Nougat[14]	7.0 – 7.1.2	August 22, 2016	24 – 25	Supported
+Oreo[15]	8.0 – 8.1	August 21, 2017	26 – 27	Supported
+Legend:Old versionOlder version, still supportedLatest version
+A version of Android KitKat exclusive to Android Wear devices was released on June 25, 2014, with an API level of 20.
+
+Contents  [hide] 
+1	Pre-commercial release versions
+1.1	Alpha
+1.2	Beta
+2	Version history by API level
+2.1	Android 1.0 (API 1)
+2.2	Android 1.1 (API 2)
+2.3	Android 1.5 Cupcake (API 3)
+2.4	Android 1.6 Donut (API 4)
+2.5	Android 2.0 Eclair (API 5)
+2.5.1	Android 2.0.1 Eclair (API 6)
+2.5.2	Android 2.1 Eclair (API 7)
+2.6	Android 2.2 Froyo (API 8)
+2.7	Android 2.3 Gingerbread (API 9)
+2.7.1	Android 2.3.3 Gingerbread (API 10)
+2.8	Android 3.0 Honeycomb (API 11)
+2.8.1	Android 3.1 Honeycomb (API 12)
+2.8.2	Android 3.2 Honeycomb (API 13)
+2.9	Android 4.0 Ice Cream Sandwich (API 14)
+2.9.1	Android 4.0.3 Ice Cream Sandwich (API 15)
+2.10	Android 4.1 Jelly Bean (API 16)
+2.10.1	Android 4.2 Jelly Bean (API 17)
+2.10.2	Android 4.3 Jelly Bean (API 18)
+2.11	Android 4.4 KitKat (API 19)
+2.11.1	Android 4.4W KitKat, with wearable extensions (API 20)
+2.12	Android 5.0 Lollipop (API 21)
+2.12.1	Android 5.1 Lollipop (API 22)
+2.13	Android 6.0 Marshmallow (API 23)
+2.14	Android 7.0 Nougat (API 24)
+2.14.1	Android 7.1 Nougat (API 25)
+2.15	Android 8.0 Oreo (API 26)
+2.15.1	Android 8.1 Oreo (API 27)
+3	Hardware requirements
+4	See also
+5	Notes
+6	References
+7	External links
+Pre-commercial release versions
+The development of Android started in 2003 by Android, Inc., which was purchased by Google in 2005.[16]
+
+Alpha
+There were at least two internal releases of the software inside Google and the OHA before the beta version was released.[17][18] The code names "Astro Boy" and "Bender" were used internally for some pre-1.0 milestones.[2]
+
+Dan Morrill created some of the first mascot logos, but the current Android logo was designed by Irina Blok.[19] The project manager, Ryan Gibson, conceived the confectionery-themed naming scheme that has been used for the majority of the public releases, starting with Android 1.5 Cupcake.
+
+Beta
+The beta was released on November 5, 2007,[20][21] while the software development kit (SDK) was released on November 12, 2007.[22] The November 5 date is popularly celebrated as Android's "birthday".[23] Public beta versions of the SDK were released in the following order:[24]
+
+November 12, 2007: m3-rc20a (milestone 3, release code 20a)[25]
+November 16, 2007: m3-rc22a (milestone 3, release code 22a)[26]
+December 14, 2007: m3-rc37a (milestone 3, release code 37a)[27]
+February 13, 2008: m5-rc14 (milestone 5, release code 14)[28]
+March 3, 2008: m5-rc15 (milestone 5, release code 15)[24]
+August 18, 2008: 0.9 Beta[29][30]
+September 23, 2008: 1.0-r1[31][32]
+Version history by API level
+The following tables show the release dates and key features of all Android operating system updates to date, listed chronologically by their official application programming interface (API) levels.
+
+[hide]
+Android 1.0 (API 1)
+ Android 1.0 (API 1)
+Android 1.0, the first commercial version of the software, was released on September 23, 2008.[33] The first commercially available Android device was the HTC Dream.[34] Android 1.0 incorporated the following features:
+Version	Release date	Features
+1.0	September 23, 2008	
+Android Market allowed application downloads and updates through the Market application
+Web browser to show, zoom and pan full HTML and XHTML web pages – multiple pages show as windows ("cards")[35][36]
+Camera support – however, this version lacked the option to change the camera's resolution, white balance, quality, etc.[37]
+Folders allowing the grouping of a number of application icons into a single folder icon on the Home screen[38]
+Access to web email servers, supporting POP3, IMAP4, and SMTP[36]
+Gmail synchronization with the Gmail application
+Google Contacts synchronization with the People application
+Google Calendar synchronization with the Calendar application
+Google Maps with Street View to view maps and satellite imagery, as well as find local business and obtain driving directions using GPS[37]
+Google Sync, allowing management of over-the-air synchronization of Gmail, People, and Calendar
+Google Search, allowing users to search the Internet and phone applications, contacts, calendar, etc.
+Google Talk instant messaging
+Instant messaging, text messaging, and MMS
+Media Player, enabling management, importing, and playback of media files – however, this version lacked video and stereo Bluetooth support[36][37]
+Notifications appear in the Status bar, with options to set ringtone, LED or vibration alerts[35][36][39]
+Voice Dialer allows dialing and placing of phone calls without typing a name or number[36]
+Wallpaper allows the user to set the background image or photo behind the Home screen icons and widgets
+YouTube video player[40]
+Other applications include: Alarm Clock, Calculator, Dialer (Phone), Home screen (Launcher), Pictures (Gallery), and Settings
+Wi-Fi and Bluetooth support
+
+[hide]
+Android 1.1 (API 2)
+ Android 1.1 (API 2)
+On February 9, 2009, the Android 1.1 update was released, initially for the HTC Dream only. Android 1.1 was known as "Petit Four" internally, though this name was not used officially.[2][41] The update resolved bugs, changed the Android API and added a number of features:[42]
+Version	Release date	Features
+1.1	February 9, 2009	
+Details and reviews available when a user searches for businesses on Maps
+Longer in-call screen timeout default when using the speakerphone, plus ability to show/hide dialpad
+Ability to save attachments in messages
+Support added for marquee in system layouts
+
+[hide]
+Android 1.5 Cupcake (API 3)
+ Android 1.5 Cupcake (API 3)
+On April 27, 2009, the Android 1.5 update was released, based on Linux kernel 2.6.27.[43][44] This was the first release to officially use a codename based on a dessert item ("Cupcake"), a theme which would be used for all releases henceforth. The update included several new features and UI amendments:[45]
+Version	Release date	Features	Image(s)
+1.5	April 27, 2009[43]	
+Support for third-party virtual keyboards with text prediction and user dictionary for custom words
+Support for Widgets – miniature application views that can be embedded in other applications (such as the Home screen) and receive periodic updates[46]
+Video recording and playback in MPEG-4 and 3GP formats
+Auto-pairing and stereo support for Bluetooth (A2DP and AVRCP profiles)
+Copy and paste features in web browser
+User pictures shown for Favorites in Contacts
+Specific date/time stamp shown for events in call log, and one-touch access to a contact card from call log event
+Animated screen transitions
+Auto-rotation option
+New stock boot animation
+Ability to upload videos to YouTube
+Ability to upload photos to Picasa
+Android Cupcake home screen.jpg
+Android 1.5 home screen
+[hide]
+Android 1.6 Donut (API 4)
+ Android 1.6 Donut (API 4)
+On September 15, 2009, Android 1.6 – dubbed Donut – was released, based on Linux kernel 2.6.29.[47][48][49] Included in the update were numerous new features:[47]
+Version	Release date	Features	Image(s)
+1.6	September 15, 2009[48]	
+Voice and text entry search enhanced to include bookmark history, contacts, and the web
+Ability for developers to include their content in search results
+Multi-lingual speech synthesis engine to allow any Android application to "speak" a string of text
+Easier searching and ability to view app screenshots in Android Market
+Gallery, camera and camcorder more fully integrated, with faster camera access
+Ability for users to select multiple photos for deletion
+Updated technology support for CDMA/EVDO, 802.1x, VPNs, and a text-to-speech engine
+Support for WVGA screen resolutions
+Speed improvements in searching and camera applications
+Expanded Gesture framework and new GestureBuilder development tool
+Android 1.6 on the Android SDK.png
+Android 1.6 home screen
+[hide]
+Android 2.0 Eclair (API 5)
+ Android 2.0 Eclair (API 5)
+On October 26, 2009, the Android 2.0 SDK was released, based on Linux kernel 2.6.29 and codenamed Eclair.[50] Changes include the ones listed below.[51]
+Version	Release date	Features	Image(s)
+2.0	October 26, 2009	
+Expanded Account sync, allowing users to add multiple accounts to a device for synchronization of email and contacts
+Microsoft Exchange email support, with combined inbox to browse email from multiple accounts in one page
+Bluetooth 2.1 support
+Ability to tap a Contacts photo and select to call, SMS, or email the person
+Ability to search all saved SMS and MMS messages, with delete oldest messages in a conversation automatically deleted when a defined limit is reached
+Numerous new camera features, including flash support, digital zoom, scene mode, white balance, color effect and macro focus
+Improved typing speed on virtual keyboard, with smarter dictionary that learns from word usage and includes contact names as suggestions
+Refreshed browser UI with bookmark thumbnails, double-tap zoom and support for HTML5
+Calendar agenda view enhanced, showing attending status for each invitee, and ability to invite new guests to events
+Optimized hardware speed and revamped UI
+Support for more screen sizes and resolutions, with better contrast ratio
+Improved Google Maps 3.1.2
+MotionEvent class enhanced to track multi-touch events[52]
+Addition of live wallpapers, allowing the animation of home-screen background images to show movement
+Android-2.0.png
+Android 2.0 home screen
+[hide]
+Android 2.0.1 Eclair (API 6)
+ Android 2.0.1 Eclair (API 6)
+Version	Release date	Features	Image(s)
+2.0.1	December 3, 2009[53]	
+Minor API changes, bugfixes and framework behavioral changes

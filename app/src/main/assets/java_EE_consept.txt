@@ -1,0 +1,62 @@
+Wanted to go through some of the basic tenets, the technical terminology related to Java EE. For many people, Java EE/J2EE still mean Servlets, JSPs or maybe Struts at best. No offence or pun intended!
+
+This is not a Java EE 'bible' by any means. I am not capable enough of writing such a thing! So let us line up the 'keywords' related to Java EE and then look at them one by one
+
+Java EE
+Java EE APIs (specifications)
+Containers
+Services
+Multitiered applications
+Components
+Let's try to elaborate on the above mentioned points.
+
+Ok. So what is Java EE?
+
+'EE' stands for Enterprise Edition. That essentially makes Java EE - Java Enterprise Edition. If I had to summarize Java EE in a couple of sentences, it would go something like this
+
+"Java EE is a platform which defines 'standard specifications/APIs' which are then implemented by vendors and used for development of enterprise (distributed, 'multi-tired', robust) 'applications'. These applications are composed of  modules or 'components' which use Java EE 'containers' as their run-time infrastructure."
+
+What is this 'standardized platform' based upon? What does it constitute?
+
+The platform revolves around 'standard' specifications or APIs.
+Think of these as contracts defined by a standard body e.g. Enterprise Java Beans (EJB), Java Persistence API (JPA), Java Message Service (JMS) etc.
+These contracts/specifications/APIs are implemented by different vendors e.g. GlassFish, Oracle Weblogic, Apache TomEE etc
+Alright. What about Containers?
+
+Containers can be visualized as 'virtual/logical partitions'.
+Each container supports a subset of the APIs/specifications defined by the Java EE platform
+They provide run-time 'services' to the 'applications' which they host
+The Java EE specification lists 4 types of containers
+
+EJB Container
+Web Container
+Application Client Container
+Applet Container
+Services??
+
+Well, 'services' are nothing but a result of the vendor implementations of the standard 'specifications' (mentioned above). Examples of specifications are - Jersey for JAX-RS (RESTFul Services), Tyrus (Web Sockets), EclipseLink (JPA), Weld (CDI) etc.
+The 'container' is the interface between the deployed application ('service' consumer) and the application server.
+Here is a list of 'services' which are rendered by the 'container' to the underlying 'components' (this is not an exhaustive list)
+
+Persistence - Offered by the Java Persistence API (JPA) which drives Object Relational Mapping (ORM) and an abstraction for the Database operations.
+Messaging - The Java Message Service (JMS) provides asynchronous messaging between disparate parts of your applications.
+Contexts & Dependency Injection - CDI provides loosely coupled and type safe injection of resources.
+Web Services - JAXRS and JAXWS provide support for REST and SOAP style services respectively
+Transaction -  Provided by the Java Transaction API (JTA) implementation
+What is a typical Java EE 'application'? What does it comprise of?
+
+Applications are composed of different 'components' which in turn are supported by their corresponding 'container'
+
+Supported 'component' types are:
+
+Enterprise Applications - make use of the specifications like EJB, JMS, JPA etc and are executed within an EJB container
+Web Applications - they leverage the Servlet API, JSP, JSF etc and are supported by a Web Container
+Application Client - Executed in client side. They need an Application Client Container which has a set of supported libraries and executes in a Java SE environment.
+Applets - These are GUI applications which execute in a web browser.
+How are Java EE applications structured?
+
+As far as Java EE 'application' architecture is concerned, they generally tend follow the n-tier model consisting of client tier, server tier and of course the database (back end) tier
+
+Client Tier - Consists of web browsers or GUI (Swing, Java FX) based clients. Web browsers tend to talk to the 'web components' on the Server Tier while the GUI clients interact directly with the 'business' layer within the Server Tier
+Server Tier - This tier comprises of the dynamic web components (JSP, JSF, Servlets) and the business layer driven by EJBs, JMS, JPA, JTA specifications.
+Database Tier - Contains 'Enterprise Information Systems' backed by databases or even legacy data repositories.

@@ -1,0 +1,169 @@
+Strings in Swift 4 are an ordered collection of characters, such as "Hello, World!" and they are represented by the Swift 4 data type String, which in turn represents a collection of values of Character type.
+
+Create a String
+You can create a String either by using a string literal or creating an instance of a String class as follows -
+
+ Live Demo
+// String creation using String literal
+var stringA = "Hello, Swift 4!"
+print( stringA )
+
+// String creation using String instance
+var stringB = String("Hello, Swift 4!")
+print( stringB )
+
+//Multiple line string
+
+let stringC = """
+Hey this is a
+example of multiple Line
+string by tutorialsPoint 
+
+"""
+print(stringC)
+When the above code is compiled and executed, it produces the following result
+
+Hello, Swift 4!
+Hello, Swift 4!
+Hey this is a
+example of multiple Line
+string by tutorialsPoint
+Empty String
+You can create an empty String either by using an empty string literal or creating an instance of String class as shown below. You can also check whether a string is empty or not using the Boolean property isEmpty.
+
+ Live Demo
+// Empty string creation using String literal
+var stringA = ""
+
+if stringA.isEmpty {
+   print( "stringA is empty" )
+} else {
+   print( "stringA is not empty" )
+}
+
+// Empty string creation using String instance
+let stringB = String()
+
+if stringB.isEmpty {
+   print( "stringB is empty" )
+} else {
+   print( "stringB is not empty" )
+}
+When the above code is compiled and executed, it produces the following result -
+
+stringA is empty
+stringB is empty
+String Constants
+You can specify whether your String can be modified (or mutated) by assigning it to a variable, or it will be constant by assigning it to a constant using let keyword as shown below -
+
+// stringA can be modified
+var stringA = "Hello, Swift 4!"
+stringA + = "--Readers--"
+print( stringA )
+
+// stringB can not be modified
+let stringB = String("Hello, Swift 4!")
+stringB + = "--Readers--"
+print( stringB )
+When the above code is compiled and executed, it produces the following result -
+
+Playground execution failed: error: <EXPR>:10:1: error: 'String' is not
+convertible to '@lvalue UInt8'
+stringB + = "--Readers--"
+String Interpolation
+String interpolation is a way to construct a new String value from a mix of constants, variables, literals, and expressions by including their values inside a string literal.
+
+Each item (variable or constant) that you insert into the string literal is wrapped in a pair of parentheses, prefixed by a backslash. Here is a simple example -
+
+ Live Demo
+var varA = 20
+let constA = 100
+var varC:Float = 20.0
+
+var stringA = "\(varA) times \(constA) is equal to \(varC * 100)"
+print( stringA )
+When the above code is compiled and executed, it produces the following result -
+
+20 times 100 is equal to 2000.0
+String Concatenation
+You can use the + operator to concatenate two strings or a string and a character, or two characters. Here is a simple example -
+
+ Live Demo
+let constA = "Hello,"
+let constB = "World!"
+
+var stringA = constA + constB
+print( stringA )
+When the above code is compiled and executed, it produces the following result -
+
+Hello,World!
+String Length
+Swift 4 strings do not have a length property, but you can use the global count() function to count the number of characters in a string. Here is a simple example -
+
+ Live Demo
+var varA = "Hello, Swift 4!"
+
+print( "\(varA), length is \((varA.count))" )
+When the above code is compiled and executed, it produces the following result -
+
+Hello, Swift 4!, length is 15
+String Comparison
+You can use the == operator to compare two strings variables or constants. Here is a simple example -
+
+ Live Demo
+var varA = "Hello, Swift 4!"
+var varB = "Hello, World!"
+
+if varA == varB {
+   print( "\(varA) and \(varB) are equal" )
+} else {
+   print( "\(varA) and \(varB) are not equal" )
+}
+When the above code is compiled and executed, it produces the following result -
+
+Hello, Swift 4! and Hello, World! are not equal
+String Iterating
+Strings are again a collection of values in swift 4, so we can iterate over string using loops. -
+
+ Live Demo
+for chars in "ThisString" {
+   print(chars, terminator: " ")
+}
+When the above code is compiled and executed, it produces the following result -
+
+T h i s S t r i n g
+Unicode Strings
+You can access a UTF-8 and UTF-16 representation of a String by iterating over its utf8 and utf16 properties as demonstrated in the following example -
+
+ Live Demo
+var unicodeString = "Dog???"
+
+print("UTF-8 Codes: ")
+for code in unicodeString.utf8 {
+   print("\(code) ")
+}
+
+print("\n")
+
+print("UTF-16 Codes: ")
+for code in unicodeString.utf16 {
+   print("\(code) ")
+}
+When the above code is compiled and executed, it produces the following result -
+
+UTF-8 Codes: 
+68 
+111 
+103 
+63 
+63 
+63 
+
+
+UTF-16 Codes: 
+68 
+111 
+103 
+63 
+63 
+63 

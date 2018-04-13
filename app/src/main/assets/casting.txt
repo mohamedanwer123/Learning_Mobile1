@@ -1,0 +1,58 @@
+Casting in Java
+by TREVOR PAGE on SEPTEMBER 7, 2012
+Today we have a quick Java tutorial about casting variables. This topic isn’t very interesting, but it’s definitely something that you should be familiar with if you want to be a programmer (in any language).
+
+What is Casting in Java?
+Well, all casting really means is taking an Object of one particular type and “turning it into” another Object type. This process is called casting a variable.
+
+This topic is not specific to Java, as many other programming languages support casting of their variable types. But, as with other languages, in Java you cannot cast any variable to any random type.
+
+What are the Rules behind Casting Variables?
+It’s fairly simple, you remember our talk about how everything in Java is an Object, and any Object you create extends from Object? This was inheritance, and this is important to understand when dealing with casting.
+
+If you are going to cast a variable, you’re most likely doing what’s known as a downcast. This means that you’re taking the Object and casting it into a more “specific” type of Object. Here’s an example:
+
+Object aSentenceObject = "This is just a regular sentence";
+String aSentenceString = (String)aSentenceObject;
+You see what we’ve done here? Since the type Object is a very broad type for a variable, we are “downcasting” the variable to be a String type. Now, the question is, is this legal? Well, you can see that the value stored in the aSentenceObject is just a plain old String, so this cast is perfectly legal. Let’s look at the reverse scenario, an “upcast”:
+
+String aSentenceString = "This is just another regular sentence";
+Object aSentenceObject = (Object)aSentenceString;
+Here we are taking a variable with a more specific type (String) and casting it to a variable type that’s more generic (Object). This is also legal, and really, it is always legal to upcast.
+
+What are the benefits of casting variables?
+There are times when you want to get more specific functionality out of a generic Object. For example, in my line of work, I deal with web applications, and I’m always dealing with something called a “model”. This “model” represents data that I want to display on a webpage, and the model is essentially a generic Map. The Map stores key/value pairs, where the key is a String and the value is usually just the generic Object type. So, an example of what would appear in this model would be:
+
+“name” -> “Trevor Page”
+“email” -> “tpage@ecosim.ca”
+“birthday” -> “07-01-83”
+
+Here’s what that Map would look like in code:
+
+Map&lt;String, Object&gt; model = new HashMap&lt;String, Object&gt;();
+This Map is a candidate for casting, and here’s how we would deal with the casting:
+
+// get the individual date units (Year / Month / Day) from the model
+// Note: we cast the value to a String and wrap it with additional brackets
+// in order to get access to the built-in String methods (i.e. split())
+String[] dateUnits = ((String)model.get("birthday")).split("-");
+ 
+Integer year = Integer.valueOf(dateUnits[0]);
+Integer month = Integer.valueOf(dateUnits[1])-1; // note that we subtract 1 here because Java wants a zero based index value for the month unit
+Integer day = Integer.valueOf(dateUnits[2]);
+ 
+String name = (String)model.get("name");
+String email = (String)model.get("email");
+Calendar cal = Calendar.getInstance();
+cal.set(year, month, day);
+Date birthday = cal.getTime();
+You see how we did three separate casts there? Since all the objects stored in the map are of type Object, this means that they are very generic and could most likely be downcasted. Since we know that the “name” is a String, and the “email” is a String, and the “birthday” is a Date, we can do these three downcasts safely.
+
+This would then give us more flexibility with those three variables, because now we have an actual birthday Date object, so we have access to methods like getTime() instead of just the default Object methods.
+
+This is quite a valuable approach to storing Objects in a Map, because if we had created the Map with something more specific than Object as the value, then we would be constrained to only storing Objects of that specific type (and its sub-classes).
+
+What are the downsides to Casting?
+Well, there is a certain amount of risk that goes along with downcasting your variables. If you were to try to cast something like a Date object to an Integer object, then you’ll get a ClassCastException. This is what’s known as a run-time exception, as it’s really only detectable when your code is running. So, unless you’re doing something with error handling, then your program will likely exit or you’ll get an ugly error message on your webpage.
+
+So just make sure that if you are doing any downcasting, that you’re well aware of the type of object you’ll be casting.

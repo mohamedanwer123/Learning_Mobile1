@@ -1,0 +1,12 @@
+A storyboard is a visual representation of the user interface of an iOS application, showing screens of content and the connections between those screens. A storyboard is composed of a sequence of scenes, each of which represents a view controller and its views; scenes are connected by segue objects, which represent a transition between two view controllers.
+
+Xcode provides a visual editor for storyboards, where you can lay out and design the user interface of your application by adding views such as buttons, table views, and text views onto scenes. In addition, a storyboard enables you to connect a view to its controller object, and to manage the transfer of data between view controllers. Using storyboards is the recommended way to design the user interface of your application because they enable you to visualize the appearance and flow of your user interface on one canvas.
+A Scene Corresponds to a Single View Controller and Its Views
+On iPhone, each scene corresponds to a full screen’s worth of content; on iPad, multiple scenes can appear on screen at once—for example, using popover view controllers. Each scene has a dock, which displays icons representing the top-level objects of the scene. The dock is used primarily to make action and outlet connections between the view controller and its views.
+
+As with all objects loaded from a story board, to finish initializing a view controller loaded from a storyboard you override awakeFromNib.
+
+A Segue Manages the Transition Between Two Scenes
+You can set the type of transition (for example, modal or push) on a segue. Additionally, you can subclass a segue object to implement a custom transition.
+
+You can pass data between scenes with the method prepareForSegue:sender:, which is invoked on the view controller when a segue is triggered. This method allows you to customize the setup of the next view controller before it appears on the screen. Transitions usually occur as the result of some event, such as a button being tapped, but you can programmatically force a transition by calling performSegueWithIdentifier:sender: on the view controller.

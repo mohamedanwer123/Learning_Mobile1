@@ -1,0 +1,387 @@
+Android Web Service Tutorial
+
+Creating web service application in android is not a difficult task. We can easily create a restful web service application in android to authenticate or save information into the external database such as oracle, mysql, postgre sql, sql server using other application developed in java, .net, php etc languages. That is what we are going to do.
+
+Android Restful Web Service Tutorial
+
+Before developing web services application, you must have basic knowledge of SOAP and Restful web services. That is why, we are going to discuss basic points about web services such as what is web service and brief information about SOAP and Restful web services.
+
+What is Web Service?
+
+A web service is a standard for exchanging information between different types of applications irrespective of language and platform. For example, an android application can interact with java or .net application using web services.
+
+Android Restful Web Service Example
+
+File: activity_main.xml
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    xmlns:tools="http://schemas.android.com/tools"  
+    android:layout_width="match_parent"  
+    android:layout_height="match_parent"  
+    android:paddingBottom="@dimen/activity_vertical_margin"  
+    android:paddingLeft="@dimen/activity_horizontal_margin"  
+    android:paddingRight="@dimen/activity_horizontal_margin"  
+    android:paddingTop="@dimen/activity_vertical_margin"  
+    tools:context=".MainActivity" >  
+  
+    <EditText  
+        android:id="@+id/editText1"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignParentTop="true"  
+        android:layout_centerHorizontal="true"  
+        android:hint="Username"  
+        android:ems="10" >  
+  
+        <requestFocus />  
+    </EditText>  
+  
+    <EditText  
+        android:id="@+id/editText2"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignLeft="@+id/editText1"  
+        android:layout_below="@+id/editText1"  
+        android:layout_marginTop="67dp"  
+        android:ems="10"  
+        android:hint="Password"  
+        android:inputType="textPassword" />  
+  
+    <Button  
+        android:id="@+id/button2"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignParentBottom="true"  
+        android:layout_marginBottom="24dp"  
+        android:layout_toRightOf="@+id/button1"  
+        android:text="New User" />  
+  
+    <ProgressBar  
+        android:id="@+id/progressBar1"  
+        style="?android:attr/progressBarStyleLarge"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignLeft="@+id/button1"  
+        android:layout_below="@+id/editText2"  
+        android:layout_marginTop="22dp" />  
+  
+    <Button  
+        android:id="@+id/button1"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignLeft="@+id/editText2"  
+        android:layout_below="@+id/progressBar1"  
+        android:layout_marginLeft="22dp"  
+        android:text="Login" />  
+  
+</RelativeLayout>  
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:layout_width="fill_parent"  
+    android:layout_height="fill_parent" >  
+  
+    <EditText  
+        android:id="@+id/editText1"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignParentTop="true"  
+        android:layout_centerHorizontal="true"  
+        android:layout_marginTop="15dp"  
+        android:ems="10"  
+        android:hint="Enter UserName" />  
+  
+    <EditText  
+        android:id="@+id/editText2"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignLeft="@+id/editText1"  
+        android:layout_below="@+id/editText1"  
+        android:layout_marginTop="50dp"  
+        android:ems="10"  
+        android:hint="Enter Password"  
+        android:inputType="textPassword" />  
+  
+    <Button  
+        android:id="@+id/button1"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignParentBottom="true"  
+        android:layout_centerHorizontal="true"  
+        android:text="Resister" />  
+  
+    <ProgressBar  
+        android:id="@+id/progressBar1"  
+        style="?android:attr/progressBarStyleLarge"  
+        android:layout_width="wrap_content"  
+        android:layout_height="wrap_content"  
+        android:layout_alignLeft="@+id/button1"  
+        android:layout_below="@+id/editText2"  
+        android:layout_marginTop="87dp" />  
+  
+</RelativeLayout>  
+MainActivity class
+
+File: MainActivity.java
+package com.example.newrestapi;  
+  
+import java.io.BufferedReader;  
+import java.io.InputStream;  
+import java.io.InputStreamReader;  
+import java.util.ArrayList;  
+import java.util.List;  
+import org.apache.http.HttpEntity;  
+import org.apache.http.HttpResponse;  
+import org.apache.http.NameValuePair;  
+import org.apache.http.client.HttpClient;  
+import org.apache.http.client.entity.UrlEncodedFormEntity;  
+import org.apache.http.client.methods.HttpPost;  
+import org.apache.http.impl.client.DefaultHttpClient;  
+import org.apache.http.message.BasicNameValuePair;  
+import android.os.AsyncTask;  
+import android.os.Bundle;  
+import android.app.Activity;  
+import android.content.Intent;  
+import android.view.View;  
+import android.view.View.OnClickListener;  
+import android.widget.Button;  
+import android.widget.EditText;  
+import android.widget.ProgressBar;  
+import android.widget.Toast;  
+  
+public class MainActivity extends Activity {  
+    EditText password,userName;  
+    Button login,resister;  
+    ProgressBar progressBar;  
+      
+      
+         
+    protected void onCreate(Bundle savedInstanceState) {  
+        super.onCreate(savedInstanceState);  
+        setContentView(R.layout.activity_main);  
+        password=(EditText) findViewById(R.id.editText2);  
+        userName=(EditText) findViewById(R.id.editText1);  
+        login=(Button) findViewById(R.id.button1);  
+        resister=(Button) findViewById(R.id.button2);  
+          
+        //progess_msz.setVisibility(View.GONE);  
+        progressBar=(ProgressBar) findViewById(R.id.progressBar1);  
+        progressBar.setVisibility(View.GONE);  
+          
+          
+        resister.setOnClickListener(new OnClickListener() {  
+              
+            @Override  
+            public void onClick(View arg0) {  
+                // TODO Auto-generated method stub  
+                Intent  intent=new Intent(MainActivity.this,ResisterUser.class);  
+                startActivity(intent);  
+            }  
+        });  
+        login.setOnClickListener(new OnClickListener() {  
+          
+            public void onClick(View v) {  
+                progressBar.setVisibility(View.VISIBLE);  
+                  
+                String s1=userName.getText().toString();  
+                String s2=password.getText().toString();  
+                new ExecuteTask().execute(s1,s2);  
+                  
+            }  
+        });  
+          
+  
+    }  
+      
+     class ExecuteTask extends AsyncTask<String, Integer, String>  
+        {  
+  
+            @Override  
+            protected String doInBackground(String... params) {  
+                  
+                String res=PostData(params);  
+                  
+                return res;  
+            }  
+              
+            @Override  
+            protected void onPostExecute(String result) {  
+            progressBar.setVisibility(View.GONE);  
+            //progess_msz.setVisibility(View.GONE);  
+            Toast.makeText(getApplicationContext(), result, 3000).show();  
+            }  
+              
+        }  
+      
+    public String PostData(String[] valuse) {  
+        String s="";  
+        try  
+        {  
+        HttpClient httpClient=new DefaultHttpClient();  
+        HttpPost httpPost=new HttpPost("http://10.0.0.8:7777/HttpPostServlet/servlet/Login");  
+          
+        List<NameValuePair> list=new ArrayList<NameValuePair>();  
+        list.add(new BasicNameValuePair("name", valuse[0]));  
+        list.add(new BasicNameValuePair("pass",valuse[1]));  
+        httpPost.setEntity(new UrlEncodedFormEntity(list));  
+        HttpResponse httpResponse=  httpClient.execute(httpPost);  
+      
+        HttpEntity httpEntity=httpResponse.getEntity();  
+        s= readResponse(httpResponse);  
+    
+        }  
+        catch(Exception exception)  {}  
+        return s;  
+      
+          
+    }  
+    public String readResponse(HttpResponse res) {  
+        InputStream is=null;   
+        String return_text="";  
+        try {  
+            is=res.getEntity().getContent();  
+            BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(is));  
+            String line="";  
+            StringBuffer sb=new StringBuffer();  
+            while ((line=bufferedReader.readLine())!=null)  
+            {  
+            sb.append(line);  
+            }  
+            return_text=sb.toString();  
+        } catch (Exception e)  
+        {  
+              
+        }  
+        return return_text;  
+          
+    }  
+      
+}  
+RegisterUser class
+
+File: RegisterUser.java
+package com.example.newrestapi;  
+  
+import java.util.ArrayList;  
+import java.util.List;  
+import org.apache.http.NameValuePair;  
+import org.apache.http.client.HttpClient;  
+import org.apache.http.client.entity.UrlEncodedFormEntity;  
+import org.apache.http.client.methods.HttpPost;  
+import org.apache.http.impl.client.DefaultHttpClient;  
+import org.apache.http.message.BasicNameValuePair;  
+import android.os.AsyncTask;  
+import android.os.Bundle;  
+import android.app.Activity;  
+import android.view.View;  
+import android.view.View.OnClickListener;  
+import android.widget.Button;  
+import android.widget.EditText;  
+import android.widget.ProgressBar;  
+  
+public class ResisterUser extends Activity {  
+     EditText userName,passwprd;  
+       Button resister,login;  
+       ProgressBar progressBar;  
+        protected void onCreate(Bundle savedInstanceState) {  
+            super.onCreate(savedInstanceState);  
+            setContentView(R.layout.activity_resister_user);  
+            userName=(EditText) findViewById(R.id.editText1);;  
+            passwprd=(EditText) findViewById(R.id.editText2);  
+            resister=(Button) findViewById(R.id.button1);  
+              
+            progressBar=(ProgressBar) findViewById(R.id.progressBar1);  
+            progressBar.setVisibility(View.GONE);  
+              
+            resister.setOnClickListener(new OnClickListener() {  
+                  
+                @Override  
+                public void onClick(View v) {  
+                      
+                    progressBar.setVisibility(View.VISIBLE);  
+                      
+                    String s1=userName.getText().toString();  
+                    String s2=passwprd.getText().toString();  
+                    new ExecuteTask().execute(s1,s2);  
+                }  
+            });  
+              
+             
+              
+              
+        }  
+          
+        class ExecuteTask extends AsyncTask<String, Integer, String>  
+        {  
+  
+            @Override  
+            protected String doInBackground(String... params) {  
+                  
+                PostData(params);  
+                return null;  
+            }  
+              
+            @Override  
+            protected void onPostExecute(String result) {  
+            progressBar.setVisibility(View.GONE);  
+            }  
+              
+        }  
+          
+         
+          
+        public void PostData(String[] valuse) {  
+            try  
+            {  
+            HttpClient httpClient=new DefaultHttpClient();  
+            HttpPost httpPost=new HttpPost(  
+                                  "http://10.0.0.8:7777/HttpPostServlet/servlet/httpPostServlet");  
+            List<NameValuePair> list=new ArrayList<NameValuePair>();  
+            list.add(new BasicNameValuePair("name", valuse[0]));  
+            list.add(new BasicNameValuePair("pass",valuse[1]));  
+            httpPost.setEntity(new UrlEncodedFormEntity(list));  
+            httpClient.execute(httpPost);  
+            }  
+            catch(Exception e)  
+            {  
+                System.out.println(e);  
+            }  
+              
+        }  
+         
+        }  
+File: AndroidManifest.xml
+You need to provide INTERNET permission in AndroidManifest.xml file.
+
+<?xml version="1.0" encoding="utf-8"?>  
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"  
+    package="com.example.newrestapi"  
+    android:versionCode="1"  
+    android:versionName="1.0" >  
+  
+    <uses-sdk  
+        android:minSdkVersion="8"  
+        android:targetSdkVersion="17" />  
+  
+    <uses-permission android:name="android.permission.INTERNET" />  
+  
+    <application  
+        android:allowBackup="true"  
+        android:icon="@drawable/ic_launcher"  
+        android:label="@string/app_name"  
+        android:theme="@style/AppTheme" >  
+        <activity  
+            android:name="com.example.newrestapi.MainActivity"  
+            android:label="@string/app_name" >  
+            <intent-filter>  
+                <action android:name="android.intent.action.MAIN" />  
+  
+                <category android:name="android.intent.category.LAUNCHER" />  
+            </intent-filter>  
+        </activity>  
+        <activity  
+            android:name="com.example.newrestapi.ResisterUser"  
+            android:label="@string/title_activity_resister_user" >  
+        </activity>  
+    </application>  
+  
+</manifest>  

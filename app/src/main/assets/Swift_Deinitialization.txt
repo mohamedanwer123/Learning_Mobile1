@@ -1,0 +1,42 @@
+Before a class instance needs to be deallocated 'deinitializer' has to be called to deallocate the memory space. The keyword 'deinit' is used to deallocate the memory spaces occupied by the system resources. Deinitialization is available only on class types.
+
+Deinitialization to Deallocate Memory Space
+Swift 4 automatically deallocates your instances when they are no longer needed, to free up resources. Swift 4 handles the memory management of instances through automatic reference counting (ARC), as described in Automatic Reference Counting. Typically you don't need to perform manual clean-up when your instances are deallocated. However, when you are working with your own resources, you might need to perform some additional clean-up yourself. For example, if you create a custom class to open a file and write some data to it, you might need to close the file before the class instance is deallocated.
+
+var counter = 0; // for reference counting
+class baseclass {
+   init() {
+      counter++;
+   }
+   deinit {
+      counter--;
+   }
+}
+var print: baseclass? = baseclass()
+
+print(counter)
+print = nil
+print(counter)
+When we run the above program using playground, we get the following result -
+
+1
+0
+When print = nil statement is omitted the values of the counter retains the same since it is not deinitialized.
+
+var counter = 0; // for reference counting
+
+class baseclass {
+   init() {
+      counter++;
+   }
+   deinit {
+      counter--;
+   }
+}
+var print: baseclass? = baseclass()
+print(counter)
+print(counter)
+When we run the above program using playground, we get the following result -
+
+1
+1

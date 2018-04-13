@@ -1,0 +1,35 @@
+When you tap a button, or select a button that has focus, the button performs any actions attached to it. You communicate the purpose of a button using a text label, an image, or both. The appearance of buttons is configurable, so you can tint buttons or format titles to match the design of your app. You can add buttons to your interface programmatically or using Interface Builder.
+
+When adding a button to your interface, perform the following steps:
+Set the type of the button at creation time.
+Supply a title string or image; size the button appropriately for your content.
+Connect one or more action methods to the button.
+Set up Auto Layout rules to govern the size and position of the button in your interface.
+Provide accessibility information and localized strings.
+Responding to Button Taps
+Buttons use the Target-Action design pattern to notify your app when the user taps the button. Rather than handle touch events directly, you assign action methods to the button and designate which events trigger calls to your methods. At runtime, the button handles all incoming touch events and calls your methods in response.
+You connect a button to your action method using the addTarget(_:action:for:) method or by creating a connection in Interface Builder. The signature of an action method takes one of three forms, which are listed in Listing 1. Choose the form that provides the information that you need to respond to the button tap.
+Listing 1 
+Action methods for buttons
+@IBAction func doSomething()
+@IBAction func doSomething(sender: UIButton)
+@IBAction func doSomething(sender: UIButton, forEvent event: UIEvent)
+Configuring a Button’s Appearance
+A button’s type defines its basic appearance and behavior. You specify the type of a button at creation time using the init(type:) method or in your storyboard file. After creating a button, you cannot change its type. The most commonly used button types are the Custom and System types, but use the other types when appropriate.
+Note
+To configure the appearance of all buttons in your app, use the appearance proxy object. The UIButton class implements the appearance() class method, which you can use to fetch the appearance proxy for all buttons in your app.
+Button States
+Buttons have five states that define their appearance: default, highlighted, focused, selected, and disabled. When you add a button to your interface, it is in the default state initially, which means the button is enabled and the user is not interacting with it. As the user interacts with the button, its state changes to the other values. For example, when the user taps a button with a title, the button moves to the highlighted state.
+When configuring a button either programmatically or in Interface Builder, you specify attributes for each state separately. In Interface Builder, use the State Config control in the Attributes inspector to choose the appropriate state and then configure the other attributes. If you do not specify attributes for a particular state, the UIButton class provides a reasonable default behavior. For example, a disabled button is normally dimmed and does not display a highlight when tapped. Other properties of this class, such as the adjustsImageWhenHighlighted and adjustsImageWhenDisabled properties, let you alter the default behavior in specific cases.
+Content
+The content of a button consists of a title string or image that you specify. The content you specify is used to configure the UILabel and UIImageView object managed by the button itself. You can access these objects using the titleLabel or imageView properties and modify their values directly. The methods of this class also provide a convenient shortcut for configuring the appearance of your string or image.
+Normally, you configure a button using either a title or an image and size the button accordingly. Buttons can also have a background image, which is positioned behind the content you specify. It is possible to specify both an image and a title for buttons, which results in the appearance shown in Figure 2. You can access the current content of a button using the indicated properties.
+Figure 2 
+Providing a title and image for a button
+
+When setting the content of a button, you must specify the title, image, and appearance attributes for each state separately. If you do not customize the content for a particular state, the button uses the values associated with the Default state and adds any appropriate customizations. For example, in the highlighted state, an image-based button draws a highlight on top of the default image if no custom image is provided.
+Tint Color
+You can specify a custom button tint using the tintColor property. This property sets the color of the button image and text. If you do not explicitly set a tint color, the button uses its superview’s tint color.
+Edge Insets
+Use insets to add or remove space around the content in your custom or system buttons. You can specify separate insets for your button’s title (titleEdgeInsets), image (imageEdgeInsets), and both the title and image together (contentEdgeInsets). When applied, insets affect the corresponding content rectangle of the button, which is used by the Auto Layout engine to determine the button’s position.
+There should be no reason for you to adjust the edge insets for info, contact, or disclosure buttons.

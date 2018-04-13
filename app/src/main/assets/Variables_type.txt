@@ -1,0 +1,114 @@
+Definition:
+A variable provides us with named storage that our programs can manipulate. Each variable in Java has a specific type, which determines the size and layout of the variable's memory; the range of values that can be stored within that memory; and the set of operations that can be applied to the variable.
+Basic form of a variable declaration :
+data type variable [ = value][, variable [ = value] ...] ;
+Example:
+int a, b, c;         // Declares three ints, a, b, and c.
+int a = 10, b = 10;  // Example of initialization
+byte B = 22;         // initializes a byte type variable B.
+double pi = 3.14159; // declares and assigns a value of PI.
+char a = 'a';        // the char variable a iis initialized with value 'a'
+
+variable types available in Java Language:
+ There are three kinds of variables in Java ……
+•	Local variables
+•	Instance variables
+•	Class/Static variables
+
+***Local Variables
+
+•	Local variables are declared in methods, constructors, or blocks.
+•	Local variables are created when the method, constructor or block is entered and the variable will be destroyed once it exits the method, constructor, or block.
+•	Access modifiers cannot be used for local variables.
+
+Example:
+
+public class Test {
+   public void pupAge() {
+      int age = 0;
+      age = age + 7;
+      System.out.println("Puppy age is : " + age);
+   }
+
+   public static void main(String args[]) {
+      Test test = new Test();
+      test.pupAge();
+   }
+}
+Output
+Puppy age is: 7
+
+
+***Instance variables:
+•	Instance variables are declared in a class, but outside a method, constructor or any block.
+•	When a space is allocated for an object in the heap, a slot for each instance variable value is created.
+•	Instance variables are created when an object is created with the use of the keyword 'new' and destroyed when the object is destroyed.
+•	Instance variables hold values that must be referenced by more than one method, constructor or block, or essential parts of an object's state that must be present throughout the class.
+
+
+Example:
+
+import java.io.*;
+public class Employee {
+
+   // this instance variable is visible for any child class.
+   public String name;
+
+   // salary  variable is visible in Employee class only.
+   private double salary;
+
+   // The name variable is assigned in the constructor.
+   public Employee (String empName) {
+      name = empName;
+   }
+
+   // The salary variable is assigned a value.
+   public void setSalary(double empSal) {
+      salary = empSal;
+   }
+
+   // This method prints the employee details.
+   public void printEmp() {
+      System.out.println("name  : " + name );
+      System.out.println("salary :" + salary);
+   }
+
+   public static void main(String args[]) {
+      Employee empOne = new Employee("Ransika");
+      empOne.setSalary(1000);
+      empOne.printEmp();
+   }
+}
+This will produce the following result -
+Output
+name  : Ransika
+salary :1000.0
+
+
+***Class/Static Variables
+
+•	Class variables also known as static variables are declared with the static keyword in a class, but outside a method, constructor or a block.
+•	There would only be one copy of each class variable per class, regardless of how many objects are created from it.
+•	Static variables are rarely used other than being declared as constants. Constants are variables that are declared as public/private, final, and static. Constant variables never change from their initial value.
+•	Static variables are stored in the static memory. It is rare to use static variables other than declared final and used as either public or private constants.
+
+
+Example 
+import java.io.*;
+public class Employee {
+
+   // salary  variable is a private static variable
+   private static double salary;
+
+   // DEPARTMENT is a constant
+   public static final String DEPARTMENT = "Development ";
+
+   public static void main(String args[]) {
+      salary = 1000;
+      System.out.println(DEPARTMENT + "average salary:" + salary);
+   }
+}
+This will produce the following result -
+Output
+Development average salary:1000
+

@@ -1,0 +1,109 @@
+Who Should Read This Document¶
+
+If you are developing apps to access reporting data for ad placements, you should read this document. A prerequisite for working with the Yahoo Gemini Publisher Reporting API is an understanding of HTTP, XML, JSON, and a cursory knowledge of query languages.
+
+Integrating Yahoo’s OAuth Authorization Model¶
+
+Gemini supports the OAuth 2.0 protocol.
+
+Yahoo Gemini APIs use OAuth 2.0 as a simple and secure method for validation and access. The authorization model is open and based on existing standards, which ensures that secure credentials can be provisioned and verified by different software platforms.
+
+As a publisher, OAuth 2.0 provides you with secure access to this reporting data, using your Gemini API application ID and the Yahoo API key to verify your authorized access privileges.
+
+Using OAuth 2.0 with the Gemini Publisher API¶
+
+Once you connect with Gemini OAuth, your app will be able to make API calls on your behalf without requiring additional authorization.
+
+For information on how to set up your OAuth 2.0 client, refer to the the OAuth 2.0 Guide. OAuth 2.0 is an updated version of the OAuth protocol that supersedes OAuth 1.0 and 1.0a.
+
+For detailed information on Yahoo!’s implementation of the OAuth standard, see the documentation OAuth Authorization Model on the Yahoo! Developer Network.
+
+Workflow¶
+
+The Gemini Publisher API workflow is described in this section.
+
+Follow these steps to generate the access token. You’ll use the access token to make Gemini Reporting API calls.
+
+Get the consumer key, secret and refresh token.
+
+You’ll have to request a consumer key and secret from the Publisher team.
+
+To do so, log in to the Gemini publisher UI, click the gear icon in the top right, and select “Apply for a Reporting API Key”.
+
+Once your application is approved, Yahoo will email you with your consumer key and secret key.
+
+Note that the refresh token is optional. Yahoo can generate an access token without having a refresh token.
+
+For easy reference and better understanding of the process, let’s denote the consumer key as <Consumer_Key_From_Step_1> and the secret key as <Secret_Key_From_Step_1> and the refresh token as <Refresh_Token_From_Step_1>.
+
+These notations will be useful, as you follow the remaining steps.
+
+Get the encoded authorization header.
+The Reporting API requires an authorization header that needs to be passed as an HTTP request header. The header should be encoded using Base64 format. This can be obtained by encoding the consumer key and secret.
+
+Go to https://www.base64encode.org/ and enter in following format <Consumer_Key_From_Step_1>:<Secret_Key_From_Step_1>
+Click ENCODE.
+That would give you the encoded string and copy that value.
+
+Let’s say, we call it <Encoded_Auth_Header_From_Step_2>.
+
+For example: Let’s say your consumer key is
+
+dj0yJfafergra21312TN1NkUXNnJmQ9WVdrOWEzSmhXbEJMTjJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD02NA and the secret key is cda2111684674543e6dd214874ac364d21d3239ab, then you would enter the following text in the textbox in https://www.base64encode.org/ dj0yJfafergra21312TN1NkUXNnJmQ9WVdrOWEzSmhXbEJMTjJVbWNHbzlNQS0tJnM9Y29uc3VtZXJzZWNyZXQmeD02NA--:cda2111684674543e6dd214874ac364d21d3239ab and when you click “ENCODE”, it would generate ZGoweUpmYWZlcmdyYTIxMzEyVE4xTmtVWE5uSm1ROVdWZHJPV0V6U21oWGJFSk1UakpWYldOSGJ6bE5RUzB0Sm5NOVkyOXVjM1Z0WlhKelpXTnlaWFFtZUQwMk5BLS0=
+
+Get authorization Code
+
+Use this step only when you have the consumer key and secret key, but not the refresh token.
+
+Log in to Yahoo! using the Id that was used for generating the consumer and secret key.
+Enter the following url into your browser, by replacing <Consumer_Key_From_Step_1>
+https://api.login.yahoo.com/oauth2/request_auth?client_id=<Consumer_Key_From_Step1>&redirect_uri=oob&response_type=code&language=en-us
+
+This will give you an authorization code, which contains alphanumeric characters of length 7 (sometimes it can be vary). Lets call it as <Authorization_Code_From_Step_3>. The example would be something like ‘qne4d2h’
+
+NOTE: Make sure that you log out from other Yahoo accounts on your browser (in case, it’s opened in other tabs) and delete Yahoo! cookies from the cache.
+
+Create grants.txt
+
+This step can be done in two ways depending on what keys you have. If you have only consumer key and secret then use step 4.1 otherwise if you refresh token as well then follow step 4.2.
+
+4.1 Using the consumer and secret keys
+
+Create a file named “grants.txt” (in the directory where you are calling the API),
+Enter the following content in the file and save.
+Replace Authorization_Code_From_Step_3 with the code received in Step 3. grant_type=authorization_code&redirect_uri=oob&code=<Authorization_Code_From_Step_3>
+4.2 Using the refresh token
+
+Create a file named “grants.txt” (in the directory where you are calling the API).
+Enter the following content in the file and save. Replace Authorization_Code_From_Step_3 with the code received in Step 3.
+grant_type=refresh_token&redirect_uri=oob&code=&refresh_token=<Refresh_Token_From_Step_1>.
+
+Generate the access token
+By now, you have all the information to generate the access token. Make curl or use any REST client to call the following API by replacing Encoded_Auth_Header_From_Step_2.
+
+NOTE: Make sure you type the curl command in one line (without any line wrapping/carriage returns).
+
+curl -v -H "Accept: application/json" -H "Content-Type: application/x-www-form-urlencoded"
+-H "Authorization: Basic  Encoded_Auth_Header_From_Step_2" -X POST -d @grants.txt https://api.login.yahoo.com/oauth2/get_token
+This will give you the access token and refresh token in JSON response.
+
+Use http://JsonLint.com to parse the text and grab only “access_token” element value and this will be used in calling Reporting API.
+
+From the response, you can get the refresh_token as well.
+
+The example JSON response would look like this:
+
+{"access_token":"fCB7ww75gzinpC9LIarSZ_MRupRiMlORHDyiYksTpWdHhyv2G5t9Wc_NkcYF6gRUFPQNSLh17edWHER.L4Kk4ahXque39Q8KOc0JDTGhmKbLzLCR.5.nAlxQN7twayvghgPRmFb0IOt.MB3f52WV_7Bx61jBeuuQ3v5Rrk4_WiE.Pihmz8kpnA23N7yHH_EF6fK2iy4fmw1EVZuUz2QxqKTXGNbRjP8wV52Ms5wZUO1jW.5C.Gyor5VsDRra1kDWPOs7VEsiGfrLngGxK2IB1HPMy8J_JQYPiVBQZr0ElUwEuL_FseMdIRNB.TNwhtxDjq._knK9ZPyCV9Rgd7ODaZfrXcFX9CWwHvzobx8Dzls4zDSbLDq2eltY.bCs_9EcsAUGyUUbBuxbvmXKT2_g_KYThltuZ4p1f0uazqGuXDX7G8RA6DwjygrGX.FZZBZviu5sQbNp5acN.qnAXjsqv5Q.AqPIayJ78wPKOf0HmIrP7N0w_5ZNfPglwsAHfDwtQP8i_i01RdREETVxArfnY.j3Kr2amDeHfYzcYy7dlyiHPsbhH8VDa5D362t32Y77HHbjSGgsSWF5yxd.5PiFqFq55mQ9.ph2CRk7sB6gIN1efTzE_d6Lc5lcRANNQvYbpA0di4v6DZPJlBvwBfXn.BBxiGerRfT_ftWkdy6rm8ipxSwWf8d1f5mSdXtpp.bj_DJT9kBXNi6E7y0KZ0KOpKz4sncul4UCFMY3qdQxa7ay4FKfIi1GB.Ynfzgnk1wHZTZJQUpZ3HSAJ_o4PQvOdqWKcRKhfzFxYBeMVrb5_Rab1oP_xkoj6gmgQFmkm64-","expires_in":3600,"token_type":"bearer","refresh_token":"ACCj4FXBkU7rnHa0GOn9rq_4pXKi0bo5D_M_OBhW5yyDrTjRI_2mxb61v6uA","xoauth_yahoo_guid":"2PGYLYAC73G6D4XO5HXJUFJMWA"}
+
+
+These steps are also explained in detail in the Yahoo OAuth 2.0 Guide.
+
+Some common problems you may encounter in Step 5.
+
+The server returns invalid_grant as a JSON response. Solution: Repeat the process from Step 2. Sometimes, authorization codes will expire.
+To generate the <Encoded_Auth_Header_From_Step_2>, ensure that you use the Consumer Key and Secret, not the Yahoo user Id and password.
+Get the Publisher Id from the Partner Manager.
+As a Publisher, you need to know your publisherId, i.e., the unique Id that identifies you as the publisher in Gemini, in order to make a reporting call.
+
+Notes on OAuth refresh tokens¶
+Key points to consider when working with refresh tokens:

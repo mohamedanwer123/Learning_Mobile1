@@ -1,0 +1,500 @@
+Common Intents
+In this document SHOW MORE
+Alarm Clock
+Calendar
+Camera
+Contacts/People App
+Email
+File Storage
+Local Actions
+Maps
+Music or Video
+New Note
+Phone
+Search
+Settings
+Text Messaging
+Web Browser
+Verify Intents with the Android Debug Bridge
+See also
+Intents and Intent Filters
+An intent allows you to start an activity in another app by describing a simple action you'd like to perform (such as "view a map" or "take a picture") in an Intent object. This type of intent is called an implicit intent because it does not specify the app component to start, but instead specifies an action and provides some data with which to perform the action.
+
+When you call startActivity() or startActivityForResult() and pass it an implicit intent, the system resolves the intent to an app that can handle the intent and starts its corresponding Activity. If there's more than one app that can handle the intent, the system presents the user with a dialog to pick which app to use.
+
+This page describes several implicit intents that you can use to perform common actions, organized by the type of app that handles the intent. Each section also shows how you can create an intent filter to advertise your app's ability to perform the same action.
+
+Caution: If there are no apps on the device that can receive the implicit intent, your app will crash when it calls startActivity(). To first verify that an app exists to receive the intent, call resolveActivity() on your Intent object. If the result is non-null, there is at least one app that can handle the intent and it's safe to call startActivity(). If the result is null, you should not use the intent and, if possible, you should disable the feature that invokes the intent.
+
+If you're not familiar with how to create intents or intent filters, you should first read Intents and Intent Filters.
+
+To learn how to fire the intents listed on this page from your development host, see Verify Intents with the Android Debug Bridge.
+
+Google Voice Actions
+Google Voice Actions fires some of the intents listed on this page in response to voice commands. For more information, see Intents fired by Google Voice Actions.
+
+Alarm Clock
+Create an alarm
+ 
+Google Voice Actions
+
+"set an alarm for 7 am"
+To create a new alarm, use the ACTION_SET_ALARM action and specify alarm details such as the time and message using extras defined below.
+
+Note: Only the hour, minutes, and message extras are available in Android 2.3 (API level 9) and higher. The other extras were added in later versions of the platform.
+
+Action
+ACTION_SET_ALARM
+Data URI
+None
+MIME Type
+None
+Extras
+EXTRA_HOUR
+The hour for the alarm.
+EXTRA_MINUTES
+The minutes for the alarm.
+EXTRA_MESSAGE
+A custom message to identify the alarm.
+EXTRA_DAYS
+An ArrayList including each week day on which this alarm should be repeated. Each day must be declared with an integer from the Calendar class such as MONDAY.
+For a one-time alarm, do not specify this extra.
+
+EXTRA_RINGTONE
+A content: URI specifying a ringtone to use with the alarm, or VALUE_RINGTONE_SILENT for no ringtone.
+To use the default ringtone, do not specify this extra.
+
+EXTRA_VIBRATE
+A boolean specifying whether to vibrate for this alarm.
+EXTRA_SKIP_UI
+A boolean specifying whether the responding app should skip its UI when setting the alarm. If true, the app should bypass any confirmation UI and simply set the specified alarm.
+Example intent:
+
+public void createAlarm(String message, int hour, int minutes) {
+    Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+            .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+            .putExtra(AlarmClock.EXTRA_HOUR, hour)
+            .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+    }
+}
+Note:
+In order to invoke the ACTION_SET_ALARM intent, your app must have the SET_ALARM permission:
+
+<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+Example intent filter:
+
+<activity ...>
+    <intent-filter>
+        <action android:name="android.intent.action.SET_ALARM" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+Create a timer
+ 
+Google Voice Actions
+
+"set timer for 5 minutes"
+To create a countdown timer, use the ACTION_SET_TIMER action and specify timer details such as the duration using extras defined below.
+
+Note: This intent was added in Android 4.4 (API level 19).
+
+Action
+ACTION_SET_TIMER
+Data URI
+None
+MIME Type
+None
+Extras
+EXTRA_LENGTH
+The length of the timer in seconds.
+EXTRA_MESSAGE
+A custom message to identify the timer.
+EXTRA_SKIP_UI
+A boolean specifying whether the responding app should skip its UI when setting the timer. If true, the app should bypass any confirmation UI and simply start the specified timer.
+Example intent:
+
+public void startTimer(String message, int seconds) {
+    Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)
+            .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+            .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
+            .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+    }
+}
+Note:
+In order to invoke the ACTION_SET_TIMER intent, your app must have the SET_ALARM permission:
+
+<uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+Example intent filter:
+
+<activity ...>
+    <intent-filter>
+        <action android:name="android.intent.action.SET_TIMER" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+Show all alarms
+To show the list of alarms, use the ACTION_SHOW_ALARMS action.
+
+Although not many apps will invoke this intent (it's primarily used by system apps), any app that behaves as an alarm clock should implement this intent filter and respond by showing the list of current alarms.
+
+Note: This intent was added in Android 4.4 (API level 19).
+
+Action
+ACTION_SHOW_ALARMS
+Data URI
+None
+MIME Type
+None
+Example intent filter:
+
+<activity ...>
+    <intent-filter>
+        <action android:name="android.intent.action.SHOW_ALARMS" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+Calendar
+Add a calendar event
+To add a new event to the user's calendar, use the ACTION_INSERT action and specify the data URI with Events.CONTENT_URI. You can then specify various event details using extras defined below.
+
+Action
+ACTION_INSERT
+Data URI
+Events.CONTENT_URI
+MIME Type
+"vnd.android.cursor.dir/event"
+Extras
+EXTRA_EVENT_ALL_DAY
+A boolean specifying whether this is an all-day event.
+EXTRA_EVENT_BEGIN_TIME
+The start time of the event (milliseconds since epoch).
+EXTRA_EVENT_END_TIME
+The end time of the event (milliseconds since epoch).
+TITLE
+The event title.
+DESCRIPTION
+The event description.
+EVENT_LOCATION
+The event location.
+EXTRA_EMAIL
+A comma-separated list of email addresses that specify the invitees.
+Many more event details can be specified using the constants defined in the CalendarContract.EventsColumns class.
+
+Example intent:
+
+public void addEvent(String title, String location, long begin, long end) {
+    Intent intent = new Intent(Intent.ACTION_INSERT)
+            .setData(Events.CONTENT_URI)
+            .putExtra(Events.TITLE, title)
+            .putExtra(Events.EVENT_LOCATION, location)
+            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, begin)
+            .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, end);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+    }
+}
+Example intent filter:
+
+<activity ...>
+    <intent-filter>
+        <action android:name="android.intent.action.INSERT" />
+        <data android:mimeType="vnd.android.cursor.dir/event" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+Camera
+Capture a picture or video and return it
+To open a camera app and receive the resulting photo or video, use the ACTION_IMAGE_CAPTURE or ACTION_VIDEO_CAPTURE action. Also specify the URI location where you'd like the camera to save the photo or video, in the EXTRA_OUTPUT extra.
+
+Action
+ACTION_IMAGE_CAPTURE or
+ACTION_VIDEO_CAPTURE
+Data URI Scheme
+None
+MIME Type
+None
+Extras
+EXTRA_OUTPUT
+The URI location where the camera app should save the photo or video file (as a Uri object).
+When the camera app successfully returns focus to your activity (your app receives the onActivityResult() callback), you can access the photo or video at the URI you specified with the EXTRA_OUTPUT value.
+
+Note: When you use ACTION_IMAGE_CAPTURE to capture a photo, the camera may also return a downscaled copy (a thumbnail) of the photo in the result Intent, saved as a Bitmap in an extra field named "data".
+
+Example intent:
+
+static final int REQUEST_IMAGE_CAPTURE = 1;
+static final Uri mLocationForPhotos;
+
+public void capturePhoto(String targetFilename) {
+    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    intent.putExtra(MediaStore.EXTRA_OUTPUT,
+            Uri.withAppendedPath(mLocationForPhotos, targetFilename));
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+    }
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        Bitmap thumbnail = data.getParcelable("data");
+        // Do other work with full size photo saved in mLocationForPhotos
+        ...
+    }
+}
+For more information about how to use this intent to capture a photo, including how to create an appropriate Uri for the output location, read Taking Photos Simply or Taking Videos Simply.
+
+Example intent filter:
+
+<activity ...>
+    <intent-filter>
+        <action android:name="android.media.action.IMAGE_CAPTURE" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+When handling this intent, your activity should check for the EXTRA_OUTPUT extra in the incoming Intent, then save the captured image or video at the location specified by that extra and call setResult() with an Intent that includes a compressed thumbnail in an extra named "data".
+
+Start a camera app in still image mode
+ 
+Google Voice Actions
+
+"take a picture"
+To open a camera app in still image mode, use the INTENT_ACTION_STILL_IMAGE_CAMERA action.
+
+Action
+INTENT_ACTION_STILL_IMAGE_CAMERA
+Data URI Scheme
+None
+MIME Type
+None
+Extras
+None
+Example intent:
+
+public void capturePhoto() {
+    Intent intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(intent);
+    }
+}
+Example intent filter:
+
+<activity ...>
+    <intent-filter>
+        <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+Start a camera app in video mode
+ 
+Google Voice Actions
+
+"record a video"
+To open a camera app in video mode, use the INTENT_ACTION_VIDEO_CAMERA action.
+
+Action
+INTENT_ACTION_VIDEO_CAMERA
+Data URI Scheme
+None
+MIME Type
+None
+Extras
+None
+Example intent:
+
+public void capturePhoto() {
+    Intent intent = new Intent(MediaStore.INTENT_ACTION_VIDEO_CAMERA);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(intent);
+    }
+}
+Example intent filter:
+
+<activity ...>
+    <intent-filter>
+        <action android:name="android.media.action.VIDEO_CAMERA" />
+        <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+</activity>
+Contacts/People App
+Select a contact
+To have the user select a contact and provide your app access to all the contact information, use the ACTION_PICK action and specify the MIME type to Contacts.CONTENT_TYPE.
+
+The result Intent delivered to your onActivityResult() callback contains the content: URI pointing to the selected contact. The response grants your app temporary permissions to read that contact using the Contacts Provider API even if your app does not include the READ_CONTACTS permission.
+
+Tip: If you need access to only a specific piece of contact information, such as a phone number or email address, instead see the next section about how to select specific contact data.
+
+Action
+ACTION_PICK
+Data URI Scheme
+None
+MIME Type
+Contacts.CONTENT_TYPE
+Example intent:
+
+static final int REQUEST_SELECT_CONTACT = 1;
+
+public void selectContact() {
+    Intent intent = new Intent(Intent.ACTION_PICK);
+    intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(intent, REQUEST_SELECT_CONTACT);
+    }
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_SELECT_CONTACT && resultCode == RESULT_OK) {
+        Uri contactUri = data.getData();
+        // Do something with the selected contact at contactUri
+        ...
+    }
+}
+For information about how to retrieve contact details once you have the contact URI, read Retrieving Details for a Contact. Remember, when you retrieve the contact URI with the above intent, you do not need the READ_CONTACTS permission to read details for that contact.
+
+Select specific contact data
+To have the user select a specific piece of information from a contact, such as a phone number, email address, or other data type, use the ACTION_PICK action and specify the MIME type to one of the content types listed below, such as CommonDataKinds.Phone.CONTENT_TYPE to get the contact's phone number.
+
+If you need to retrieve only one type of data from a contact, this technique with a CONTENT_TYPE from the ContactsContract.CommonDataKinds classes is more efficient than using the Contacts.CONTENT_TYPE (as shown in the previous section) because the result provides you direct access to the desired data without requiring you to perform a more complex query to Contacts Provider.
+
+The result Intent delivered to your onActivityResult() callback contains the content: URI pointing to the selected contact data. The response grants your app temporary permissions to read that contact data even if your app does not include the READ_CONTACTS permission.
+
+Action
+ACTION_PICK
+Data URI Scheme
+None
+MIME Type
+CommonDataKinds.Phone.CONTENT_TYPE
+Pick from contacts with a phone number.
+CommonDataKinds.Email.CONTENT_TYPE
+Pick from contacts with an email address.
+CommonDataKinds.StructuredPostal.CONTENT_TYPE
+Pick from contacts with a postal address.
+Or one of many other CONTENT_TYPE values under ContactsContract.
+
+Example intent:
+
+static final int REQUEST_SELECT_PHONE_NUMBER = 1;
+
+public void selectContact() {
+    // Start an activity for the user to pick a phone number from contacts
+    Intent intent = new Intent(Intent.ACTION_PICK);
+    intent.setType(CommonDataKinds.Phone.CONTENT_TYPE);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivityForResult(intent, REQUEST_SELECT_PHONE_NUMBER);
+    }
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_SELECT_PHONE_NUMBER && resultCode == RESULT_OK) {
+        // Get the URI and query the content provider for the phone number
+        Uri contactUri = data.getData();
+        String[] projection = new String[]{CommonDataKinds.Phone.NUMBER};
+        Cursor cursor = getContentResolver().query(contactUri, projection,
+                null, null, null);
+        // If the cursor returned is valid, get the phone number
+        if (cursor != null && cursor.moveToFirst()) {
+            int numberIndex = cursor.getColumnIndex(CommonDataKinds.Phone.NUMBER);
+            String number = cursor.getString(numberIndex);
+            // Do something with the phone number
+            ...
+        }
+    }
+}
+View a contact
+To display the details for a known contact, use the ACTION_VIEW action and specify the contact with a content: URI as the intent data.
+
+There are primarily two ways to initially retrieve the contact's URI:
+
+Use the contact URI returned by the ACTION_PICK, shown in the previous section (this approach does not require any app permissions).
+Access the list of all contacts directly, as described in Retrieving a List of Contacts (this approach requires the READ_CONTACTS permission).
+Action
+ACTION_VIEW
+Data URI Scheme
+content:<URI>
+MIME Type
+None. The type is inferred from contact URI.
+Example intent:
+
+public void viewContact(Uri contactUri) {
+    Intent intent = new Intent(Intent.ACTION_VIEW, contactUri);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+    }
+}
+Edit an existing contact
+To edit a known contact, use the ACTION_EDIT action, specify the contact with a content: URI as the intent data, and include any known contact information in extras specified by constants in ContactsContract.Intents.Insert.
+
+There are primarily two ways to initially retrieve the contact URI:
+
+Use the contact URI returned by the ACTION_PICK, shown in the previous section (this approach does not require any app permissions).
+Access the list of all contacts directly, as described in Retrieving a List of Contacts (this approach requires the READ_CONTACTS permission).
+Action
+ACTION_EDIT
+Data URI Scheme
+content:<URI>
+MIME Type
+The type is inferred from contact URI.
+Extras
+One or more of the extras defined in ContactsContract.Intents.Insert so you can populate fields of the contact details.
+Example intent:
+
+public void editContact(Uri contactUri, String email) {
+    Intent intent = new Intent(Intent.ACTION_EDIT);
+    intent.setData(contactUri);
+    intent.putExtra(Intents.Insert.EMAIL, email);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+    }
+}
+For more information about how to edit a contact, read Modifying Contacts Using Intents.
+
+Insert a contact
+To insert a new contact, use the ACTION_INSERT action, specify Contacts.CONTENT_TYPE as the MIME type, and include any known contact information in extras specified by constants in ContactsContract.Intents.Insert.
+
+Action
+ACTION_INSERT
+Data URI Scheme
+None
+MIME Type
+Contacts.CONTENT_TYPE
+Extras
+One or more of the extras defined in ContactsContract.Intents.Insert.
+Example intent:
+
+public void insertContact(String name, String email) {
+    Intent intent = new Intent(Intent.ACTION_INSERT);
+    intent.setType(Contacts.CONTENT_TYPE);
+    intent.putExtra(Intents.Insert.NAME, name);
+    intent.putExtra(Intents.Insert.EMAIL, email);
+    if (intent.resolveActivity(getPackageManager()) != null) {
+        startActivity(intent);
+    }
+}
+For more information about how to insert a contact, read Modifying Contacts Using Intents.
+
+Email
+Compose an email with optional attachments
+To compose an email, use one of the below actions based on whether you'll include attachments, and include email details such as the recipient and subject using the extra keys listed below.
+
+Action
+ACTION_SENDTO (for no attachment) or
+ACTION_SEND (for one attachment) or
+ACTION_SEND_MULTIPLE (for multiple attachments)
+Data URI Scheme
+None
+MIME Type
+"text/plain"
+"*/*"
+Extras
+Intent.EXTRA_EMAIL
+A string array of all "To" recipient email addresses.
+Intent.EXTRA_CC
+A string array of all "CC" recipient email addresses.
+Intent.EXTRA_BCC
+A string array of all "BCC" recipient email addresses.

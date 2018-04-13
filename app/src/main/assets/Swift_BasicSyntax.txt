@@ -1,0 +1,53 @@
+We have already seen a piece of Swift 4 program while setting up the environment. Let's start once again with the following Hello, World! program created for OS X playground, which includes import Cocoa as shown below -
+
+/* My first program in Swift 4 */
+var myString = "Hello, World!"
+
+print(myString)
+If you create the same program for iOS playground, then it will include import UIKit and the program will look as follows -
+
+import UIKit
+var myString = "Hello, World!"
+print(myString)
+When we run the above program using an appropriate playground, we will get the following result -
+
+Hello, World!
+Let us now see the basic structure of a Swift 4 program, so that it will be easy for you to understand the basic building blocks of the Swift 4 programming language.
+
+Import in Swift 4
+You can use the import statement to import any Objective-C framework (or C library) directly into your Swift 4 program. For example, the above import cocoa statement makes all Cocoa libraries, APIs, and runtimes that form the development layer for all of OS X, available in Swift 4.
+
+Cocoa is implemented in Objective-C, which is a superset of C, so it is easy to mix C and even C++ into your Swift 4 applications.
+
+Tokens in Swift 4
+A Swift 4 program consists of various tokens and a token is either a keyword, an identifier, a constant, a string literal, or a symbol. For example, the following Swift 4 statement consists of three tokens -
+
+print("test!")
+The individual tokens are:
+print("test!")
+Comments
+Comments are like helping texts in your Swift 4 program. They are ignored by the compiler. Multi-line comments start with /* and terminate with the characters */ as shown below -
+
+/* My first program in Swift 4 */
+Multi-line comments can be nested in Swift 4. Following is a valid comment in Swift 4 -
+
+/* My first program in Swift 4 is Hello, World!
+/* Where as second program is Hello, Swift 4! */ */
+Single-line comments are written using // at the beginning of the comment.
+
+// My first program in Swift 4
+Semicolons
+Swift 4 does not require you to type a semicolon (;) after each statement in your code, though it’s optional; and if you use a semicolon, then the compiler does not complain about it.
+
+However, if you are using multiple statements in the same line, then it is required to use a semicolon as a delimiter, otherwise the compiler will raise a syntax error. You can write the above Hello, World! program as follows -
+
+/* My first program in Swift 4 */
+var myString = "Hello, World!"; print(myString)
+Identifiers
+A Swift 4 identifier is a name used to identify a variable, function, or any other userdefined item. An identifier starts with an alphabet A to Z or a to z or an underscore _ followed by zero or more letters, underscores, and digits (0 to 9).
+
+Swift 4 does not allow special characters such as @, $, and % within identifiers. Swift 4 is a case sensitive programming language. Thus, Manpower and manpower are two different identifiers in Swift 4. Here are some examples of acceptable identifiers -
+
+Azad        zara   abc   move_name   a_123
+myname50    _temp  j     a23b9       retVal
+To use a reserved word as an identifier, you will need to put a backtick (`) before and after it. For example, class is not a valid identifier, but `class` is valid.

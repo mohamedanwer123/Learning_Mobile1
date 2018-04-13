@@ -1,0 +1,112 @@
+Menus
+In this document
+Defining a Menu in XML
+Creating an Options Menu
+Handling click events
+Changing menu items at runtime
+Creating Contextual Menus
+Creating a floating context menu
+Using the contextual action mode
+Creating a Popup Menu
+Handling click events
+Creating Menu Groups
+Using checkable menu items
+Adding Menu Items Based on an Intent
+Allowing your activity to be added to other menus
+Key classes
+Menu
+MenuItem
+ContextMenu
+ActionMode
+See also
+Adding the App Bar
+Menu Resource
+Say Goodbye to the Menu Button
+Menus are a common user interface component in many types of applications. To provide a familiar and consistent user experience, you should use the Menu APIs to present user actions and other options in your activities.
+
+Beginning with Android 3.0 (API level 11), Android-powered devices are no longer required to provide a dedicated Menu button. With this change, Android apps should migrate away from a dependence on the traditional 6-item menu panel and instead provide an app bar to present common user actions.
+
+Although the design and user experience for some menu items have changed, the semantics to define a set of actions and options is still based on the Menu APIs. This guide shows how to create the three fundamental types of menus or action presentations on all versions of Android:
+
+Options menu and app bar
+The options menu is the primary collection of menu items for an activity. It's where you should place actions that have a global impact on the app, such as "Search," "Compose email," and "Settings."
+See the section about Creating an Options Menu.
+
+Context menu and contextual action mode
+A context menu is a floating menu that appears when the user performs a long-click on an element. It provides actions that affect the selected content or context frame.
+The contextual action mode displays action items that affect the selected content in a bar at the top of the screen and allows the user to select multiple items.
+
+See the section about Creating Contextual Menus.
+
+Popup menu
+A popup menu displays a list of items in a vertical list that's anchored to the view that invoked the menu. It's good for providing an overflow of actions that relate to specific content or to provide options for a second part of a command. Actions in a popup menu should not directly affect the corresponding content—that's what contextual actions are for. Rather, the popup menu is for extended actions that relate to regions of content in your activity.
+See the section about Creating a Popup Menu.
+
+Defining a Menu in XML
+For all menu types, Android provides a standard XML format to define menu items. Instead of building a menu in your activity's code, you should define a menu and all its items in an XML menu resource. You can then inflate the menu resource (load it as a Menu object) in your activity or fragment.
+
+Using a menu resource is a good practice for a few reasons:
+
+It's easier to visualize the menu structure in XML.
+It separates the content for the menu from your application's behavioral code.
+It allows you to create alternative menu configurations for different platform versions, screen sizes, and other configurations by leveraging the app resources framework.
+To define the menu, create an XML file inside your project's res/menu/ directory and build the menu with the following elements:
+
+<menu>
+Defines a Menu, which is a container for menu items. A <menu> element must be the root node for the file and can hold one or more <item> and <group> elements.
+<item>
+Creates a MenuItem, which represents a single item in a menu. This element may contain a nested <menu> element in order to create a submenu.
+<group>
+An optional, invisible container for <item> elements. It allows you to categorize menu items so they share properties such as active state and visibility. For more information, see the section about Creating Menu Groups.
+Here's an example menu named game_menu.xml:
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/new_game"
+          android:icon="@drawable/ic_new_game"
+          android:title="@string/new_game"
+          android:showAsAction="ifRoom"/>
+    <item android:id="@+id/help"
+          android:icon="@drawable/ic_help"
+          android:title="@string/help" />
+</menu>
+The <item> element supports several attributes you can use to define an item's appearance and behavior. The items in the above menu include the following attributes:
+
+android:id
+A resource ID that's unique to the item, which allows the application to recognize the item when the user selects it.
+android:icon
+A reference to a drawable to use as the item's icon.
+android:title
+A reference to a string to use as the item's title.
+android:showAsAction
+Specifies when and how this item should appear as an action item in the app bar.
+These are the most important attributes you should use, but there are many more available. For information about all the supported attributes, see the Menu Resource document.
+
+You can add a submenu to an item in any menu (except a submenu) by adding a <menu> element as the child of an <item>. Submenus are useful when your application has a lot of functions that can be organized into topics, like items in a PC application's menu bar (File, Edit, View, etc.). For example:
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/file"
+          android:title="@string/file" >
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/create_new"
+                  android:title="@string/create_new" />
+            <item android:id="@+id/open"
+                  android:title="@string/open" />
+        </menu>
+    </item>
+</menu>
+To use the menu in your activity, you need to inflate the menu resource (convert the XML resource into a programmable object) using MenuInflater.inflate(). In the following sections, you'll see how to inflate a menu for each menu type.
+
+Creating an Options Menu
+
+Figure 1. Options menu in the Browser.
+
+The options menu is where you should include actions and other options that are relevant to the current activity context, such as "Search," "Compose email," and "Settings."
+
+Where the items in your options menu appear on the screen depends on the version for which you've developed your application:
+
+If you've developed your application for Android 2.3.x (API level 10) or lower, the contents of your options menu appear at the bottom of the screen when the user presses the Menu button, as shown in figure 1. When opened, the first visible portion is the icon menu, which holds up to six menu items. If your menu includes more than six items, Android places the sixth item and the rest into the overflow menu, which the user can open by selecting More.
+If you've developed your application for Android 3.0 (API level 11) and higher, items from the options menu are available in the app bar. By default, the system places all items in the action overflow, which the user can reveal with the action overflow icon on the right side of the app bar (or by pressing the device Menu button, if available). To enable quick access to important actions, you can promote a few items to appear in the app bar by adding android:showAsAction="ifRoom" to the corresponding <item> elements (see figure 2).
+For more information about action items and other app bar behaviors, see the Adding the App Bar training class.
